@@ -1,0 +1,5 @@
+openai
+pinecone
+streamlit
+google.generativeai
+python-dotenv
