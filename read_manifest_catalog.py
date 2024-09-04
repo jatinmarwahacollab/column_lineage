@@ -4,7 +4,6 @@ import snowflake.connector
 import os
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 # Step 1: Load JSON Files
@@ -18,19 +17,18 @@ def load_catalog(file_path):
         catalog = json.load(file)
     return catalog.get('nodes', {})
 
-# Step 2: Extract Data and Populate DataFrame
 def build_dataframe_from_manifest(nodes, catalog_nodes):
     data = []
 
     # Build initial table and column list from catalog.json
     for node_key, node_info in catalog_nodes.items():
-        table_name = node_key
+        table_name = node_key.lower()  # Convert to lowercase for case-insensitive matching
         columns = node_info.get('columns', {})
-        for column_name, column_info in columns.items():
+        for column_name in columns:
             # Unique key creation
-            database = node_info.get('metadata', {}).get('database', '')
-            schema = node_info.get('metadata', {}).get('schema', '')
-            unique_key = f"{database}.{schema}.{table_name}.{column_name}"
+            database = node_info.get('metadata', {}).get('database', '').lower()
+            schema = node_info.get('metadata', {}).get('schema', '').lower()
+            unique_key = f"{database}.{schema}.{table_name}.{column_name.lower()}"
 
             # Append data to list with new columns
             data.append({
@@ -38,36 +36,43 @@ def build_dataframe_from_manifest(nodes, catalog_nodes):
                 'database': database,
                 'schema': schema,
                 'table_name': table_name,
-                'column_name': column_name,
-                'column_description': column_info.get('description', ''),
+                'column_name': column_name.lower(),
                 'resource_type': '',  # Initialize as empty
                 'name': '',  # Initialize as empty
                 'sql': '',  # Initialize as empty
-                'reference': ''  # Initialize as empty
+                'reference': '',  # Initialize as empty
+                'column_description': ''  # Initialize as empty
             })
 
     # Enrich data with information from manifest.json
     for node_key, node_info in nodes.items():
-        table_name = node_key
+        table_name = node_key.lower()  # Use the full node_key from manifest.json in lowercase
         resource_type = node_info.get('resource_type', '')
-        name = node_info.get('name', '')
+        name = node_info.get('name', '').lower()
         sql = node_info.get('raw_code', '')
         refs = node_info.get('refs', [])
+        columns = node_info.get('columns', {})  # Get columns from manifest
 
         for item in data:
-            if item['table_name'] == table_name:
+            if item['table_name'] == table_name:  # Match the full table name in lowercase
                 item['resource_type'] = resource_type
                 item['name'] = name
                 item['sql'] = sql
 
+                # Find column description in manifest
+                for column_key, column_info in columns.items():
+                    if item['column_name'] == column_key.lower():  # Ensure column names match in lowercase
+                        item['column_description'] = column_info.get('description', '')
+
+                # Prepare reference information
                 reference_info = []
                 for ref in refs:
-                    ref_name = ref.get('name', '')
+                    ref_name = ref.get('name', '').lower()
                     if ref_name:
                         ref_columns = catalog_nodes.get(f"model.jaffle_shop.{ref_name}", {}).get('columns', {})
                         for ref_column_name, ref_column_info in ref_columns.items():
                             ref_column_description = ref_column_info.get('description', '')
-                            reference_info.append(f"{ref_name}.{ref_column_name}: {ref_column_description}")
+                            reference_info.append(f"{ref_name}.{ref_column_name.lower()}: {ref_column_description}")
 
                 item['reference'] = ', '.join(reference_info)
 
