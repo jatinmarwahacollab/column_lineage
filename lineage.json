@@ -1,53 +1,13 @@
 [
     {
-        "model": "order_items",
-        "column": "order_item_id",
-        "column Description": NaN,
-        "upstream_models": [
-            {
-                "model": "stg_order_items",
-                "column": "order_item_id",
-                "column Description": "The unique key for each order item.",
-                "upstream_models": [
-                    {
-                        "model": "ecom.raw_items",
-                        "column": "id",
-                        "column Description": "Description not available",
-                        "upstream_models": []
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "model": "order_items",
-        "column": "order_id",
-        "column Description": NaN,
-        "upstream_models": [
-            {
-                "model": "stg_order_items",
-                "column": "order_id",
-                "column Description": "The corresponding order each order item belongs to",
-                "upstream_models": [
-                    {
-                        "model": "ecom.raw_items",
-                        "column": "order_id",
-                        "column Description": "Description not available",
-                        "upstream_models": []
-                    }
-                ]
-            }
-        ]
-    },
-    {
         "model": "customers",
         "column": "customer_id",
-        "column Description": "The unique key of the orders mart.",
+        "column Description": NaN,
         "upstream_models": [
             {
                 "model": "stg_customers",
                 "column": "customer_id",
-                "column Description": "The unique key for each customer.",
+                "column Description": NaN,
                 "upstream_models": [
                     {
                         "model": "ecom.raw_customers",
@@ -62,33 +22,189 @@
     {
         "model": "customers",
         "column": "customer_name",
-        "column Description": "Customers' full name.",
+        "column Description": NaN,
         "upstream_models": [
             {
                 "model": "stg_customers",
                 "column": "customer_name",
-                "column Description": "Description not available",
-                "upstream_models": []
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_customers",
+                        "column": "name",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
             }
         ]
     },
     {
         "model": "customers",
         "column": "count_lifetime_orders",
-        "column Description": "Total number of orders a customer has ever placed.",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "nan",
-                "column": "nan",
-                "column Description": "Description not available",
-                "upstream_models": []
+                "model": "orders",
+                "column": "order_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_orders",
+                        "column": "order_id",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_orders",
+                                "column": "id",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
     {
         "model": "customers",
         "column": "first_ordered_at",
-        "column Description": "The timestamp when a customer placed their first order.",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "orders",
+                "column": "ordered_at",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_orders",
+                        "column": "ordered_at",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_orders",
+                                "column": "ordered_at",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "customers",
+        "column": "last_ordered_at",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "orders",
+                "column": "ordered_at",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_orders",
+                        "column": "ordered_at",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_orders",
+                                "column": "ordered_at",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "customers",
+        "column": "lifetime_spend_pretax",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "orders",
+                "column": "subtotal",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_orders",
+                        "column": "subtotal",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_orders",
+                                "column": "subtotal",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "customers",
+        "column": "lifetime_tax_paid",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "orders",
+                "column": "tax_paid",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_orders",
+                        "column": "tax_paid",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_orders",
+                                "column": "tax_paid",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "customers",
+        "column": "lifetime_spend",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "orders",
+                "column": "order_total",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_orders",
+                        "column": "order_total",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_orders",
+                                "column": "order_total",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "customers",
+        "column": "customer_type",
+        "column Description": NaN,
         "upstream_models": [
             {
                 "model": "nan",
@@ -99,14 +215,27 @@
         ]
     },
     {
-        "model": "customers",
-        "column": "last_ordered_at",
-        "column Description": "The timestamp of a customer's most recent order.",
+        "model": "metricflow_time_spine",
+        "column": "date_day",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "orders",
-                "column": "ordered_at",
-                "column Description": "The timestamp the order was placed at.",
+                "model": "days",
+                "column": "date_day",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "order_items",
+        "column": "order_item_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_order_items",
+                "column": "order_item_id",
+                "column Description": NaN,
                 "upstream_models": [
                     {
                         "model": "nan",
@@ -119,12 +248,317 @@
         ]
     },
     {
-        "model": "customers",
-        "column": "lifetime_spend_pretax",
-        "column Description": "The sum of all the pre-tax subtotals of every order a customer has placed.",
+        "model": "order_items",
+        "column": "order_id",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "orders",
+                "model": "stg_order_items",
+                "column": "order_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "nan",
+                        "column": "nan",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            },
+            {
+                "model": "stg_orders",
+                "column": "order_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "id",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "order_items",
+        "column": "product_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_order_items",
+                "column": "product_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "nan",
+                        "column": "nan",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            },
+            {
+                "model": "stg_products",
+                "column": "product_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "sku",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "order_items",
+        "column": "ordered_at",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_orders",
+                "column": "ordered_at",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "ordered_at",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "order_items",
+        "column": "product_name",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "product_name",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "name",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "order_items",
+        "column": "product_price",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "product_price",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "price",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "order_items",
+        "column": "is_food_item",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "is_food_item",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "type",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "order_items",
+        "column": "is_drink_item",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "is_drink_item",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "type",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "order_items",
+        "column": "supply_cost",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_supplies",
+                "column": "supply_cost",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_supplies",
+                        "column": "cost",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "locations",
+        "column": "location_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_locations",
+                "column": "location_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_stores",
+                        "column": "id",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "locations",
+        "column": "location_name",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_locations",
+                "column": "location_name",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_stores",
+                        "column": "name",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "locations",
+        "column": "tax_rate",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_locations",
+                "column": "tax_rate",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_stores",
+                        "column": "tax_rate",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "locations",
+        "column": "opened_date",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_locations",
+                "column": "opened_date",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_stores",
+                        "column": "opened_at",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "stg_orders",
+        "column": "order_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_orders",
+                "column": "id",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_orders",
+        "column": "location_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_orders",
+                "column": "store_id",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_orders",
+        "column": "customer_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_orders",
+                "column": "customer",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_orders",
+        "column": "subtotal_cents",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_orders",
                 "column": "subtotal",
                 "column Description": "Description not available",
                 "upstream_models": []
@@ -132,12 +566,12 @@
         ]
     },
     {
-        "model": "customers",
-        "column": "lifetime_tax_paid",
-        "column Description": "The sum of all the tax portion of every order a customer has placed.",
+        "model": "stg_orders",
+        "column": "tax_paid_cents",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "orders",
+                "model": "ecom.raw_orders",
                 "column": "tax_paid",
                 "column Description": "Description not available",
                 "upstream_models": []
@@ -145,26 +579,546 @@
         ]
     },
     {
-        "model": "customers",
-        "column": "lifetime_spend",
-        "column Description": "The sum of all the order totals (including tax) that a customer has ever placed.",
+        "model": "stg_orders",
+        "column": "order_total_cents",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "orders",
-                "column": "lifetime_spend",
+                "model": "ecom.raw_orders",
+                "column": "order_total",
                 "column Description": "Description not available",
                 "upstream_models": []
             }
         ]
     },
     {
-        "model": "customers",
-        "column": "customer_type",
-        "column Description": "Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.",
+        "model": "stg_orders",
+        "column": "subtotal",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "nan",
-                "column": "nan",
+                "model": "ecom.raw_orders",
+                "column": "subtotal",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_orders",
+        "column": "tax_paid",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_orders",
+                "column": "tax_paid",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_orders",
+        "column": "order_total",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_orders",
+                "column": "order_total",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_orders",
+        "column": "ordered_at",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_orders",
+                "column": "ordered_at",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "products",
+        "column": "product_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "product_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "sku",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "products",
+        "column": "product_name",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "product_name",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "name",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "products",
+        "column": "product_type",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "product_type",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "type",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "products",
+        "column": "product_description",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "product_description",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "description",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "products",
+        "column": "product_price",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "product_price",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "price",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "products",
+        "column": "is_food_item",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "is_food_item",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "type",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "products",
+        "column": "is_drink_item",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_products",
+                "column": "is_drink_item",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_products",
+                        "column": "type",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "stg_products",
+        "column": "product_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_products",
+                "column": "sku",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_products",
+        "column": "product_name",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_products",
+                "column": "name",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_products",
+        "column": "product_type",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_products",
+                "column": "type",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_products",
+        "column": "product_description",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_products",
+                "column": "description",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_products",
+        "column": "product_price",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_products",
+                "column": "price",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_products",
+        "column": "is_food_item",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_products",
+                "column": "type",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_products",
+        "column": "is_drink_item",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_products",
+                "column": "type",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_supplies",
+        "column": "supply_uuid",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_supplies",
+                "column": "id",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_supplies",
+        "column": "supply_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_supplies",
+                "column": "id",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_supplies",
+        "column": "product_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_supplies",
+                "column": "sku",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_supplies",
+        "column": "supply_name",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_supplies",
+                "column": "name",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_supplies",
+        "column": "supply_cost",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_supplies",
+                "column": "cost",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_supplies",
+        "column": "is_perishable_supply",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_supplies",
+                "column": "perishable",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "supplies",
+        "column": "supply_uuid",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_supplies",
+                "column": "supply_uuid",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_supplies",
+                        "column": "id",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "supplies",
+        "column": "supply_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_supplies",
+                "column": "supply_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_supplies",
+                        "column": "id",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "supplies",
+        "column": "product_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_supplies",
+                "column": "product_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_supplies",
+                        "column": "sku",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "supplies",
+        "column": "supply_name",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_supplies",
+                "column": "supply_name",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_supplies",
+                        "column": "name",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "supplies",
+        "column": "supply_cost",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_supplies",
+                "column": "supply_cost",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_supplies",
+                        "column": "cost",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "supplies",
+        "column": "is_perishable_supply",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_supplies",
+                "column": "is_perishable_supply",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_supplies",
+                        "column": "perishable",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "stg_locations",
+        "column": "location_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_stores",
+                "column": "id",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_locations",
+        "column": "location_name",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_stores",
+                "column": "name",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_locations",
+        "column": "tax_rate",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_stores",
+                "column": "tax_rate",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_locations",
+        "column": "opened_date",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "ecom.raw_stores",
+                "column": "opened_at",
                 "column Description": "Description not available",
                 "upstream_models": []
             }
@@ -173,12 +1127,12 @@
     {
         "model": "orders",
         "column": "order_id",
-        "column Description": "The unique key of the orders mart.",
+        "column Description": NaN,
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "order_id",
-                "column Description": "The unique key for each order.",
+                "column Description": NaN,
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
@@ -192,151 +1146,397 @@
     },
     {
         "model": "orders",
+        "column": "location_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_orders",
+                "column": "location_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "store_id",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
         "column": "customer_id",
-        "column Description": "The foreign key relating to the customer who placed the order.",
+        "column Description": NaN,
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "customer_id",
-                "column Description": "Description not available",
-                "upstream_models": []
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "customer",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
+        "column": "subtotal_cents",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_orders",
+                "column": "subtotal_cents",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "subtotal",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
+        "column": "tax_paid_cents",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_orders",
+                "column": "tax_paid_cents",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "tax_paid",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
+        "column": "order_total_cents",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_orders",
+                "column": "order_total_cents",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "order_total",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
+        "column": "subtotal",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_orders",
+                "column": "subtotal",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "subtotal",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
+        "column": "tax_paid",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "stg_orders",
+                "column": "tax_paid",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "tax_paid",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
             }
         ]
     },
     {
         "model": "orders",
         "column": "order_total",
-        "column Description": "The total amount of the order in USD including tax.",
+        "column Description": NaN,
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "order_total",
-                "column Description": "Description not available",
-                "upstream_models": []
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "order_total",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
             }
         ]
     },
     {
         "model": "orders",
         "column": "ordered_at",
-        "column Description": "The timestamp the order was placed at.",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "nan",
-                "column": "nan",
-                "column Description": "Description not available",
-                "upstream_models": []
+                "model": "stg_orders",
+                "column": "ordered_at",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "ordered_at",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
             }
         ]
     },
     {
         "model": "orders",
         "column": "order_cost",
-        "column Description": "The sum of supply expenses to fulfill the order.",
+        "column Description": NaN,
         "upstream_models": [
             {
                 "model": "order_items",
                 "column": "supply_cost",
-                "column Description": "Description not available",
-                "upstream_models": []
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_supplies",
+                        "column": "supply_cost",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_supplies",
+                                "column": "cost",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
+        "column": "order_items_subtotal",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "order_items",
+                "column": "product_price",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_products",
+                        "column": "product_price",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_products",
+                                "column": "price",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
+        "column": "count_food_items",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "order_items",
+                "column": "is_food_item",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_products",
+                        "column": "is_food_item",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_products",
+                                "column": "type",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
+        "column": "count_drink_items",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "order_items",
+                "column": "is_drink_item",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_products",
+                        "column": "is_drink_item",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_products",
+                                "column": "type",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "model": "orders",
+        "column": "count_order_items",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "order_items",
+                "column": "order_item_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_order_items",
+                        "column": "order_item_id",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "nan",
+                                "column": "nan",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
     {
         "model": "orders",
         "column": "is_food_order",
-        "column Description": "A boolean indicating if this order included any food items.",
+        "column Description": NaN,
         "upstream_models": [
             {
                 "model": "order_items",
                 "column": "is_food_item",
-                "column Description": "Description not available",
-                "upstream_models": []
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_products",
+                        "column": "is_food_item",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_products",
+                                "column": "type",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
     {
         "model": "orders",
         "column": "is_drink_order",
-        "column Description": "A boolean indicating if this order included any drink items.",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "nan",
-                "column": "nan",
-                "column Description": "Description not available",
-                "upstream_models": []
+                "model": "order_items",
+                "column": "is_drink_item",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "stg_products",
+                        "column": "is_drink_item",
+                        "column Description": NaN,
+                        "upstream_models": [
+                            {
+                                "model": "ecom.raw_products",
+                                "column": "type",
+                                "column Description": "Description not available",
+                                "upstream_models": []
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
     {
-        "model": "stg_products",
-        "column": "product_id",
-        "column Description": "The unique key for each product.",
+        "model": "orders",
+        "column": "customer_order_number",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "ecom.raw_products",
-                "column": "sku",
-                "column Description": "Description not available",
-                "upstream_models": []
-            }
-        ]
-    },
-    {
-        "model": "stg_supplies",
-        "column": "supply_uuid",
-        "column Description": "The unique key of our supplies per cost.",
-        "upstream_models": [
-            {
-                "model": "ecom.raw_supplies",
-                "column": "id",
-                "column Description": "Description not available",
-                "upstream_models": []
-            }
-        ]
-    },
-    {
-        "model": "stg_orders",
-        "column": "order_id",
-        "column Description": "The unique key for each order.",
-        "upstream_models": [
-            {
-                "model": "ecom.raw_orders",
-                "column": "id",
-                "column Description": "Description not available",
-                "upstream_models": []
-            }
-        ]
-    },
-    {
-        "model": "stg_order_items",
-        "column": "order_item_id",
-        "column Description": "The unique key for each order item.",
-        "upstream_models": [
-            {
-                "model": "ecom.raw_items",
-                "column": "id",
-                "column Description": "Description not available",
-                "upstream_models": []
-            }
-        ]
-    },
-    {
-        "model": "stg_order_items",
-        "column": "order_id",
-        "column Description": "The corresponding order each order item belongs to",
-        "upstream_models": [
-            {
-                "model": "ecom.raw_items",
-                "column": "order_id",
-                "column Description": "Description not available",
-                "upstream_models": []
+                "model": "stg_orders",
+                "column": "customer_id",
+                "column Description": NaN,
+                "upstream_models": [
+                    {
+                        "model": "ecom.raw_orders",
+                        "column": "customer",
+                        "column Description": "Description not available",
+                        "upstream_models": []
+                    }
+                ]
             }
         ]
     },
     {
         "model": "stg_customers",
         "column": "customer_id",
-        "column Description": "The unique key for each customer.",
+        "column Description": NaN,
         "upstream_models": [
             {
                 "model": "ecom.raw_customers",
@@ -347,13 +1547,52 @@
         ]
     },
     {
-        "model": "stg_locations",
-        "column": "location_id",
-        "column Description": "The unique key for each location.",
+        "model": "stg_customers",
+        "column": "customer_name",
+        "column Description": NaN,
         "upstream_models": [
             {
-                "model": "ecom.raw_stores",
-                "column": "id",
+                "model": "ecom.raw_customers",
+                "column": "name",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_order_items",
+        "column": "order_item_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "nan",
+                "column": "nan",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_order_items",
+        "column": "order_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "nan",
+                "column": "nan",
+                "column Description": "Description not available",
+                "upstream_models": []
+            }
+        ]
+    },
+    {
+        "model": "stg_order_items",
+        "column": "product_id",
+        "column Description": NaN,
+        "upstream_models": [
+            {
+                "model": "nan",
+                "column": "nan",
                 "column Description": "Description not available",
                 "upstream_models": []
             }

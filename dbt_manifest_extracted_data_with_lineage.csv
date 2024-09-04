@@ -1,0 +1,3657 @@
+﻿UNIQUE_KEY,DATABASE,SCHEMA,TABLE_NAME,COLUMN_NAME,COLUMN_DESCRIPTION,RESOURCE_TYPE,NAME,SQL,REFERENCE,UPSTREAM_TABLE,UPSTREAM_COLUMN,REASONING
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,CUSTOMER_ID,,model,customers,"with
+
+customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('orders') }}
+
+),
+
+customer_orders_summary as (
+
+    select
+        orders.customer_id,
+
+        count(distinct orders.order_id) as count_lifetime_orders,
+        count(distinct orders.order_id) > 1 as is_repeat_buyer,
+        min(orders.ordered_at) as first_ordered_at,
+        max(orders.ordered_at) as last_ordered_at,
+        sum(orders.subtotal) as lifetime_spend_pretax,
+        sum(orders.tax_paid) as lifetime_tax_paid,
+        sum(orders.order_total) as lifetime_spend
+
+    from orders
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        customers.*,
+
+        customer_orders_summary.count_lifetime_orders,
+        customer_orders_summary.first_ordered_at,
+        customer_orders_summary.last_ordered_at,
+        customer_orders_summary.lifetime_spend_pretax,
+        customer_orders_summary.lifetime_tax_paid,
+        customer_orders_summary.lifetime_spend,
+
+        case
+            when customer_orders_summary.is_repeat_buyer then 'returning'
+            else 'new'
+        end as customer_type
+
+    from customers
+
+    left join customer_orders_summary
+        on customers.customer_id = customer_orders_summary.customer_id
+
+)
+
+select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",stg_customers,stg_customers.CUSTOMER_ID,"The CUSTOMER_ID is directly selected from the stg_customers table without any transformation, representing a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.CUSTOMER_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,CUSTOMER_NAME,,model,customers,"with
+
+customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('orders') }}
+
+),
+
+customer_orders_summary as (
+
+    select
+        orders.customer_id,
+
+        count(distinct orders.order_id) as count_lifetime_orders,
+        count(distinct orders.order_id) > 1 as is_repeat_buyer,
+        min(orders.ordered_at) as first_ordered_at,
+        max(orders.ordered_at) as last_ordered_at,
+        sum(orders.subtotal) as lifetime_spend_pretax,
+        sum(orders.tax_paid) as lifetime_tax_paid,
+        sum(orders.order_total) as lifetime_spend
+
+    from orders
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        customers.*,
+
+        customer_orders_summary.count_lifetime_orders,
+        customer_orders_summary.first_ordered_at,
+        customer_orders_summary.last_ordered_at,
+        customer_orders_summary.lifetime_spend_pretax,
+        customer_orders_summary.lifetime_tax_paid,
+        customer_orders_summary.lifetime_spend,
+
+        case
+            when customer_orders_summary.is_repeat_buyer then 'returning'
+            else 'new'
+        end as customer_type
+
+    from customers
+
+    left join customer_orders_summary
+        on customers.customer_id = customer_orders_summary.customer_id
+
+)
+
+select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",stg_customers,stg_customers.CUSTOMER_NAME,"The CUSTOMER_NAME column is directly selected from the customers table which references stg_customers, indicating a one-to-one mapping with no transformation."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.COUNT_LIFETIME_ORDERS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,COUNT_LIFETIME_ORDERS,,model,customers,"with
+
+customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('orders') }}
+
+),
+
+customer_orders_summary as (
+
+    select
+        orders.customer_id,
+
+        count(distinct orders.order_id) as count_lifetime_orders,
+        count(distinct orders.order_id) > 1 as is_repeat_buyer,
+        min(orders.ordered_at) as first_ordered_at,
+        max(orders.ordered_at) as last_ordered_at,
+        sum(orders.subtotal) as lifetime_spend_pretax,
+        sum(orders.tax_paid) as lifetime_tax_paid,
+        sum(orders.order_total) as lifetime_spend
+
+    from orders
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        customers.*,
+
+        customer_orders_summary.count_lifetime_orders,
+        customer_orders_summary.first_ordered_at,
+        customer_orders_summary.last_ordered_at,
+        customer_orders_summary.lifetime_spend_pretax,
+        customer_orders_summary.lifetime_tax_paid,
+        customer_orders_summary.lifetime_spend,
+
+        case
+            when customer_orders_summary.is_repeat_buyer then 'returning'
+            else 'new'
+        end as customer_type
+
+    from customers
+
+    left join customer_orders_summary
+        on customers.customer_id = customer_orders_summary.customer_id
+
+)
+
+select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.order_id,"The COUNT_LIFETIME_ORDERS is derived from counting distinct order IDs from the orders table, indicating a transformation from multiple order records to a single count value."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.FIRST_ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,FIRST_ORDERED_AT,,model,customers,"with
+
+customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('orders') }}
+
+),
+
+customer_orders_summary as (
+
+    select
+        orders.customer_id,
+
+        count(distinct orders.order_id) as count_lifetime_orders,
+        count(distinct orders.order_id) > 1 as is_repeat_buyer,
+        min(orders.ordered_at) as first_ordered_at,
+        max(orders.ordered_at) as last_ordered_at,
+        sum(orders.subtotal) as lifetime_spend_pretax,
+        sum(orders.tax_paid) as lifetime_tax_paid,
+        sum(orders.order_total) as lifetime_spend
+
+    from orders
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        customers.*,
+
+        customer_orders_summary.count_lifetime_orders,
+        customer_orders_summary.first_ordered_at,
+        customer_orders_summary.last_ordered_at,
+        customer_orders_summary.lifetime_spend_pretax,
+        customer_orders_summary.lifetime_tax_paid,
+        customer_orders_summary.lifetime_spend,
+
+        case
+            when customer_orders_summary.is_repeat_buyer then 'returning'
+            else 'new'
+        end as customer_type
+
+    from customers
+
+    left join customer_orders_summary
+        on customers.customer_id = customer_orders_summary.customer_id
+
+)
+
+select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.ORDERED_AT,"The column FIRST_ORDERED_AT is calculated as the minimum of orders.ORDERED_AT in the customer_orders_summary CTE, indicating it is derived from the orders table."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LAST_ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LAST_ORDERED_AT,,model,customers,"with
+
+customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('orders') }}
+
+),
+
+customer_orders_summary as (
+
+    select
+        orders.customer_id,
+
+        count(distinct orders.order_id) as count_lifetime_orders,
+        count(distinct orders.order_id) > 1 as is_repeat_buyer,
+        min(orders.ordered_at) as first_ordered_at,
+        max(orders.ordered_at) as last_ordered_at,
+        sum(orders.subtotal) as lifetime_spend_pretax,
+        sum(orders.tax_paid) as lifetime_tax_paid,
+        sum(orders.order_total) as lifetime_spend
+
+    from orders
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        customers.*,
+
+        customer_orders_summary.count_lifetime_orders,
+        customer_orders_summary.first_ordered_at,
+        customer_orders_summary.last_ordered_at,
+        customer_orders_summary.lifetime_spend_pretax,
+        customer_orders_summary.lifetime_tax_paid,
+        customer_orders_summary.lifetime_spend,
+
+        case
+            when customer_orders_summary.is_repeat_buyer then 'returning'
+            else 'new'
+        end as customer_type
+
+    from customers
+
+    left join customer_orders_summary
+        on customers.customer_id = customer_orders_summary.customer_id
+
+)
+
+select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.ORDERED_AT,The column LAST_ORDERED_AT is derived from the aggregation of the ORDERED_AT column using the MAX function to determine the most recent order date for each customer.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LIFETIME_SPEND_PRETAX,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LIFETIME_SPEND_PRETAX,,model,customers,"with
+
+customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('orders') }}
+
+),
+
+customer_orders_summary as (
+
+    select
+        orders.customer_id,
+
+        count(distinct orders.order_id) as count_lifetime_orders,
+        count(distinct orders.order_id) > 1 as is_repeat_buyer,
+        min(orders.ordered_at) as first_ordered_at,
+        max(orders.ordered_at) as last_ordered_at,
+        sum(orders.subtotal) as lifetime_spend_pretax,
+        sum(orders.tax_paid) as lifetime_tax_paid,
+        sum(orders.order_total) as lifetime_spend
+
+    from orders
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        customers.*,
+
+        customer_orders_summary.count_lifetime_orders,
+        customer_orders_summary.first_ordered_at,
+        customer_orders_summary.last_ordered_at,
+        customer_orders_summary.lifetime_spend_pretax,
+        customer_orders_summary.lifetime_tax_paid,
+        customer_orders_summary.lifetime_spend,
+
+        case
+            when customer_orders_summary.is_repeat_buyer then 'returning'
+            else 'new'
+        end as customer_type
+
+    from customers
+
+    left join customer_orders_summary
+        on customers.customer_id = customer_orders_summary.customer_id
+
+)
+
+select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.SUBTOTAL,"The column LIFETIME_SPEND_PRETAX is calculated as the sum of the orders' subtotal, indicating it is derived directly from the orders table without any transformation beyond aggregation."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LIFETIME_TAX_PAID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LIFETIME_TAX_PAID,,model,customers,"with
+
+customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('orders') }}
+
+),
+
+customer_orders_summary as (
+
+    select
+        orders.customer_id,
+
+        count(distinct orders.order_id) as count_lifetime_orders,
+        count(distinct orders.order_id) > 1 as is_repeat_buyer,
+        min(orders.ordered_at) as first_ordered_at,
+        max(orders.ordered_at) as last_ordered_at,
+        sum(orders.subtotal) as lifetime_spend_pretax,
+        sum(orders.tax_paid) as lifetime_tax_paid,
+        sum(orders.order_total) as lifetime_spend
+
+    from orders
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        customers.*,
+
+        customer_orders_summary.count_lifetime_orders,
+        customer_orders_summary.first_ordered_at,
+        customer_orders_summary.last_ordered_at,
+        customer_orders_summary.lifetime_spend_pretax,
+        customer_orders_summary.lifetime_tax_paid,
+        customer_orders_summary.lifetime_spend,
+
+        case
+            when customer_orders_summary.is_repeat_buyer then 'returning'
+            else 'new'
+        end as customer_type
+
+    from customers
+
+    left join customer_orders_summary
+        on customers.customer_id = customer_orders_summary.customer_id
+
+)
+
+select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.TAX_PAID,"The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LIFETIME_SPEND,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LIFETIME_SPEND,,model,customers,"with
+
+customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('orders') }}
+
+),
+
+customer_orders_summary as (
+
+    select
+        orders.customer_id,
+
+        count(distinct orders.order_id) as count_lifetime_orders,
+        count(distinct orders.order_id) > 1 as is_repeat_buyer,
+        min(orders.ordered_at) as first_ordered_at,
+        max(orders.ordered_at) as last_ordered_at,
+        sum(orders.subtotal) as lifetime_spend_pretax,
+        sum(orders.tax_paid) as lifetime_tax_paid,
+        sum(orders.order_total) as lifetime_spend
+
+    from orders
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        customers.*,
+
+        customer_orders_summary.count_lifetime_orders,
+        customer_orders_summary.first_ordered_at,
+        customer_orders_summary.last_ordered_at,
+        customer_orders_summary.lifetime_spend_pretax,
+        customer_orders_summary.lifetime_tax_paid,
+        customer_orders_summary.lifetime_spend,
+
+        case
+            when customer_orders_summary.is_repeat_buyer then 'returning'
+            else 'new'
+        end as customer_type
+
+    from customers
+
+    left join customer_orders_summary
+        on customers.customer_id = customer_orders_summary.customer_id
+
+)
+
+select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,"orders.ORDER_TOTAL, orders.SUBTOTAL, orders.TAX_PAID","The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.CUSTOMER_TYPE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,CUSTOMER_TYPE,,model,customers,"with
+
+customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('orders') }}
+
+),
+
+customer_orders_summary as (
+
+    select
+        orders.customer_id,
+
+        count(distinct orders.order_id) as count_lifetime_orders,
+        count(distinct orders.order_id) > 1 as is_repeat_buyer,
+        min(orders.ordered_at) as first_ordered_at,
+        max(orders.ordered_at) as last_ordered_at,
+        sum(orders.subtotal) as lifetime_spend_pretax,
+        sum(orders.tax_paid) as lifetime_tax_paid,
+        sum(orders.order_total) as lifetime_spend
+
+    from orders
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        customers.*,
+
+        customer_orders_summary.count_lifetime_orders,
+        customer_orders_summary.first_ordered_at,
+        customer_orders_summary.last_ordered_at,
+        customer_orders_summary.lifetime_spend_pretax,
+        customer_orders_summary.lifetime_tax_paid,
+        customer_orders_summary.lifetime_spend,
+
+        case
+            when customer_orders_summary.is_repeat_buyer then 'returning'
+            else 'new'
+        end as customer_type
+
+    from customers
+
+    left join customer_orders_summary
+        on customers.customer_id = customer_orders_summary.customer_id
+
+)
+
+select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",,,
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.metricflow_time_spine.DATE_DAY,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.metricflow_time_spine,DATE_DAY,,model,metricflow_time_spine,"-- metricflow_time_spine.sql
+with
+
+days as (
+
+    --for BQ adapters use ""DATE('01/01/2000','mm/dd/yyyy')""
+    {{ dbt_date.get_base_dates(n_dateparts=365*10, datepart=""day"") }}
+
+),
+
+cast_to_date as (
+
+    select cast(date_day as date) as date_day
+
+    from days
+
+)
+
+select * from cast_to_date",,days,date_day,"The column `date_day` is sourced directly from the CTE `days` and is cast to a date type without any additional transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.order_items.ORDER_ITEM_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.order_items,ORDER_ITEM_ID,,model,order_items,"with
+
+order_items as (
+
+    select * from {{ ref('stg_order_items') }}
+
+),
+
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+),
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+),
+
+order_supplies_summary as (
+
+    select
+        product_id,
+
+        sum(supply_cost) as supply_cost
+
+    from supplies
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        order_items.*,
+
+        orders.ordered_at,
+
+        products.product_name,
+        products.product_price,
+        products.is_food_item,
+        products.is_drink_item,
+
+        order_supplies_summary.supply_cost
+
+    from order_items
+
+    left join orders on order_items.order_id = orders.order_id
+
+    left join products on order_items.product_id = products.product_id
+
+    left join order_supplies_summary
+        on order_items.product_id = order_supplies_summary.product_id
+
+)
+
+select * from joined","stg_order_items.ORDER_ITEM_ID: , stg_order_items.ORDER_ID: , stg_order_items.PRODUCT_ID: , stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: , stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_order_items,stg_order_items.ORDER_ITEM_ID,"The column ORDER_ITEM_ID is directly selected from the stg_order_items table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.order_items.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.order_items,ORDER_ID,,model,order_items,"with
+
+order_items as (
+
+    select * from {{ ref('stg_order_items') }}
+
+),
+
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+),
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+),
+
+order_supplies_summary as (
+
+    select
+        product_id,
+
+        sum(supply_cost) as supply_cost
+
+    from supplies
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        order_items.*,
+
+        orders.ordered_at,
+
+        products.product_name,
+        products.product_price,
+        products.is_food_item,
+        products.is_drink_item,
+
+        order_supplies_summary.supply_cost
+
+    from order_items
+
+    left join orders on order_items.order_id = orders.order_id
+
+    left join products on order_items.product_id = products.product_id
+
+    left join order_supplies_summary
+        on order_items.product_id = order_supplies_summary.product_id
+
+)
+
+select * from joined","stg_order_items.ORDER_ITEM_ID: , stg_order_items.ORDER_ID: , stg_order_items.PRODUCT_ID: , stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: , stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ","stg_order_items, stg_orders","stg_order_items.ORDER_ID, stg_orders.ORDER_ID","The ORDER_ID in the model is sourced from the stg_order_items table directly as it is included in the selection of order_items, but it is also present in stg_orders, indicating that it is likely a key reference; however, since order_items is the primary source for the order items, stg_order_items.ORDER_ID is the direct source."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.order_items.PRODUCT_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.order_items,PRODUCT_ID,,model,order_items,"with
+
+order_items as (
+
+    select * from {{ ref('stg_order_items') }}
+
+),
+
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+),
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+),
+
+order_supplies_summary as (
+
+    select
+        product_id,
+
+        sum(supply_cost) as supply_cost
+
+    from supplies
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        order_items.*,
+
+        orders.ordered_at,
+
+        products.product_name,
+        products.product_price,
+        products.is_food_item,
+        products.is_drink_item,
+
+        order_supplies_summary.supply_cost
+
+    from order_items
+
+    left join orders on order_items.order_id = orders.order_id
+
+    left join products on order_items.product_id = products.product_id
+
+    left join order_supplies_summary
+        on order_items.product_id = order_supplies_summary.product_id
+
+)
+
+select * from joined","stg_order_items.ORDER_ITEM_ID: , stg_order_items.ORDER_ID: , stg_order_items.PRODUCT_ID: , stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: , stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ","stg_order_items, stg_products","stg_order_items.PRODUCT_ID, stg_products.PRODUCT_ID","The column PRODUCT_ID is directly selected from stg_order_items and also joined with stg_products, indicating it may originate from either, but the direct reference in the selection from order_items suggests a one-to-one mapping from stg_order_items."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.order_items.ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.order_items,ORDERED_AT,,model,order_items,"with
+
+order_items as (
+
+    select * from {{ ref('stg_order_items') }}
+
+),
+
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+),
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+),
+
+order_supplies_summary as (
+
+    select
+        product_id,
+
+        sum(supply_cost) as supply_cost
+
+    from supplies
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        order_items.*,
+
+        orders.ordered_at,
+
+        products.product_name,
+        products.product_price,
+        products.is_food_item,
+        products.is_drink_item,
+
+        order_supplies_summary.supply_cost
+
+    from order_items
+
+    left join orders on order_items.order_id = orders.order_id
+
+    left join products on order_items.product_id = products.product_id
+
+    left join order_supplies_summary
+        on order_items.product_id = order_supplies_summary.product_id
+
+)
+
+select * from joined","stg_order_items.ORDER_ITEM_ID: , stg_order_items.ORDER_ID: , stg_order_items.PRODUCT_ID: , stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: , stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_orders,stg_orders.ORDERED_AT,"The column ORDERED_AT is directly selected from the stg_orders table in the SQL code without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.order_items.PRODUCT_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.order_items,PRODUCT_NAME,,model,order_items,"with
+
+order_items as (
+
+    select * from {{ ref('stg_order_items') }}
+
+),
+
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+),
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+),
+
+order_supplies_summary as (
+
+    select
+        product_id,
+
+        sum(supply_cost) as supply_cost
+
+    from supplies
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        order_items.*,
+
+        orders.ordered_at,
+
+        products.product_name,
+        products.product_price,
+        products.is_food_item,
+        products.is_drink_item,
+
+        order_supplies_summary.supply_cost
+
+    from order_items
+
+    left join orders on order_items.order_id = orders.order_id
+
+    left join products on order_items.product_id = products.product_id
+
+    left join order_supplies_summary
+        on order_items.product_id = order_supplies_summary.product_id
+
+)
+
+select * from joined","stg_order_items.ORDER_ITEM_ID: , stg_order_items.ORDER_ID: , stg_order_items.PRODUCT_ID: , stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: , stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_products,stg_products.PRODUCT_NAME,"The column PRODUCT_NAME is directly selected from the stg_products table without any transformations or calculations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.order_items.PRODUCT_PRICE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.order_items,PRODUCT_PRICE,,model,order_items,"with
+
+order_items as (
+
+    select * from {{ ref('stg_order_items') }}
+
+),
+
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+),
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+),
+
+order_supplies_summary as (
+
+    select
+        product_id,
+
+        sum(supply_cost) as supply_cost
+
+    from supplies
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        order_items.*,
+
+        orders.ordered_at,
+
+        products.product_name,
+        products.product_price,
+        products.is_food_item,
+        products.is_drink_item,
+
+        order_supplies_summary.supply_cost
+
+    from order_items
+
+    left join orders on order_items.order_id = orders.order_id
+
+    left join products on order_items.product_id = products.product_id
+
+    left join order_supplies_summary
+        on order_items.product_id = order_supplies_summary.product_id
+
+)
+
+select * from joined","stg_order_items.ORDER_ITEM_ID: , stg_order_items.ORDER_ID: , stg_order_items.PRODUCT_ID: , stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: , stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_products,stg_products.PRODUCT_PRICE,"The column PRODUCT_PRICE is directly selected from the stg_products table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.order_items.IS_FOOD_ITEM,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.order_items,IS_FOOD_ITEM,,model,order_items,"with
+
+order_items as (
+
+    select * from {{ ref('stg_order_items') }}
+
+),
+
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+),
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+),
+
+order_supplies_summary as (
+
+    select
+        product_id,
+
+        sum(supply_cost) as supply_cost
+
+    from supplies
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        order_items.*,
+
+        orders.ordered_at,
+
+        products.product_name,
+        products.product_price,
+        products.is_food_item,
+        products.is_drink_item,
+
+        order_supplies_summary.supply_cost
+
+    from order_items
+
+    left join orders on order_items.order_id = orders.order_id
+
+    left join products on order_items.product_id = products.product_id
+
+    left join order_supplies_summary
+        on order_items.product_id = order_supplies_summary.product_id
+
+)
+
+select * from joined","stg_order_items.ORDER_ITEM_ID: , stg_order_items.ORDER_ID: , stg_order_items.PRODUCT_ID: , stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: , stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_products,stg_products.IS_FOOD_ITEM,"The column IS_FOOD_ITEM is directly selected from the products table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.order_items.IS_DRINK_ITEM,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.order_items,IS_DRINK_ITEM,,model,order_items,"with
+
+order_items as (
+
+    select * from {{ ref('stg_order_items') }}
+
+),
+
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+),
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+),
+
+order_supplies_summary as (
+
+    select
+        product_id,
+
+        sum(supply_cost) as supply_cost
+
+    from supplies
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        order_items.*,
+
+        orders.ordered_at,
+
+        products.product_name,
+        products.product_price,
+        products.is_food_item,
+        products.is_drink_item,
+
+        order_supplies_summary.supply_cost
+
+    from order_items
+
+    left join orders on order_items.order_id = orders.order_id
+
+    left join products on order_items.product_id = products.product_id
+
+    left join order_supplies_summary
+        on order_items.product_id = order_supplies_summary.product_id
+
+)
+
+select * from joined","stg_order_items.ORDER_ITEM_ID: , stg_order_items.ORDER_ID: , stg_order_items.PRODUCT_ID: , stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: , stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_products,stg_products.IS_DRINK_ITEM,"The column IS_DRINK_ITEM is directly selected from the stg_products table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.order_items.SUPPLY_COST,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.order_items,SUPPLY_COST,,model,order_items,"with
+
+order_items as (
+
+    select * from {{ ref('stg_order_items') }}
+
+),
+
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+),
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+),
+
+order_supplies_summary as (
+
+    select
+        product_id,
+
+        sum(supply_cost) as supply_cost
+
+    from supplies
+
+    group by 1
+
+),
+
+joined as (
+
+    select
+        order_items.*,
+
+        orders.ordered_at,
+
+        products.product_name,
+        products.product_price,
+        products.is_food_item,
+        products.is_drink_item,
+
+        order_supplies_summary.supply_cost
+
+    from order_items
+
+    left join orders on order_items.order_id = orders.order_id
+
+    left join products on order_items.product_id = products.product_id
+
+    left join order_supplies_summary
+        on order_items.product_id = order_supplies_summary.product_id
+
+)
+
+select * from joined","stg_order_items.ORDER_ITEM_ID: , stg_order_items.ORDER_ID: , stg_order_items.PRODUCT_ID: , stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: , stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_supplies,stg_supplies.SUPPLY_COST,[The SUPPLY_COST is directly selected from the supplies table without any transformations or calculations applied.]
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.locations.LOCATION_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.locations,LOCATION_ID,,model,locations,"with
+
+locations as (
+
+    select * from {{ ref('stg_locations') }}
+
+)
+
+select * from locations","stg_locations.LOCATION_ID: , stg_locations.LOCATION_NAME: , stg_locations.TAX_RATE: , stg_locations.OPENED_DATE: ",stg_locations,stg_locations.LOCATION_ID,"The LOCATION_ID column is directly selected from the stg_locations table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.locations.LOCATION_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.locations,LOCATION_NAME,,model,locations,"with
+
+locations as (
+
+    select * from {{ ref('stg_locations') }}
+
+)
+
+select * from locations","stg_locations.LOCATION_ID: , stg_locations.LOCATION_NAME: , stg_locations.TAX_RATE: , stg_locations.OPENED_DATE: ",stg_locations,stg_locations.LOCATION_NAME,"The column LOCATION_NAME is directly selected from the upstream table stg_locations without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.locations.TAX_RATE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.locations,TAX_RATE,,model,locations,"with
+
+locations as (
+
+    select * from {{ ref('stg_locations') }}
+
+)
+
+select * from locations","stg_locations.LOCATION_ID: , stg_locations.LOCATION_NAME: , stg_locations.TAX_RATE: , stg_locations.OPENED_DATE: ",stg_locations,stg_locations.TAX_RATE,"This column is directly selected from the upstream table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.locations.OPENED_DATE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.locations,OPENED_DATE,,model,locations,"with
+
+locations as (
+
+    select * from {{ ref('stg_locations') }}
+
+)
+
+select * from locations","stg_locations.LOCATION_ID: , stg_locations.LOCATION_NAME: , stg_locations.TAX_RATE: , stg_locations.OPENED_DATE: ",stg_locations,stg_locations.OPENED_DATE,"The OPENED_DATE column is directly selected from the stg_locations table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,ORDER_ID,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,id,"The ORDER_ID is a direct mapping from the id column in the source table, with no transformations applied."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.LOCATION_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,LOCATION_ID,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,store_id,"The LOCATION_ID column is directly sourced from the store_id column in the raw_orders table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,CUSTOMER_ID,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,customer,The CUSTOMER_ID column is directly sourced from the customer column in the raw_orders table with a straightforward one-to-one mapping.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.SUBTOTAL_CENTS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,SUBTOTAL_CENTS,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,subtotal,The column SUBTOTAL_CENTS is directly sourced from the subtotal column in the raw_orders table without any transformation.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.TAX_PAID_CENTS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,TAX_PAID_CENTS,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,tax_paid,"The column `tax_paid_cents` is directly sourced from `tax_paid` in the `raw_orders` table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.ORDER_TOTAL_CENTS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,ORDER_TOTAL_CENTS,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,order_total,The column ORDER_TOTAL_CENTS is directly sourced from the order_total column in the raw_orders table with no transformations applied.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.SUBTOTAL,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,SUBTOTAL,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,subtotal,The column 'subtotal' is directly selected from the source table 'ecom.raw_orders' and transformed using the `cents_to_dollars` function to convert cents to dollars.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.TAX_PAID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,TAX_PAID,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,tax_paid,"The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.ORDER_TOTAL,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,ORDER_TOTAL,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,order_total,"The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,ORDERED_AT,,model,stg_orders,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_orders') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_id,
+        store_id as location_id,
+        customer as customer_id,
+
+        ---------- numerics
+        subtotal as subtotal_cents,
+        tax_paid as tax_paid_cents,
+        order_total as order_total_cents,
+        {{ cents_to_dollars('subtotal') }} as subtotal,
+        {{ cents_to_dollars('tax_paid') }} as tax_paid,
+        {{ cents_to_dollars('order_total') }} as order_total,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day','ordered_at') }} as ordered_at
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_orders,ordered_at,The column 'ordered_at' is directly selected from the source table 'ecom.raw_orders' and is truncated to the day level using the `dbt.date_trunc` function.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.products.PRODUCT_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.products,PRODUCT_ID,,model,products,"with
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+)
+
+select * from products","stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: ",stg_products,stg_products.PRODUCT_ID,"This column is directly selected from the upstream table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.products.PRODUCT_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.products,PRODUCT_NAME,,model,products,"with
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+)
+
+select * from products","stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: ",stg_products,stg_products.PRODUCT_NAME,"The column PRODUCT_NAME is directly selected from the stg_products table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.products.PRODUCT_TYPE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.products,PRODUCT_TYPE,,model,products,"with
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+)
+
+select * from products","stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: ",stg_products,stg_products.PRODUCT_TYPE,"The column PRODUCT_TYPE is directly selected from the stg_products table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.products.PRODUCT_DESCRIPTION,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.products,PRODUCT_DESCRIPTION,,model,products,"with
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+)
+
+select * from products","stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: ",stg_products,stg_products.PRODUCT_DESCRIPTION,"The column PRODUCT_DESCRIPTION is directly selected from the stg_products table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.products.PRODUCT_PRICE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.products,PRODUCT_PRICE,,model,products,"with
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+)
+
+select * from products","stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: ",stg_products,stg_products.PRODUCT_PRICE,"The column PRODUCT_PRICE is directly selected from the stg_products table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.products.IS_FOOD_ITEM,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.products,IS_FOOD_ITEM,,model,products,"with
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+)
+
+select * from products","stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: ",stg_products,stg_products.IS_FOOD_ITEM,"The column IS_FOOD_ITEM is directly selected from the stg_products table without any transformations or calculations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.products.IS_DRINK_ITEM,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.products,IS_DRINK_ITEM,,model,products,"with
+
+products as (
+
+    select * from {{ ref('stg_products') }}
+
+)
+
+select * from products","stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: ",stg_products,stg_products.IS_DRINK_ITEM,"The column IS_DRINK_ITEM is directly selected from the upstream table stg_products without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_products.PRODUCT_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_products,PRODUCT_ID,,model,stg_products,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_products') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        sku as product_id,
+
+        ---------- text
+        name as product_name,
+        type as product_type,
+        description as product_description,
+
+
+        ---------- numerics
+        {{ cents_to_dollars('price') }} as product_price,
+
+        ---------- booleans
+        coalesce(type = 'jaffle', false) as is_food_item,
+
+        coalesce(type = 'beverage', false) as is_drink_item
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_products,sku,"The PRODUCT_ID is derived directly from the sku column in the source table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_products.PRODUCT_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_products,PRODUCT_NAME,,model,stg_products,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_products') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        sku as product_id,
+
+        ---------- text
+        name as product_name,
+        type as product_type,
+        description as product_description,
+
+
+        ---------- numerics
+        {{ cents_to_dollars('price') }} as product_price,
+
+        ---------- booleans
+        coalesce(type = 'jaffle', false) as is_food_item,
+
+        coalesce(type = 'beverage', false) as is_drink_item
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_products,name,The PRODUCT_NAME column is directly sourced from the name column in the ecom.raw_products table without any transformation.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_products.PRODUCT_TYPE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_products,PRODUCT_TYPE,,model,stg_products,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_products') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        sku as product_id,
+
+        ---------- text
+        name as product_name,
+        type as product_type,
+        description as product_description,
+
+
+        ---------- numerics
+        {{ cents_to_dollars('price') }} as product_price,
+
+        ---------- booleans
+        coalesce(type = 'jaffle', false) as is_food_item,
+
+        coalesce(type = 'beverage', false) as is_drink_item
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_products,type,"The column PRODUCT_TYPE is directly sourced from the column 'type' in the raw_products table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_products.PRODUCT_DESCRIPTION,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_products,PRODUCT_DESCRIPTION,,model,stg_products,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_products') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        sku as product_id,
+
+        ---------- text
+        name as product_name,
+        type as product_type,
+        description as product_description,
+
+
+        ---------- numerics
+        {{ cents_to_dollars('price') }} as product_price,
+
+        ---------- booleans
+        coalesce(type = 'jaffle', false) as is_food_item,
+
+        coalesce(type = 'beverage', false) as is_drink_item
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_products,description,The column `product_description` is directly selected from the `description` column in the `ecom.raw_products` source table without any transformations.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_products.PRODUCT_PRICE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_products,PRODUCT_PRICE,,model,stg_products,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_products') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        sku as product_id,
+
+        ---------- text
+        name as product_name,
+        type as product_type,
+        description as product_description,
+
+
+        ---------- numerics
+        {{ cents_to_dollars('price') }} as product_price,
+
+        ---------- booleans
+        coalesce(type = 'jaffle', false) as is_food_item,
+
+        coalesce(type = 'beverage', false) as is_drink_item
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_products,price,"The PRODUCT_PRICE column is derived from the price column in the raw_products table, transformed using the `cents_to_dollars` function to convert the value from cents to dollars."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_products.IS_FOOD_ITEM,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_products,IS_FOOD_ITEM,,model,stg_products,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_products') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        sku as product_id,
+
+        ---------- text
+        name as product_name,
+        type as product_type,
+        description as product_description,
+
+
+        ---------- numerics
+        {{ cents_to_dollars('price') }} as product_price,
+
+        ---------- booleans
+        coalesce(type = 'jaffle', false) as is_food_item,
+
+        coalesce(type = 'beverage', false) as is_drink_item
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_products,type,"The column IS_FOOD_ITEM is derived from a boolean expression evaluating the 'type' column from the source table, indicating that it is a calculated field based on the 'type' value being equal to 'jaffle'."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_products.IS_DRINK_ITEM,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_products,IS_DRINK_ITEM,,model,stg_products,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_products') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        sku as product_id,
+
+        ---------- text
+        name as product_name,
+        type as product_type,
+        description as product_description,
+
+
+        ---------- numerics
+        {{ cents_to_dollars('price') }} as product_price,
+
+        ---------- booleans
+        coalesce(type = 'jaffle', false) as is_food_item,
+
+        coalesce(type = 'beverage', false) as is_drink_item
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_products,type,The column `is_drink_item` is derived from a boolean expression that checks if the `type` is equal to 'beverage'.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_supplies.SUPPLY_UUID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_supplies,SUPPLY_UUID,,model,stg_supplies,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_supplies') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        {{ dbt_utils.generate_surrogate_key(['id', 'sku']) }} as supply_uuid,
+        id as supply_id,
+        sku as product_id,
+
+        ---------- text
+        name as supply_name,
+
+        ---------- numerics
+        {{ cents_to_dollars('cost') }} as supply_cost,
+
+        ---------- booleans
+        perishable as is_perishable_supply
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_supplies,"id, sku",The column SUPPLY_UUID is generated as a surrogate key from the combination of id and sku from the source table without any transformations.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_supplies.SUPPLY_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_supplies,SUPPLY_ID,,model,stg_supplies,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_supplies') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        {{ dbt_utils.generate_surrogate_key(['id', 'sku']) }} as supply_uuid,
+        id as supply_id,
+        sku as product_id,
+
+        ---------- text
+        name as supply_name,
+
+        ---------- numerics
+        {{ cents_to_dollars('cost') }} as supply_cost,
+
+        ---------- booleans
+        perishable as is_perishable_supply
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_supplies,id,"The column `supply_id` is directly selected from the source table without any transformations, indicating a one-to-one mapping from the `id` column in `ecom.raw_supplies`."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_supplies.PRODUCT_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_supplies,PRODUCT_ID,,model,stg_supplies,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_supplies') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        {{ dbt_utils.generate_surrogate_key(['id', 'sku']) }} as supply_uuid,
+        id as supply_id,
+        sku as product_id,
+
+        ---------- text
+        name as supply_name,
+
+        ---------- numerics
+        {{ cents_to_dollars('cost') }} as supply_cost,
+
+        ---------- booleans
+        perishable as is_perishable_supply
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_supplies,sku,"The column `product_id` is directly sourced from the `sku` column in the `ecom.raw_supplies` table, indicating a one-to-one mapping without any transformation."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_supplies.SUPPLY_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_supplies,SUPPLY_NAME,,model,stg_supplies,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_supplies') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        {{ dbt_utils.generate_surrogate_key(['id', 'sku']) }} as supply_uuid,
+        id as supply_id,
+        sku as product_id,
+
+        ---------- text
+        name as supply_name,
+
+        ---------- numerics
+        {{ cents_to_dollars('cost') }} as supply_cost,
+
+        ---------- booleans
+        perishable as is_perishable_supply
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_supplies,name,"The column 'supply_name' is directly selected from the 'name' column in the 'ecom.raw_supplies' table with no transformation applied, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_supplies.SUPPLY_COST,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_supplies,SUPPLY_COST,,model,stg_supplies,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_supplies') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        {{ dbt_utils.generate_surrogate_key(['id', 'sku']) }} as supply_uuid,
+        id as supply_id,
+        sku as product_id,
+
+        ---------- text
+        name as supply_name,
+
+        ---------- numerics
+        {{ cents_to_dollars('cost') }} as supply_cost,
+
+        ---------- booleans
+        perishable as is_perishable_supply
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_supplies,cost,The column SUPPLY_COST is derived from the cost column in the raw_supplies table through a transformation that converts cents to dollars.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_supplies.IS_PERISHABLE_SUPPLY,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_supplies,IS_PERISHABLE_SUPPLY,,model,stg_supplies,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_supplies') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        {{ dbt_utils.generate_surrogate_key(['id', 'sku']) }} as supply_uuid,
+        id as supply_id,
+        sku as product_id,
+
+        ---------- text
+        name as supply_name,
+
+        ---------- numerics
+        {{ cents_to_dollars('cost') }} as supply_cost,
+
+        ---------- booleans
+        perishable as is_perishable_supply
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_supplies,perishable,"The column `is_perishable_supply` is directly sourced from the `perishable` column in the `ecom.raw_supplies` table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.supplies.SUPPLY_UUID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.supplies,SUPPLY_UUID,,model,supplies,"with
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+)
+
+select * from supplies","stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_supplies,stg_supplies.SUPPLY_UUID,"The column SUPPLY_UUID is directly selected from the stg_supplies table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.supplies.SUPPLY_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.supplies,SUPPLY_ID,,model,supplies,"with
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+)
+
+select * from supplies","stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_supplies,stg_supplies.SUPPLY_ID,"The column SUPPLY_ID is directly selected from the stg_supplies table with no transformations applied, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.supplies.PRODUCT_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.supplies,PRODUCT_ID,,model,supplies,"with
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+)
+
+select * from supplies","stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_supplies,stg_supplies.PRODUCT_ID,"The column PRODUCT_ID is directly selected from the stg_supplies table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.supplies.SUPPLY_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.supplies,SUPPLY_NAME,,model,supplies,"with
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+)
+
+select * from supplies","stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_supplies,stg_supplies.SUPPLY_NAME,"The column SUPPLY_NAME is directly selected from the stg_supplies table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.supplies.SUPPLY_COST,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.supplies,SUPPLY_COST,,model,supplies,"with
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+)
+
+select * from supplies","stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_supplies,stg_supplies.SUPPLY_COST,"This column is directly selected from the upstream table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.supplies.IS_PERISHABLE_SUPPLY,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.supplies,IS_PERISHABLE_SUPPLY,,model,supplies,"with
+
+supplies as (
+
+    select * from {{ ref('stg_supplies') }}
+
+)
+
+select * from supplies","stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_supplies,stg_supplies.IS_PERISHABLE_SUPPLY,"The column IS_PERISHABLE_SUPPLY is directly selected from the stg_supplies table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_locations.LOCATION_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_locations,LOCATION_ID,,model,stg_locations,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_stores') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as location_id,
+
+        ---------- text
+        name as location_name,
+
+        ---------- numerics
+        tax_rate,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day', 'opened_at') }} as opened_date
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_stores,id,The LOCATION_ID is directly sourced from the id column in the raw_stores table with no transformation applied.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_locations.LOCATION_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_locations,LOCATION_NAME,,model,stg_locations,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_stores') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as location_id,
+
+        ---------- text
+        name as location_name,
+
+        ---------- numerics
+        tax_rate,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day', 'opened_at') }} as opened_date
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_stores,name,The column LOCATION_NAME is directly sourced from the name column in the raw_stores table with a one-to-one mapping.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_locations.TAX_RATE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_locations,TAX_RATE,,model,stg_locations,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_stores') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as location_id,
+
+        ---------- text
+        name as location_name,
+
+        ---------- numerics
+        tax_rate,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day', 'opened_at') }} as opened_date
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_stores,tax_rate,"The column `tax_rate` is directly selected from the `source` table, which is defined as `{{ source('ecom', 'raw_stores') }}`, indicating a one-to-one mapping with no transformations applied."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_locations.OPENED_DATE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_locations,OPENED_DATE,,model,stg_locations,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_stores') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as location_id,
+
+        ---------- text
+        name as location_name,
+
+        ---------- numerics
+        tax_rate,
+
+        ---------- timestamps
+        {{ dbt.date_trunc('day', 'opened_at') }} as opened_date
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_stores,opened_at,The OPENED_DATE column is derived from the opened_at column using a date truncation transformation to round down to the nearest day.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_ID,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.ORDER_ID,"The ORDER_ID is directly selected from the stg_orders table without any transformation or calculation, establishing a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.LOCATION_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,LOCATION_ID,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.LOCATION_ID,"The LOCATION_ID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,CUSTOMER_ID,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.CUSTOMER_ID,"The CUSTOMER_ID is directly selected from the stg_orders table without any transformation or aggregation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.SUBTOTAL_CENTS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,SUBTOTAL_CENTS,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.SUBTOTAL_CENTS,"The column SUBTOTAL_CENTS is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.TAX_PAID_CENTS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,TAX_PAID_CENTS,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.TAX_PAID_CENTS,"The column TAX_PAID_CENTS is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_TOTAL_CENTS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_TOTAL_CENTS,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.ORDER_TOTAL_CENTS,"This column is directly selected from the `stg_orders` table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.SUBTOTAL,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,SUBTOTAL,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.SUBTOTAL,"The SUBTOTAL column is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.TAX_PAID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,TAX_PAID,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.TAX_PAID,"The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_TOTAL,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_TOTAL,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,"stg_orders.ORDER_TOTAL, stg_orders.ORDER_TOTAL_CENTS","The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDERED_AT,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.ORDERED_AT,"The column ORDERED_AT is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_COST,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_COST,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",order_items,order_items.SUPPLY_COST,"The ORDER_COST is calculated as the sum of supply costs from the order_items table, indicating a transformation from the original supply_cost column."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_ITEMS_SUBTOTAL,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_ITEMS_SUBTOTAL,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",order_items,order_items.PRODUCT_PRICE,"[The ORDER_ITEMS_SUBTOTAL is calculated as the sum of PRODUCT_PRICE from the order_items table, indicating a transformation rather than a direct mapping.]"
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.COUNT_FOOD_ITEMS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,COUNT_FOOD_ITEMS,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",order_items,order_items.IS_FOOD_ITEM,The COUNT_FOOD_ITEMS column is calculated by counting the occurrences of food items based on the IS_FOOD_ITEM flag from the order_items table.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.COUNT_DRINK_ITEMS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,COUNT_DRINK_ITEMS,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",order_items,order_items.IS_DRINK_ITEM,"The COUNT_DRINK_ITEMS column is calculated by summing the occurrences of IS_DRINK_ITEM from the order_items table, indicating a transformation based on a conditional count."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.COUNT_ORDER_ITEMS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,COUNT_ORDER_ITEMS,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",order_items,order_item_id,"COUNT_ORDER_ITEMS is derived from counting the order_item_id in the order_items table, indicating a one-to-many relationship where each order can have multiple order items."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.IS_FOOD_ORDER,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,IS_FOOD_ORDER,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",order_items,order_items.IS_FOOD_ITEM,"The column IS_FOOD_ORDER is derived from a conditional aggregation on the order_items.IS_FOOD_ITEM column, counting instances where the item is a food item."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.IS_DRINK_ORDER,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,IS_DRINK_ORDER,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",order_items,order_items.IS_DRINK_ITEM,"The column IS_DRINK_ORDER is derived from a transformation that checks if there are any drink items in the order, specifically using the IS_DRINK_ITEM column from the order_items table."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.CUSTOMER_ORDER_NUMBER,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,CUSTOMER_ORDER_NUMBER,,model,orders,"with
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+order_items as (
+
+    select * from {{ ref('order_items') }}
+
+),
+
+order_items_summary as (
+
+    select
+        order_id,
+
+        sum(supply_cost) as order_cost,
+        sum(product_price) as order_items_subtotal,
+        count(order_item_id) as count_order_items,
+        sum(
+            case
+                when is_food_item then 1
+                else 0
+            end
+        ) as count_food_items,
+        sum(
+            case
+                when is_drink_item then 1
+                else 0
+            end
+        ) as count_drink_items
+
+    from order_items
+
+    group by 1
+
+),
+
+compute_booleans as (
+
+    select
+        orders.*,
+
+        order_items_summary.order_cost,
+        order_items_summary.order_items_subtotal,
+        order_items_summary.count_food_items,
+        order_items_summary.count_drink_items,
+        order_items_summary.count_order_items,
+        order_items_summary.count_food_items > 0 as is_food_order,
+        order_items_summary.count_drink_items > 0 as is_drink_order
+
+    from orders
+
+    left join
+        order_items_summary
+        on orders.order_id = order_items_summary.order_id
+
+),
+
+customer_order_count as (
+
+    select
+        *,
+
+        row_number() over (
+            partition by customer_id
+            order by ordered_at asc
+        ) as customer_order_number
+
+    from compute_booleans
+
+)
+
+select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.CUSTOMER_ID,"The CUSTOMER_ORDER_NUMBER is derived from the row number assigned to orders for each customer based on the ordered_at timestamp, indicating it is calculated from the customer_id in the stg_orders table."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_customers.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_customers,CUSTOMER_ID,,model,stg_customers,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_customers') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as customer_id,
+
+        ---------- text
+        name as customer_name
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_customers,id,The CUSTOMER_ID is a direct one-to-one mapping from the id column in the raw_customers table.
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_customers.CUSTOMER_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_customers,CUSTOMER_NAME,,model,stg_customers,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_customers') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as customer_id,
+
+        ---------- text
+        name as customer_name
+
+    from source
+
+)
+
+select * from renamed",,ecom.raw_customers,name,"The column CUSTOMER_NAME is derived directly from the name column in the source table without any transformation, representing a one-to-one mapping."
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_order_items.ORDER_ITEM_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_order_items,ORDER_ITEM_ID,,model,stg_order_items,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_items') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_item_id,
+        order_id,
+        sku as product_id
+
+    from source
+
+)
+
+select * from renamed",,,,
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_order_items.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_order_items,ORDER_ID,,model,stg_order_items,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_items') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_item_id,
+        order_id,
+        sku as product_id
+
+    from source
+
+)
+
+select * from renamed",,,,
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_order_items.PRODUCT_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_order_items,PRODUCT_ID,,model,stg_order_items,"with
+
+source as (
+
+    select * from {{ source('ecom', 'raw_items') }}
+
+),
+
+renamed as (
+
+    select
+
+        ----------  ids
+        id as order_item_id,
+        order_id,
+        sku as product_id
+
+    from source
+
+)
+
+select * from renamed",,,,
