@@ -22,13 +22,13 @@ def build_dataframe_from_manifest(nodes, catalog_nodes):
 
     # Build initial table and column list from catalog.json
     for node_key, node_info in catalog_nodes.items():
-        table_name = node_key.lower()  # Convert to lowercase for case-insensitive matching
+        table_name = node_key
         columns = node_info.get('columns', {})
-        for column_name in columns:
+        for column_name in columns: 
             # Unique key creation
-            database = node_info.get('metadata', {}).get('database', '').lower()
-            schema = node_info.get('metadata', {}).get('schema', '').lower()
-            unique_key = f"{database}.{schema}.{table_name}.{column_name.lower()}"
+            database = node_info.get('metadata', {}).get('database', '')
+            schema = node_info.get('metadata', {}).get('schema', '')
+            unique_key = f"{database}.{schema}.{table_name}.{column_name}"
 
             # Append data to list with new columns
             data.append({
@@ -36,48 +36,52 @@ def build_dataframe_from_manifest(nodes, catalog_nodes):
                 'database': database,
                 'schema': schema,
                 'table_name': table_name,
-                'column_name': column_name.lower(),
+                'column_name': column_name,
                 'resource_type': '',  # Initialize as empty
                 'name': '',  # Initialize as empty
                 'sql': '',  # Initialize as empty
                 'reference': '',  # Initialize as empty
-                'column_description': ''  # Initialize as empty
+                'column_description': '' # Initialize as empty
             })
 
     # Enrich data with information from manifest.json
     for node_key, node_info in nodes.items():
-        table_name = node_key.lower()  # Use the full node_key from manifest.json in lowercase
+        table_name = node_key  # Use the full node_key from manifest.json
         resource_type = node_info.get('resource_type', '')
-        name = node_info.get('name', '').lower()
+        name = node_info.get('name', '')
         sql = node_info.get('raw_code', '')
         refs = node_info.get('refs', [])
-        columns = node_info.get('columns', {})  # Get columns from manifest
+        columns = node_info.get('columns', {}) # Get columns from manifest
+
+        table_name_lower = table_name.lower()  # Convert once for comparison
 
         for item in data:
-            if item['table_name'] == table_name:  # Match the full table name in lowercase
+            # Perform comparison without modifying original data
+            if item['table_name'].lower() == table_name_lower:
                 item['resource_type'] = resource_type
                 item['name'] = name
                 item['sql'] = sql
 
                 # Find column description in manifest
                 for column_key, column_info in columns.items():
-                    if item['column_name'] == column_key.lower():  # Ensure column names match in lowercase
+                    if item['column_name'].lower() == column_key.lower():
                         item['column_description'] = column_info.get('description', '')
 
                 # Prepare reference information
                 reference_info = []
                 for ref in refs:
-                    ref_name = ref.get('name', '').lower()
+                    ref_name = ref.get('name', '')
                     if ref_name:
                         ref_columns = catalog_nodes.get(f"model.jaffle_shop.{ref_name}", {}).get('columns', {})
                         for ref_column_name, ref_column_info in ref_columns.items():
                             ref_column_description = ref_column_info.get('description', '')
-                            reference_info.append(f"{ref_name}.{ref_column_name.lower()}: {ref_column_description}")
+                            reference_info.append(f"{ref_name}.{ref_column_name}: {ref_column_description}")
 
                 item['reference'] = ', '.join(reference_info)
 
     df = pd.DataFrame(data)
     return df
+
 
 # Step 3: Connect to Snowflake and Load Data
 def connect_to_snowflake():
