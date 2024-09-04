@@ -1,5 +1,5 @@
 ﻿UNIQUE_KEY,DATABASE,SCHEMA,TABLE_NAME,COLUMN_NAME,COLUMN_DESCRIPTION,RESOURCE_TYPE,NAME,SQL,REFERENCE,UPSTREAM_TABLE,UPSTREAM_COLUMN,REASONING
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,CUSTOMER_ID,,model,customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,CUSTOMER_ID,The unique key of the orders mart.,model,customers,"with
 
 customers as (
 
@@ -57,7 +57,7 @@ joined as (
 )
 
 select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",stg_customers,stg_customers.CUSTOMER_ID,"The CUSTOMER_ID is directly selected from the stg_customers table without any transformation, representing a one-to-one mapping."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.CUSTOMER_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,CUSTOMER_NAME,,model,customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.CUSTOMER_NAME,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,CUSTOMER_NAME,Customers' full name.,model,customers,"with
 
 customers as (
 
@@ -115,7 +115,7 @@ joined as (
 )
 
 select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",stg_customers,stg_customers.CUSTOMER_NAME,"The CUSTOMER_NAME column is directly selected from the customers table which references stg_customers, indicating a one-to-one mapping with no transformation."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.COUNT_LIFETIME_ORDERS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,COUNT_LIFETIME_ORDERS,,model,customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.COUNT_LIFETIME_ORDERS,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,COUNT_LIFETIME_ORDERS,Total number of orders a customer has ever placed.,model,customers,"with
 
 customers as (
 
@@ -173,7 +173,7 @@ joined as (
 )
 
 select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.order_id,"The COUNT_LIFETIME_ORDERS is derived from counting distinct order IDs from the orders table, indicating a transformation from multiple order records to a single count value."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.FIRST_ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,FIRST_ORDERED_AT,,model,customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.FIRST_ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,FIRST_ORDERED_AT,The timestamp when a customer placed their first order.,model,customers,"with
 
 customers as (
 
@@ -231,7 +231,7 @@ joined as (
 )
 
 select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.ORDERED_AT,"The column FIRST_ORDERED_AT is calculated as the minimum of orders.ORDERED_AT in the customer_orders_summary CTE, indicating it is derived from the orders table."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LAST_ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LAST_ORDERED_AT,,model,customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LAST_ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LAST_ORDERED_AT,The timestamp of a customer's most recent order.,model,customers,"with
 
 customers as (
 
@@ -289,7 +289,7 @@ joined as (
 )
 
 select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.ORDERED_AT,The column LAST_ORDERED_AT is derived from the aggregation of the ORDERED_AT column using the MAX function to determine the most recent order date for each customer.
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LIFETIME_SPEND_PRETAX,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LIFETIME_SPEND_PRETAX,,model,customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LIFETIME_SPEND_PRETAX,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LIFETIME_SPEND_PRETAX,The sum of all the pre-tax subtotals of every order a customer has placed.,model,customers,"with
 
 customers as (
 
@@ -347,7 +347,7 @@ joined as (
 )
 
 select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.SUBTOTAL,"The column LIFETIME_SPEND_PRETAX is calculated as the sum of the orders' subtotal, indicating it is derived directly from the orders table without any transformation beyond aggregation."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LIFETIME_TAX_PAID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LIFETIME_TAX_PAID,,model,customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LIFETIME_TAX_PAID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LIFETIME_TAX_PAID,The sum of all the tax portion of every order a customer has placed.,model,customers,"with
 
 customers as (
 
@@ -405,7 +405,7 @@ joined as (
 )
 
 select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,orders.TAX_PAID,"The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LIFETIME_SPEND,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LIFETIME_SPEND,,model,customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.LIFETIME_SPEND,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,LIFETIME_SPEND,The sum of all the order totals (including tax) that a customer has ever placed.,model,customers,"with
 
 customers as (
 
@@ -463,7 +463,7 @@ joined as (
 )
 
 select * from joined","stg_customers.CUSTOMER_ID: , stg_customers.CUSTOMER_NAME: , orders.ORDER_ID: , orders.LOCATION_ID: , orders.CUSTOMER_ID: , orders.SUBTOTAL_CENTS: , orders.TAX_PAID_CENTS: , orders.ORDER_TOTAL_CENTS: , orders.SUBTOTAL: , orders.TAX_PAID: , orders.ORDER_TOTAL: , orders.ORDERED_AT: , orders.ORDER_COST: , orders.ORDER_ITEMS_SUBTOTAL: , orders.COUNT_FOOD_ITEMS: , orders.COUNT_DRINK_ITEMS: , orders.COUNT_ORDER_ITEMS: , orders.IS_FOOD_ORDER: , orders.IS_DRINK_ORDER: , orders.CUSTOMER_ORDER_NUMBER: ",orders,"orders.ORDER_TOTAL, orders.SUBTOTAL, orders.TAX_PAID","The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.CUSTOMER_TYPE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,CUSTOMER_TYPE,,model,customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.customers.CUSTOMER_TYPE,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.customers,CUSTOMER_TYPE,"Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.",model,customers,"with
 
 customers as (
 
@@ -1170,7 +1170,7 @@ locations as (
 )
 
 select * from locations","stg_locations.LOCATION_ID: , stg_locations.LOCATION_NAME: , stg_locations.TAX_RATE: , stg_locations.OPENED_DATE: ",stg_locations,stg_locations.OPENED_DATE,"The OPENED_DATE column is directly selected from the stg_locations table without any transformation, indicating a one-to-one mapping."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,ORDER_ID,,model,stg_orders,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_orders.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_orders,ORDER_ID,The unique key for each order.,model,stg_orders,"with
 
 source as (
 
@@ -1563,7 +1563,7 @@ products as (
 )
 
 select * from products","stg_products.PRODUCT_ID: , stg_products.PRODUCT_NAME: , stg_products.PRODUCT_TYPE: , stg_products.PRODUCT_DESCRIPTION: , stg_products.PRODUCT_PRICE: , stg_products.IS_FOOD_ITEM: , stg_products.IS_DRINK_ITEM: ",stg_products,stg_products.IS_DRINK_ITEM,"The column IS_DRINK_ITEM is directly selected from the upstream table stg_products without any transformations, indicating a one-to-one mapping."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_products.PRODUCT_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_products,PRODUCT_ID,,model,stg_products,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_products.PRODUCT_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_products,PRODUCT_ID,The unique key for each product.,model,stg_products,"with
 
 source as (
 
@@ -1801,7 +1801,7 @@ renamed as (
 )
 
 select * from renamed",,ecom.raw_products,type,The column `is_drink_item` is derived from a boolean expression that checks if the `type` is equal to 'beverage'.
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_supplies.SUPPLY_UUID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_supplies,SUPPLY_UUID,,model,stg_supplies,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_supplies.SUPPLY_UUID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_supplies,SUPPLY_UUID,The unique key of our supplies per cost.,model,stg_supplies,"with
 
 source as (
 
@@ -2041,7 +2041,7 @@ supplies as (
 )
 
 select * from supplies","stg_supplies.SUPPLY_UUID: , stg_supplies.SUPPLY_ID: , stg_supplies.PRODUCT_ID: , stg_supplies.SUPPLY_NAME: , stg_supplies.SUPPLY_COST: , stg_supplies.IS_PERISHABLE_SUPPLY: ",stg_supplies,stg_supplies.IS_PERISHABLE_SUPPLY,"The column IS_PERISHABLE_SUPPLY is directly selected from the stg_supplies table without any transformations, indicating a one-to-one mapping."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_locations.LOCATION_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_locations,LOCATION_ID,,model,stg_locations,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_locations.LOCATION_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_locations,LOCATION_ID,The unique key for each location.,model,stg_locations,"with
 
 source as (
 
@@ -2157,7 +2157,7 @@ renamed as (
 )
 
 select * from renamed",,ecom.raw_stores,opened_at,The OPENED_DATE column is derived from the opened_at column using a date truncation transformation to round down to the nearest day.
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_ID,,model,orders,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_ID,The unique key of the orders mart.,model,orders,"with
 
 orders as (
 
@@ -2311,7 +2311,7 @@ customer_order_count as (
 )
 
 select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.LOCATION_ID,"The LOCATION_ID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,CUSTOMER_ID,,model,orders,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,CUSTOMER_ID,The foreign key relating to the customer who placed the order.,model,orders,"with
 
 orders as (
 
@@ -2773,7 +2773,7 @@ customer_order_count as (
 )
 
 select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.TAX_PAID,"The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_TOTAL,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_TOTAL,,model,orders,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_TOTAL,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_TOTAL,The total amount of the order in USD including tax.,model,orders,"with
 
 orders as (
 
@@ -2850,7 +2850,7 @@ customer_order_count as (
 )
 
 select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,"stg_orders.ORDER_TOTAL, stg_orders.ORDER_TOTAL_CENTS","The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDERED_AT,,model,orders,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDERED_AT,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDERED_AT,The timestamp the order was placed at.,model,orders,"with
 
 orders as (
 
@@ -2927,7 +2927,7 @@ customer_order_count as (
 )
 
 select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.ORDERED_AT,"The column ORDERED_AT is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_COST,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_COST,,model,orders,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.ORDER_COST,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,ORDER_COST,The sum of supply expenses to fulfill the order.,model,orders,"with
 
 orders as (
 
@@ -3312,7 +3312,7 @@ customer_order_count as (
 )
 
 select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",order_items,order_item_id,"COUNT_ORDER_ITEMS is derived from counting the order_item_id in the order_items table, indicating a one-to-many relationship where each order can have multiple order items."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.IS_FOOD_ORDER,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,IS_FOOD_ORDER,,model,orders,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.IS_FOOD_ORDER,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,IS_FOOD_ORDER,A boolean indicating if this order included any food items.,model,orders,"with
 
 orders as (
 
@@ -3389,7 +3389,7 @@ customer_order_count as (
 )
 
 select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",order_items,order_items.IS_FOOD_ITEM,"The column IS_FOOD_ORDER is derived from a conditional aggregation on the order_items.IS_FOOD_ITEM column, counting instances where the item is a food item."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.IS_DRINK_ORDER,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,IS_DRINK_ORDER,,model,orders,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.orders.IS_DRINK_ORDER,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.orders,IS_DRINK_ORDER,A boolean indicating if this order included any drink items.,model,orders,"with
 
 orders as (
 
@@ -3543,7 +3543,7 @@ customer_order_count as (
 )
 
 select * from customer_order_count","stg_orders.ORDER_ID: , stg_orders.LOCATION_ID: , stg_orders.CUSTOMER_ID: , stg_orders.SUBTOTAL_CENTS: , stg_orders.TAX_PAID_CENTS: , stg_orders.ORDER_TOTAL_CENTS: , stg_orders.SUBTOTAL: , stg_orders.TAX_PAID: , stg_orders.ORDER_TOTAL: , stg_orders.ORDERED_AT: , order_items.ORDER_ITEM_ID: , order_items.ORDER_ID: , order_items.PRODUCT_ID: , order_items.ORDERED_AT: , order_items.PRODUCT_NAME: , order_items.PRODUCT_PRICE: , order_items.IS_FOOD_ITEM: , order_items.IS_DRINK_ITEM: , order_items.SUPPLY_COST: ",stg_orders,stg_orders.CUSTOMER_ID,"The CUSTOMER_ORDER_NUMBER is derived from the row number assigned to orders for each customer based on the ordered_at timestamp, indicating it is calculated from the customer_id in the stg_orders table."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_customers.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_customers,CUSTOMER_ID,,model,stg_customers,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_customers.CUSTOMER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_customers,CUSTOMER_ID,The unique key for each customer.,model,stg_customers,"with
 
 source as (
 
@@ -3589,7 +3589,7 @@ renamed as (
 )
 
 select * from renamed",,ecom.raw_customers,name,"The column CUSTOMER_NAME is derived directly from the name column in the source table without any transformation, representing a one-to-one mapping."
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_order_items.ORDER_ITEM_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_order_items,ORDER_ITEM_ID,,model,stg_order_items,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_order_items.ORDER_ITEM_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_order_items,ORDER_ITEM_ID,The unique key for each order item.,model,stg_order_items,"with
 
 source as (
 
@@ -3611,7 +3611,7 @@ renamed as (
 )
 
 select * from renamed",,,,
-JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_order_items.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_order_items,ORDER_ID,,model,stg_order_items,"with
+JAFFLE_SHOP.DBT_JMARWAHA.model.jaffle_shop.stg_order_items.ORDER_ID,JAFFLE_SHOP,DBT_JMARWAHA,model.jaffle_shop.stg_order_items,ORDER_ID,The corresponding order each order item belongs to,model,stg_order_items,"with
 
 source as (
 

@@ -2,17 +2,20 @@
     {
         "model": "customers",
         "column": "customer_id",
-        "column Description": NaN,
+        "column Description": "The unique key of the orders mart.",
+        "reasoning": "The CUSTOMER_ID is directly selected from the stg_customers table without any transformation, representing a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_customers",
                 "column": "customer_id",
-                "column Description": NaN,
+                "column Description": "The unique key for each customer.",
+                "reasoning": "The CUSTOMER_ID is a direct one-to-one mapping from the id column in the raw_customers table.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_customers",
                         "column": "id",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -22,17 +25,20 @@
     {
         "model": "customers",
         "column": "customer_name",
-        "column Description": NaN,
+        "column Description": "Customers' full name.",
+        "reasoning": "The CUSTOMER_NAME column is directly selected from the customers table which references stg_customers, indicating a one-to-one mapping with no transformation.",
         "upstream_models": [
             {
                 "model": "stg_customers",
                 "column": "customer_name",
                 "column Description": NaN,
+                "reasoning": "The column CUSTOMER_NAME is derived directly from the name column in the source table without any transformation, representing a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_customers",
                         "column": "name",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -42,22 +48,26 @@
     {
         "model": "customers",
         "column": "count_lifetime_orders",
-        "column Description": NaN,
+        "column Description": "Total number of orders a customer has ever placed.",
+        "reasoning": "The COUNT_LIFETIME_ORDERS is derived from counting distinct order IDs from the orders table, indicating a transformation from multiple order records to a single count value.",
         "upstream_models": [
             {
                 "model": "orders",
                 "column": "order_id",
-                "column Description": NaN,
+                "column Description": "The unique key of the orders mart.",
+                "reasoning": "The ORDER_ID is directly selected from the stg_orders table without any transformation or calculation, establishing a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_orders",
                         "column": "order_id",
-                        "column Description": NaN,
+                        "column Description": "The unique key for each order.",
+                        "reasoning": "The ORDER_ID is a direct mapping from the id column in the source table, with no transformations applied.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_orders",
                                 "column": "id",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -69,22 +79,26 @@
     {
         "model": "customers",
         "column": "first_ordered_at",
-        "column Description": NaN,
+        "column Description": "The timestamp when a customer placed their first order.",
+        "reasoning": "The column FIRST_ORDERED_AT is calculated as the minimum of orders.ORDERED_AT in the customer_orders_summary CTE, indicating it is derived from the orders table.",
         "upstream_models": [
             {
                 "model": "orders",
                 "column": "ordered_at",
-                "column Description": NaN,
+                "column Description": "The timestamp the order was placed at.",
+                "reasoning": "The column ORDERED_AT is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_orders",
                         "column": "ordered_at",
                         "column Description": NaN,
+                        "reasoning": "The column 'ordered_at' is directly selected from the source table 'ecom.raw_orders' and is truncated to the day level using the `dbt.date_trunc` function.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_orders",
                                 "column": "ordered_at",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -96,22 +110,26 @@
     {
         "model": "customers",
         "column": "last_ordered_at",
-        "column Description": NaN,
+        "column Description": "The timestamp of a customer's most recent order.",
+        "reasoning": "The column LAST_ORDERED_AT is derived from the aggregation of the ORDERED_AT column using the MAX function to determine the most recent order date for each customer.",
         "upstream_models": [
             {
                 "model": "orders",
                 "column": "ordered_at",
-                "column Description": NaN,
+                "column Description": "The timestamp the order was placed at.",
+                "reasoning": "The column ORDERED_AT is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_orders",
                         "column": "ordered_at",
                         "column Description": NaN,
+                        "reasoning": "The column 'ordered_at' is directly selected from the source table 'ecom.raw_orders' and is truncated to the day level using the `dbt.date_trunc` function.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_orders",
                                 "column": "ordered_at",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -123,22 +141,26 @@
     {
         "model": "customers",
         "column": "lifetime_spend_pretax",
-        "column Description": NaN,
+        "column Description": "The sum of all the pre-tax subtotals of every order a customer has placed.",
+        "reasoning": "The column LIFETIME_SPEND_PRETAX is calculated as the sum of the orders' subtotal, indicating it is derived directly from the orders table without any transformation beyond aggregation.",
         "upstream_models": [
             {
                 "model": "orders",
                 "column": "subtotal",
                 "column Description": NaN,
+                "reasoning": "The SUBTOTAL column is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_orders",
                         "column": "subtotal",
                         "column Description": NaN,
+                        "reasoning": "The column 'subtotal' is directly selected from the source table 'ecom.raw_orders' and transformed using the `cents_to_dollars` function to convert cents to dollars.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_orders",
                                 "column": "subtotal",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -150,22 +172,26 @@
     {
         "model": "customers",
         "column": "lifetime_tax_paid",
-        "column Description": NaN,
+        "column Description": "The sum of all the tax portion of every order a customer has placed.",
+        "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer.",
         "upstream_models": [
             {
                 "model": "orders",
                 "column": "tax_paid",
                 "column Description": NaN,
+                "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_orders",
                         "column": "tax_paid",
                         "column Description": NaN,
+                        "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_orders",
                                 "column": "tax_paid",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -177,22 +203,26 @@
     {
         "model": "customers",
         "column": "lifetime_spend",
-        "column Description": NaN,
+        "column Description": "The sum of all the order totals (including tax) that a customer has ever placed.",
+        "reasoning": "The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric.",
         "upstream_models": [
             {
                 "model": "orders",
                 "column": "order_total",
-                "column Description": NaN,
+                "column Description": "The total amount of the order in USD including tax.",
+                "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_orders",
                         "column": "order_total",
                         "column Description": NaN,
+                        "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_orders",
                                 "column": "order_total",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -204,12 +234,14 @@
     {
         "model": "customers",
         "column": "customer_type",
-        "column Description": NaN,
+        "column Description": "Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.",
+        "reasoning": NaN,
         "upstream_models": [
             {
                 "model": "nan",
                 "column": "nan",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -218,11 +250,13 @@
         "model": "metricflow_time_spine",
         "column": "date_day",
         "column Description": NaN,
+        "reasoning": "The column `date_day` is sourced directly from the CTE `days` and is cast to a date type without any additional transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "days",
                 "column": "date_day",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -231,16 +265,19 @@
         "model": "order_items",
         "column": "order_item_id",
         "column Description": NaN,
+        "reasoning": "The column ORDER_ITEM_ID is directly selected from the stg_order_items table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_order_items",
                 "column": "order_item_id",
-                "column Description": NaN,
+                "column Description": "The unique key for each order item.",
+                "reasoning": NaN,
                 "upstream_models": [
                     {
                         "model": "nan",
                         "column": "nan",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -251,16 +288,19 @@
         "model": "order_items",
         "column": "order_id",
         "column Description": NaN,
+        "reasoning": "The ORDER_ID in the model is sourced from the stg_order_items table directly as it is included in the selection of order_items, but it is also present in stg_orders, indicating that it is likely a key reference; however, since order_items is the primary source for the order items, stg_order_items.ORDER_ID is the direct source.",
         "upstream_models": [
             {
                 "model": "stg_order_items",
                 "column": "order_id",
-                "column Description": NaN,
+                "column Description": "The corresponding order each order item belongs to",
+                "reasoning": NaN,
                 "upstream_models": [
                     {
                         "model": "nan",
                         "column": "nan",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -268,12 +308,14 @@
             {
                 "model": "stg_orders",
                 "column": "order_id",
-                "column Description": NaN,
+                "column Description": "The unique key for each order.",
+                "reasoning": "The ORDER_ID is a direct mapping from the id column in the source table, with no transformations applied.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "id",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -284,16 +326,19 @@
         "model": "order_items",
         "column": "product_id",
         "column Description": NaN,
+        "reasoning": "The column PRODUCT_ID is directly selected from stg_order_items and also joined with stg_products, indicating it may originate from either, but the direct reference in the selection from order_items suggests a one-to-one mapping from stg_order_items.",
         "upstream_models": [
             {
                 "model": "stg_order_items",
                 "column": "product_id",
                 "column Description": NaN,
+                "reasoning": NaN,
                 "upstream_models": [
                     {
                         "model": "nan",
                         "column": "nan",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -301,12 +346,14 @@
             {
                 "model": "stg_products",
                 "column": "product_id",
-                "column Description": NaN,
+                "column Description": "The unique key for each product.",
+                "reasoning": "The PRODUCT_ID is derived directly from the sku column in the source table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "sku",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -317,16 +364,19 @@
         "model": "order_items",
         "column": "ordered_at",
         "column Description": NaN,
+        "reasoning": "The column ORDERED_AT is directly selected from the stg_orders table in the SQL code without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "ordered_at",
                 "column Description": NaN,
+                "reasoning": "The column 'ordered_at' is directly selected from the source table 'ecom.raw_orders' and is truncated to the day level using the `dbt.date_trunc` function.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "ordered_at",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -337,16 +387,19 @@
         "model": "order_items",
         "column": "product_name",
         "column Description": NaN,
+        "reasoning": "The column PRODUCT_NAME is directly selected from the stg_products table without any transformations or calculations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "product_name",
                 "column Description": NaN,
+                "reasoning": "The PRODUCT_NAME column is directly sourced from the name column in the ecom.raw_products table without any transformation.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "name",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -357,16 +410,19 @@
         "model": "order_items",
         "column": "product_price",
         "column Description": NaN,
+        "reasoning": "The column PRODUCT_PRICE is directly selected from the stg_products table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "product_price",
                 "column Description": NaN,
+                "reasoning": "The PRODUCT_PRICE column is derived from the price column in the raw_products table, transformed using the `cents_to_dollars` function to convert the value from cents to dollars.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "price",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -377,16 +433,19 @@
         "model": "order_items",
         "column": "is_food_item",
         "column Description": NaN,
+        "reasoning": "The column IS_FOOD_ITEM is directly selected from the products table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "is_food_item",
                 "column Description": NaN,
+                "reasoning": "The column IS_FOOD_ITEM is derived from a boolean expression evaluating the 'type' column from the source table, indicating that it is a calculated field based on the 'type' value being equal to 'jaffle'.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "type",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -397,16 +456,19 @@
         "model": "order_items",
         "column": "is_drink_item",
         "column Description": NaN,
+        "reasoning": "The column IS_DRINK_ITEM is directly selected from the stg_products table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "is_drink_item",
                 "column Description": NaN,
+                "reasoning": "The column `is_drink_item` is derived from a boolean expression that checks if the `type` is equal to 'beverage'.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "type",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -417,16 +479,19 @@
         "model": "order_items",
         "column": "supply_cost",
         "column Description": NaN,
+        "reasoning": "[The SUPPLY_COST is directly selected from the supplies table without any transformations or calculations applied.]",
         "upstream_models": [
             {
                 "model": "stg_supplies",
                 "column": "supply_cost",
                 "column Description": NaN,
+                "reasoning": "The column SUPPLY_COST is derived from the cost column in the raw_supplies table through a transformation that converts cents to dollars.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_supplies",
                         "column": "cost",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -437,16 +502,19 @@
         "model": "locations",
         "column": "location_id",
         "column Description": NaN,
+        "reasoning": "The LOCATION_ID column is directly selected from the stg_locations table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_locations",
                 "column": "location_id",
-                "column Description": NaN,
+                "column Description": "The unique key for each location.",
+                "reasoning": "The LOCATION_ID is directly sourced from the id column in the raw_stores table with no transformation applied.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_stores",
                         "column": "id",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -457,16 +525,19 @@
         "model": "locations",
         "column": "location_name",
         "column Description": NaN,
+        "reasoning": "The column LOCATION_NAME is directly selected from the upstream table stg_locations without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_locations",
                 "column": "location_name",
                 "column Description": NaN,
+                "reasoning": "The column LOCATION_NAME is directly sourced from the name column in the raw_stores table with a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_stores",
                         "column": "name",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -477,16 +548,19 @@
         "model": "locations",
         "column": "tax_rate",
         "column Description": NaN,
+        "reasoning": "This column is directly selected from the upstream table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_locations",
                 "column": "tax_rate",
                 "column Description": NaN,
+                "reasoning": "The column `tax_rate` is directly selected from the `source` table, which is defined as `{{ source('ecom', 'raw_stores') }}`, indicating a one-to-one mapping with no transformations applied.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_stores",
                         "column": "tax_rate",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -497,16 +571,19 @@
         "model": "locations",
         "column": "opened_date",
         "column Description": NaN,
+        "reasoning": "The OPENED_DATE column is directly selected from the stg_locations table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_locations",
                 "column": "opened_date",
                 "column Description": NaN,
+                "reasoning": "The OPENED_DATE column is derived from the opened_at column using a date truncation transformation to round down to the nearest day.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_stores",
                         "column": "opened_at",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -516,12 +593,14 @@
     {
         "model": "stg_orders",
         "column": "order_id",
-        "column Description": NaN,
+        "column Description": "The unique key for each order.",
+        "reasoning": "The ORDER_ID is a direct mapping from the id column in the source table, with no transformations applied.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "id",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -530,11 +609,13 @@
         "model": "stg_orders",
         "column": "location_id",
         "column Description": NaN,
+        "reasoning": "The LOCATION_ID column is directly sourced from the store_id column in the raw_orders table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "store_id",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -543,11 +624,13 @@
         "model": "stg_orders",
         "column": "customer_id",
         "column Description": NaN,
+        "reasoning": "The CUSTOMER_ID column is directly sourced from the customer column in the raw_orders table with a straightforward one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "customer",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -556,11 +639,13 @@
         "model": "stg_orders",
         "column": "subtotal_cents",
         "column Description": NaN,
+        "reasoning": "The column SUBTOTAL_CENTS is directly sourced from the subtotal column in the raw_orders table without any transformation.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "subtotal",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -569,11 +654,13 @@
         "model": "stg_orders",
         "column": "tax_paid_cents",
         "column Description": NaN,
+        "reasoning": "The column `tax_paid_cents` is directly sourced from `tax_paid` in the `raw_orders` table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "tax_paid",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -582,11 +669,13 @@
         "model": "stg_orders",
         "column": "order_total_cents",
         "column Description": NaN,
+        "reasoning": "The column ORDER_TOTAL_CENTS is directly sourced from the order_total column in the raw_orders table with no transformations applied.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "order_total",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -595,11 +684,13 @@
         "model": "stg_orders",
         "column": "subtotal",
         "column Description": NaN,
+        "reasoning": "The column 'subtotal' is directly selected from the source table 'ecom.raw_orders' and transformed using the `cents_to_dollars` function to convert cents to dollars.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "subtotal",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -608,11 +699,13 @@
         "model": "stg_orders",
         "column": "tax_paid",
         "column Description": NaN,
+        "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "tax_paid",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -621,11 +714,13 @@
         "model": "stg_orders",
         "column": "order_total",
         "column Description": NaN,
+        "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "order_total",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -634,11 +729,13 @@
         "model": "stg_orders",
         "column": "ordered_at",
         "column Description": NaN,
+        "reasoning": "The column 'ordered_at' is directly selected from the source table 'ecom.raw_orders' and is truncated to the day level using the `dbt.date_trunc` function.",
         "upstream_models": [
             {
                 "model": "ecom.raw_orders",
                 "column": "ordered_at",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -647,16 +744,19 @@
         "model": "products",
         "column": "product_id",
         "column Description": NaN,
+        "reasoning": "This column is directly selected from the upstream table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "product_id",
-                "column Description": NaN,
+                "column Description": "The unique key for each product.",
+                "reasoning": "The PRODUCT_ID is derived directly from the sku column in the source table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "sku",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -667,16 +767,19 @@
         "model": "products",
         "column": "product_name",
         "column Description": NaN,
+        "reasoning": "The column PRODUCT_NAME is directly selected from the stg_products table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "product_name",
                 "column Description": NaN,
+                "reasoning": "The PRODUCT_NAME column is directly sourced from the name column in the ecom.raw_products table without any transformation.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "name",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -687,16 +790,19 @@
         "model": "products",
         "column": "product_type",
         "column Description": NaN,
+        "reasoning": "The column PRODUCT_TYPE is directly selected from the stg_products table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "product_type",
                 "column Description": NaN,
+                "reasoning": "The column PRODUCT_TYPE is directly sourced from the column 'type' in the raw_products table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "type",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -707,16 +813,19 @@
         "model": "products",
         "column": "product_description",
         "column Description": NaN,
+        "reasoning": "The column PRODUCT_DESCRIPTION is directly selected from the stg_products table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "product_description",
                 "column Description": NaN,
+                "reasoning": "The column `product_description` is directly selected from the `description` column in the `ecom.raw_products` source table without any transformations.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "description",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -727,16 +836,19 @@
         "model": "products",
         "column": "product_price",
         "column Description": NaN,
+        "reasoning": "The column PRODUCT_PRICE is directly selected from the stg_products table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "product_price",
                 "column Description": NaN,
+                "reasoning": "The PRODUCT_PRICE column is derived from the price column in the raw_products table, transformed using the `cents_to_dollars` function to convert the value from cents to dollars.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "price",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -747,16 +859,19 @@
         "model": "products",
         "column": "is_food_item",
         "column Description": NaN,
+        "reasoning": "The column IS_FOOD_ITEM is directly selected from the stg_products table without any transformations or calculations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "is_food_item",
                 "column Description": NaN,
+                "reasoning": "The column IS_FOOD_ITEM is derived from a boolean expression evaluating the 'type' column from the source table, indicating that it is a calculated field based on the 'type' value being equal to 'jaffle'.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "type",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -767,16 +882,19 @@
         "model": "products",
         "column": "is_drink_item",
         "column Description": NaN,
+        "reasoning": "The column IS_DRINK_ITEM is directly selected from the upstream table stg_products without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_products",
                 "column": "is_drink_item",
                 "column Description": NaN,
+                "reasoning": "The column `is_drink_item` is derived from a boolean expression that checks if the `type` is equal to 'beverage'.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_products",
                         "column": "type",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -786,12 +904,14 @@
     {
         "model": "stg_products",
         "column": "product_id",
-        "column Description": NaN,
+        "column Description": "The unique key for each product.",
+        "reasoning": "The PRODUCT_ID is derived directly from the sku column in the source table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_products",
                 "column": "sku",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -800,11 +920,13 @@
         "model": "stg_products",
         "column": "product_name",
         "column Description": NaN,
+        "reasoning": "The PRODUCT_NAME column is directly sourced from the name column in the ecom.raw_products table without any transformation.",
         "upstream_models": [
             {
                 "model": "ecom.raw_products",
                 "column": "name",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -813,11 +935,13 @@
         "model": "stg_products",
         "column": "product_type",
         "column Description": NaN,
+        "reasoning": "The column PRODUCT_TYPE is directly sourced from the column 'type' in the raw_products table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_products",
                 "column": "type",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -826,11 +950,13 @@
         "model": "stg_products",
         "column": "product_description",
         "column Description": NaN,
+        "reasoning": "The column `product_description` is directly selected from the `description` column in the `ecom.raw_products` source table without any transformations.",
         "upstream_models": [
             {
                 "model": "ecom.raw_products",
                 "column": "description",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -839,11 +965,13 @@
         "model": "stg_products",
         "column": "product_price",
         "column Description": NaN,
+        "reasoning": "The PRODUCT_PRICE column is derived from the price column in the raw_products table, transformed using the `cents_to_dollars` function to convert the value from cents to dollars.",
         "upstream_models": [
             {
                 "model": "ecom.raw_products",
                 "column": "price",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -852,11 +980,13 @@
         "model": "stg_products",
         "column": "is_food_item",
         "column Description": NaN,
+        "reasoning": "The column IS_FOOD_ITEM is derived from a boolean expression evaluating the 'type' column from the source table, indicating that it is a calculated field based on the 'type' value being equal to 'jaffle'.",
         "upstream_models": [
             {
                 "model": "ecom.raw_products",
                 "column": "type",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -865,11 +995,13 @@
         "model": "stg_products",
         "column": "is_drink_item",
         "column Description": NaN,
+        "reasoning": "The column `is_drink_item` is derived from a boolean expression that checks if the `type` is equal to 'beverage'.",
         "upstream_models": [
             {
                 "model": "ecom.raw_products",
                 "column": "type",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -877,12 +1009,14 @@
     {
         "model": "stg_supplies",
         "column": "supply_uuid",
-        "column Description": NaN,
+        "column Description": "The unique key of our supplies per cost.",
+        "reasoning": "The column SUPPLY_UUID is generated as a surrogate key from the combination of id and sku from the source table without any transformations.",
         "upstream_models": [
             {
                 "model": "ecom.raw_supplies",
                 "column": "id",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -891,11 +1025,13 @@
         "model": "stg_supplies",
         "column": "supply_id",
         "column Description": NaN,
+        "reasoning": "The column `supply_id` is directly selected from the source table without any transformations, indicating a one-to-one mapping from the `id` column in `ecom.raw_supplies`.",
         "upstream_models": [
             {
                 "model": "ecom.raw_supplies",
                 "column": "id",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -904,11 +1040,13 @@
         "model": "stg_supplies",
         "column": "product_id",
         "column Description": NaN,
+        "reasoning": "The column `product_id` is directly sourced from the `sku` column in the `ecom.raw_supplies` table, indicating a one-to-one mapping without any transformation.",
         "upstream_models": [
             {
                 "model": "ecom.raw_supplies",
                 "column": "sku",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -917,11 +1055,13 @@
         "model": "stg_supplies",
         "column": "supply_name",
         "column Description": NaN,
+        "reasoning": "The column 'supply_name' is directly selected from the 'name' column in the 'ecom.raw_supplies' table with no transformation applied, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_supplies",
                 "column": "name",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -930,11 +1070,13 @@
         "model": "stg_supplies",
         "column": "supply_cost",
         "column Description": NaN,
+        "reasoning": "The column SUPPLY_COST is derived from the cost column in the raw_supplies table through a transformation that converts cents to dollars.",
         "upstream_models": [
             {
                 "model": "ecom.raw_supplies",
                 "column": "cost",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -943,11 +1085,13 @@
         "model": "stg_supplies",
         "column": "is_perishable_supply",
         "column Description": NaN,
+        "reasoning": "The column `is_perishable_supply` is directly sourced from the `perishable` column in the `ecom.raw_supplies` table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_supplies",
                 "column": "perishable",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -956,16 +1100,19 @@
         "model": "supplies",
         "column": "supply_uuid",
         "column Description": NaN,
+        "reasoning": "The column SUPPLY_UUID is directly selected from the stg_supplies table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_supplies",
                 "column": "supply_uuid",
-                "column Description": NaN,
+                "column Description": "The unique key of our supplies per cost.",
+                "reasoning": "The column SUPPLY_UUID is generated as a surrogate key from the combination of id and sku from the source table without any transformations.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_supplies",
                         "column": "id",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -976,16 +1123,19 @@
         "model": "supplies",
         "column": "supply_id",
         "column Description": NaN,
+        "reasoning": "The column SUPPLY_ID is directly selected from the stg_supplies table with no transformations applied, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_supplies",
                 "column": "supply_id",
                 "column Description": NaN,
+                "reasoning": "The column `supply_id` is directly selected from the source table without any transformations, indicating a one-to-one mapping from the `id` column in `ecom.raw_supplies`.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_supplies",
                         "column": "id",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -996,16 +1146,19 @@
         "model": "supplies",
         "column": "product_id",
         "column Description": NaN,
+        "reasoning": "The column PRODUCT_ID is directly selected from the stg_supplies table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_supplies",
                 "column": "product_id",
                 "column Description": NaN,
+                "reasoning": "The column `product_id` is directly sourced from the `sku` column in the `ecom.raw_supplies` table, indicating a one-to-one mapping without any transformation.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_supplies",
                         "column": "sku",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1016,16 +1169,19 @@
         "model": "supplies",
         "column": "supply_name",
         "column Description": NaN,
+        "reasoning": "The column SUPPLY_NAME is directly selected from the stg_supplies table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_supplies",
                 "column": "supply_name",
                 "column Description": NaN,
+                "reasoning": "The column 'supply_name' is directly selected from the 'name' column in the 'ecom.raw_supplies' table with no transformation applied, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_supplies",
                         "column": "name",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1036,16 +1192,19 @@
         "model": "supplies",
         "column": "supply_cost",
         "column Description": NaN,
+        "reasoning": "This column is directly selected from the upstream table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_supplies",
                 "column": "supply_cost",
                 "column Description": NaN,
+                "reasoning": "The column SUPPLY_COST is derived from the cost column in the raw_supplies table through a transformation that converts cents to dollars.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_supplies",
                         "column": "cost",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1056,16 +1215,19 @@
         "model": "supplies",
         "column": "is_perishable_supply",
         "column Description": NaN,
+        "reasoning": "The column IS_PERISHABLE_SUPPLY is directly selected from the stg_supplies table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_supplies",
                 "column": "is_perishable_supply",
                 "column Description": NaN,
+                "reasoning": "The column `is_perishable_supply` is directly sourced from the `perishable` column in the `ecom.raw_supplies` table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_supplies",
                         "column": "perishable",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1075,12 +1237,14 @@
     {
         "model": "stg_locations",
         "column": "location_id",
-        "column Description": NaN,
+        "column Description": "The unique key for each location.",
+        "reasoning": "The LOCATION_ID is directly sourced from the id column in the raw_stores table with no transformation applied.",
         "upstream_models": [
             {
                 "model": "ecom.raw_stores",
                 "column": "id",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -1089,11 +1253,13 @@
         "model": "stg_locations",
         "column": "location_name",
         "column Description": NaN,
+        "reasoning": "The column LOCATION_NAME is directly sourced from the name column in the raw_stores table with a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_stores",
                 "column": "name",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -1102,11 +1268,13 @@
         "model": "stg_locations",
         "column": "tax_rate",
         "column Description": NaN,
+        "reasoning": "The column `tax_rate` is directly selected from the `source` table, which is defined as `{{ source('ecom', 'raw_stores') }}`, indicating a one-to-one mapping with no transformations applied.",
         "upstream_models": [
             {
                 "model": "ecom.raw_stores",
                 "column": "tax_rate",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -1115,11 +1283,13 @@
         "model": "stg_locations",
         "column": "opened_date",
         "column Description": NaN,
+        "reasoning": "The OPENED_DATE column is derived from the opened_at column using a date truncation transformation to round down to the nearest day.",
         "upstream_models": [
             {
                 "model": "ecom.raw_stores",
                 "column": "opened_at",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -1127,17 +1297,20 @@
     {
         "model": "orders",
         "column": "order_id",
-        "column Description": NaN,
+        "column Description": "The unique key of the orders mart.",
+        "reasoning": "The ORDER_ID is directly selected from the stg_orders table without any transformation or calculation, establishing a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "order_id",
-                "column Description": NaN,
+                "column Description": "The unique key for each order.",
+                "reasoning": "The ORDER_ID is a direct mapping from the id column in the source table, with no transformations applied.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "id",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1148,16 +1321,19 @@
         "model": "orders",
         "column": "location_id",
         "column Description": NaN,
+        "reasoning": "The LOCATION_ID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "location_id",
                 "column Description": NaN,
+                "reasoning": "The LOCATION_ID column is directly sourced from the store_id column in the raw_orders table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "store_id",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1167,17 +1343,20 @@
     {
         "model": "orders",
         "column": "customer_id",
-        "column Description": NaN,
+        "column Description": "The foreign key relating to the customer who placed the order.",
+        "reasoning": "The CUSTOMER_ID is directly selected from the stg_orders table without any transformation or aggregation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "customer_id",
                 "column Description": NaN,
+                "reasoning": "The CUSTOMER_ID column is directly sourced from the customer column in the raw_orders table with a straightforward one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "customer",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1188,16 +1367,19 @@
         "model": "orders",
         "column": "subtotal_cents",
         "column Description": NaN,
+        "reasoning": "The column SUBTOTAL_CENTS is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "subtotal_cents",
                 "column Description": NaN,
+                "reasoning": "The column SUBTOTAL_CENTS is directly sourced from the subtotal column in the raw_orders table without any transformation.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "subtotal",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1208,16 +1390,19 @@
         "model": "orders",
         "column": "tax_paid_cents",
         "column Description": NaN,
+        "reasoning": "The column TAX_PAID_CENTS is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "tax_paid_cents",
                 "column Description": NaN,
+                "reasoning": "The column `tax_paid_cents` is directly sourced from `tax_paid` in the `raw_orders` table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "tax_paid",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1228,16 +1413,19 @@
         "model": "orders",
         "column": "order_total_cents",
         "column Description": NaN,
+        "reasoning": "This column is directly selected from the `stg_orders` table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "order_total_cents",
                 "column Description": NaN,
+                "reasoning": "The column ORDER_TOTAL_CENTS is directly sourced from the order_total column in the raw_orders table with no transformations applied.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "order_total",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1248,16 +1436,19 @@
         "model": "orders",
         "column": "subtotal",
         "column Description": NaN,
+        "reasoning": "The SUBTOTAL column is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "subtotal",
                 "column Description": NaN,
+                "reasoning": "The column 'subtotal' is directly selected from the source table 'ecom.raw_orders' and transformed using the `cents_to_dollars` function to convert cents to dollars.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "subtotal",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1268,16 +1459,19 @@
         "model": "orders",
         "column": "tax_paid",
         "column Description": NaN,
+        "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "tax_paid",
                 "column Description": NaN,
+                "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "tax_paid",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1287,17 +1481,20 @@
     {
         "model": "orders",
         "column": "order_total",
-        "column Description": NaN,
+        "column Description": "The total amount of the order in USD including tax.",
+        "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "order_total",
                 "column Description": NaN,
+                "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "order_total",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1307,17 +1504,20 @@
     {
         "model": "orders",
         "column": "ordered_at",
-        "column Description": NaN,
+        "column Description": "The timestamp the order was placed at.",
+        "reasoning": "The column ORDERED_AT is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "ordered_at",
                 "column Description": NaN,
+                "reasoning": "The column 'ordered_at' is directly selected from the source table 'ecom.raw_orders' and is truncated to the day level using the `dbt.date_trunc` function.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "ordered_at",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1327,22 +1527,26 @@
     {
         "model": "orders",
         "column": "order_cost",
-        "column Description": NaN,
+        "column Description": "The sum of supply expenses to fulfill the order.",
+        "reasoning": "The ORDER_COST is calculated as the sum of supply costs from the order_items table, indicating a transformation from the original supply_cost column.",
         "upstream_models": [
             {
                 "model": "order_items",
                 "column": "supply_cost",
                 "column Description": NaN,
+                "reasoning": "[The SUPPLY_COST is directly selected from the supplies table without any transformations or calculations applied.]",
                 "upstream_models": [
                     {
                         "model": "stg_supplies",
                         "column": "supply_cost",
                         "column Description": NaN,
+                        "reasoning": "The column SUPPLY_COST is derived from the cost column in the raw_supplies table through a transformation that converts cents to dollars.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_supplies",
                                 "column": "cost",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -1355,21 +1559,25 @@
         "model": "orders",
         "column": "order_items_subtotal",
         "column Description": NaN,
+        "reasoning": "[The ORDER_ITEMS_SUBTOTAL is calculated as the sum of PRODUCT_PRICE from the order_items table, indicating a transformation rather than a direct mapping.]",
         "upstream_models": [
             {
                 "model": "order_items",
                 "column": "product_price",
                 "column Description": NaN,
+                "reasoning": "The column PRODUCT_PRICE is directly selected from the stg_products table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_products",
                         "column": "product_price",
                         "column Description": NaN,
+                        "reasoning": "The PRODUCT_PRICE column is derived from the price column in the raw_products table, transformed using the `cents_to_dollars` function to convert the value from cents to dollars.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_products",
                                 "column": "price",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -1382,21 +1590,25 @@
         "model": "orders",
         "column": "count_food_items",
         "column Description": NaN,
+        "reasoning": "The COUNT_FOOD_ITEMS column is calculated by counting the occurrences of food items based on the IS_FOOD_ITEM flag from the order_items table.",
         "upstream_models": [
             {
                 "model": "order_items",
                 "column": "is_food_item",
                 "column Description": NaN,
+                "reasoning": "The column IS_FOOD_ITEM is directly selected from the products table without any transformations, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_products",
                         "column": "is_food_item",
                         "column Description": NaN,
+                        "reasoning": "The column IS_FOOD_ITEM is derived from a boolean expression evaluating the 'type' column from the source table, indicating that it is a calculated field based on the 'type' value being equal to 'jaffle'.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_products",
                                 "column": "type",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -1409,21 +1621,25 @@
         "model": "orders",
         "column": "count_drink_items",
         "column Description": NaN,
+        "reasoning": "The COUNT_DRINK_ITEMS column is calculated by summing the occurrences of IS_DRINK_ITEM from the order_items table, indicating a transformation based on a conditional count.",
         "upstream_models": [
             {
                 "model": "order_items",
                 "column": "is_drink_item",
                 "column Description": NaN,
+                "reasoning": "The column IS_DRINK_ITEM is directly selected from the stg_products table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_products",
                         "column": "is_drink_item",
                         "column Description": NaN,
+                        "reasoning": "The column `is_drink_item` is derived from a boolean expression that checks if the `type` is equal to 'beverage'.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_products",
                                 "column": "type",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -1436,21 +1652,25 @@
         "model": "orders",
         "column": "count_order_items",
         "column Description": NaN,
+        "reasoning": "COUNT_ORDER_ITEMS is derived from counting the order_item_id in the order_items table, indicating a one-to-many relationship where each order can have multiple order items.",
         "upstream_models": [
             {
                 "model": "order_items",
                 "column": "order_item_id",
                 "column Description": NaN,
+                "reasoning": "The column ORDER_ITEM_ID is directly selected from the stg_order_items table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_order_items",
                         "column": "order_item_id",
-                        "column Description": NaN,
+                        "column Description": "The unique key for each order item.",
+                        "reasoning": NaN,
                         "upstream_models": [
                             {
                                 "model": "nan",
                                 "column": "nan",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -1462,22 +1682,26 @@
     {
         "model": "orders",
         "column": "is_food_order",
-        "column Description": NaN,
+        "column Description": "A boolean indicating if this order included any food items.",
+        "reasoning": "The column IS_FOOD_ORDER is derived from a conditional aggregation on the order_items.IS_FOOD_ITEM column, counting instances where the item is a food item.",
         "upstream_models": [
             {
                 "model": "order_items",
                 "column": "is_food_item",
                 "column Description": NaN,
+                "reasoning": "The column IS_FOOD_ITEM is directly selected from the products table without any transformations, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_products",
                         "column": "is_food_item",
                         "column Description": NaN,
+                        "reasoning": "The column IS_FOOD_ITEM is derived from a boolean expression evaluating the 'type' column from the source table, indicating that it is a calculated field based on the 'type' value being equal to 'jaffle'.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_products",
                                 "column": "type",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -1489,22 +1713,26 @@
     {
         "model": "orders",
         "column": "is_drink_order",
-        "column Description": NaN,
+        "column Description": "A boolean indicating if this order included any drink items.",
+        "reasoning": "The column IS_DRINK_ORDER is derived from a transformation that checks if there are any drink items in the order, specifically using the IS_DRINK_ITEM column from the order_items table.",
         "upstream_models": [
             {
                 "model": "order_items",
                 "column": "is_drink_item",
                 "column Description": NaN,
+                "reasoning": "The column IS_DRINK_ITEM is directly selected from the stg_products table without any transformation, indicating a one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "stg_products",
                         "column": "is_drink_item",
                         "column Description": NaN,
+                        "reasoning": "The column `is_drink_item` is derived from a boolean expression that checks if the `type` is equal to 'beverage'.",
                         "upstream_models": [
                             {
                                 "model": "ecom.raw_products",
                                 "column": "type",
                                 "column Description": "Description not available",
+                                "reasoning": "Reasoning not available",
                                 "upstream_models": []
                             }
                         ]
@@ -1517,16 +1745,19 @@
         "model": "orders",
         "column": "customer_order_number",
         "column Description": NaN,
+        "reasoning": "The CUSTOMER_ORDER_NUMBER is derived from the row number assigned to orders for each customer based on the ordered_at timestamp, indicating it is calculated from the customer_id in the stg_orders table.",
         "upstream_models": [
             {
                 "model": "stg_orders",
                 "column": "customer_id",
                 "column Description": NaN,
+                "reasoning": "The CUSTOMER_ID column is directly sourced from the customer column in the raw_orders table with a straightforward one-to-one mapping.",
                 "upstream_models": [
                     {
                         "model": "ecom.raw_orders",
                         "column": "customer",
                         "column Description": "Description not available",
+                        "reasoning": "Reasoning not available",
                         "upstream_models": []
                     }
                 ]
@@ -1536,12 +1767,14 @@
     {
         "model": "stg_customers",
         "column": "customer_id",
-        "column Description": NaN,
+        "column Description": "The unique key for each customer.",
+        "reasoning": "The CUSTOMER_ID is a direct one-to-one mapping from the id column in the raw_customers table.",
         "upstream_models": [
             {
                 "model": "ecom.raw_customers",
                 "column": "id",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -1550,11 +1783,13 @@
         "model": "stg_customers",
         "column": "customer_name",
         "column Description": NaN,
+        "reasoning": "The column CUSTOMER_NAME is derived directly from the name column in the source table without any transformation, representing a one-to-one mapping.",
         "upstream_models": [
             {
                 "model": "ecom.raw_customers",
                 "column": "name",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -1562,12 +1797,14 @@
     {
         "model": "stg_order_items",
         "column": "order_item_id",
-        "column Description": NaN,
+        "column Description": "The unique key for each order item.",
+        "reasoning": NaN,
         "upstream_models": [
             {
                 "model": "nan",
                 "column": "nan",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -1575,12 +1812,14 @@
     {
         "model": "stg_order_items",
         "column": "order_id",
-        "column Description": NaN,
+        "column Description": "The corresponding order each order item belongs to",
+        "reasoning": NaN,
         "upstream_models": [
             {
                 "model": "nan",
                 "column": "nan",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]
@@ -1589,11 +1828,13 @@
         "model": "stg_order_items",
         "column": "product_id",
         "column Description": NaN,
+        "reasoning": NaN,
         "upstream_models": [
             {
                 "model": "nan",
                 "column": "nan",
                 "column Description": "Description not available",
+                "reasoning": "Reasoning not available",
                 "upstream_models": []
             }
         ]

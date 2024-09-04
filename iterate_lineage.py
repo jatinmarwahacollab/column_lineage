@@ -27,17 +27,24 @@ def build_hierarchy(df, model_name, column_name):
         "model": model_name,
         "column": column_name,
         "column Description": "",
+        "reasoning": "",  # New field for reasoning
         "upstream_models": []
     }
 
-    # Safely extract the description for the current model and column
+    # Safely extract the description and reasoning for the current model and column
     try:
         base_structure["column Description"] = df.loc[
             (df['NAME'] == model_name) & (df['COLUMN_NAME'] == column_name), 'COLUMN_DESCRIPTION'
         ].values[0]
     except IndexError:
-        # If there is no description, we leave it as an empty string
         base_structure["column Description"] = "Description not available"
+
+    try:
+        base_structure["reasoning"] = df.loc[
+            (df['NAME'] == model_name) & (df['COLUMN_NAME'] == column_name), 'REASONING'
+        ].values[0]
+    except IndexError:
+        base_structure["reasoning"] = "Reasoning not available"
 
     # Get the row corresponding to the current model and column
     current_row = df[(df['NAME'] == model_name) & (df['COLUMN_NAME'] == column_name)]
