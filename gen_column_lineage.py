@@ -2,6 +2,7 @@ import hashlib
 import pandas as pd
 import snowflake.connector
 import openai
+import os
 from dotenv import load_dotenv
 
 
@@ -54,12 +55,12 @@ def get_column_lineage_from_openai(table_name, column_name, reference, sql):
         f"- If the column is not calculated, it should have a single source table. Use this knowledge to deduce the correct lineage.\n"
         f"- If a column is present in multiple upstream tables, consider typical naming conventions, data transformations, and table relationships to identify the most likely source.\n\n"
         f"Your response should adhere to the following format:\n"
-        f"Response Format: Upstream Column(s): [list the most likely upstream Column(s)], Upstream Table(s): [Table related to Upstream column], Reasoning: [Short one-liner transformation rule which is applied on this column, if no transformation then its a one to one mapping.]"
+        f"Response Format should be like this: Upstream Column(s): [list the most likely upstream Column(s)], Upstream Table(s): [Table related to Upstream column], Reasoning: [Short one-liner transformation rule which is applied on this column, if no transformation then its a one to one mapping.]"
     )
 
     # Send the prompt to OpenAI
     response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "user", "content": prompt}
         ],
@@ -68,18 +69,18 @@ def get_column_lineage_from_openai(table_name, column_name, reference, sql):
     )
 
     response_text = response.choices[0].message.content.strip()
-    #print(f"Response received from LLM:\n{response_text}\n")  # Print the response from the LLM
+    print(f"Response received from LLM:\n{response_text}\n")  # Print the response from the LLM
 
     return response_text
 
 # Step 4: Process and Insert/Update Records
 def process_and_update_records(conn, df_lineage, df_lineage_genai):
-    
+
     # Get environment variables
     warehouse = os.getenv('warehouse')
     database = os.getenv('database')
-    schema = os.getenv('schema')  
-    
+    schema = os.getenv('schema')
+
     cursor = conn.cursor()
     # Use environment variables in SQL commands
     cursor.execute(f"USE WAREHOUSE {warehouse};")  # Explicitly set the warehouse
@@ -138,6 +139,8 @@ def process_and_update_records(conn, df_lineage, df_lineage_genai):
         cursor.execute(insert_query, data_to_insert)
         conn.commit()
 
+
+
     # Process changed records
     for index, row in changed_records.iterrows():
         response = get_column_lineage_from_openai(row['TABLE_NAME'], row['COLUMN_NAME'], row['REFERENCE'], row['SQL'])
@@ -157,7 +160,7 @@ def process_and_update_records(conn, df_lineage, df_lineage_genai):
         conn.commit()
 
     # Query to fetch data from the Snowflake table
-    query = "SELECT * FROM JAFFLE_LINEAGE.lineage_data.column_lineage_genai;"
+    query = "SELECT * FROM column_lineage_genai;"
 
     # Read the data into a pandas DataFrame
     df = pd.read_sql(query, conn)
@@ -168,20 +171,37 @@ def process_and_update_records(conn, df_lineage, df_lineage_genai):
 
     cursor.close()
 
+import re
+
 def parse_openai_response(response):
+    # Initialize variables to store the extracted values
     upstream_tables = ''
     upstream_columns = ''
     reasoning = ''
 
     try:
-        if "Upstream Table(s):" in response and "Upstream Column(s):" in response and "Reasoning:" in response:
-            upstream_tables = response.split("Upstream Table(s): [")[1].split("],")[0].strip()
-            upstream_columns = response.split("Upstream Column(s): [")[1].split("],")[0].strip()
-            reasoning = response.split("Reasoning:")[1].strip()
+        # Normalize spaces and remove leading/trailing whitespace
+        response = ' '.join(response.split()).strip()
+
+        # Extract upstream tables, columns, and reasoning using regular expressions
+        upstream_tables_match = re.search(r"Upstream Table\(s\):\s*\[([^\]]*)\]", response)
+        upstream_columns_match = re.search(r"Upstream Column\(s\):\s*\[([^\]]*)\]", response)
+        reasoning_match = re.search(r"Reasoning:\s*(.*)", response)
+
+        # Extract values if matches are found, otherwise default to empty strings
+        upstream_tables = upstream_tables_match.group(1).strip() if upstream_tables_match else ''
+        upstream_columns = upstream_columns_match.group(1).strip() if upstream_columns_match else ''
+        reasoning = reasoning_match.group(1).strip() if reasoning_match else ''
+
+        # Remove any surrounding brackets or extra whitespace
+        upstream_tables = upstream_tables.replace('[', '').replace(']', '').strip()
+        upstream_columns = upstream_columns.replace('[', '').replace(']', '').strip()
+
     except Exception as e:
         print(f"Error parsing response: {e}")
 
     return upstream_tables, upstream_columns, reasoning
+
 
 # Main Function to Execute the Process
 def main():

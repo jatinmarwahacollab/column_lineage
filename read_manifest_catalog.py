@@ -24,7 +24,7 @@ def build_dataframe_from_manifest(nodes, catalog_nodes):
     for node_key, node_info in catalog_nodes.items():
         table_name = node_key
         columns = node_info.get('columns', {})
-        for column_name in columns: 
+        for column_name in columns:
             # Unique key creation
             database = node_info.get('metadata', {}).get('database', '')
             schema = node_info.get('metadata', {}).get('schema', '')
@@ -41,7 +41,7 @@ def build_dataframe_from_manifest(nodes, catalog_nodes):
                 'name': '',  # Initialize as empty
                 'sql': '',  # Initialize as empty
                 'reference': '',  # Initialize as empty
-                'column_description': '' # Initialize as empty
+                'column_description': ''  # Initialize as empty
             })
 
     # Enrich data with information from manifest.json
@@ -51,7 +51,7 @@ def build_dataframe_from_manifest(nodes, catalog_nodes):
         name = node_info.get('name', '')
         sql = node_info.get('raw_code', '')
         refs = node_info.get('refs', [])
-        columns = node_info.get('columns', {}) # Get columns from manifest
+        columns = node_info.get('columns', {})  # Get columns from manifest
 
         table_name_lower = table_name.lower()  # Convert once for comparison
 
@@ -72,7 +72,15 @@ def build_dataframe_from_manifest(nodes, catalog_nodes):
                 for ref in refs:
                     ref_name = ref.get('name', '')
                     if ref_name:
-                        ref_columns = catalog_nodes.get(f"model.jaffle_shop.{ref_name}", {}).get('columns', {})
+                        # Dynamically extract package name from node_key
+                        package_name = node_key.split('.')[1]  # Assuming node_key is structured like "model.package_name.table_name"
+                        
+                        # Construct the reference key dynamically
+                        ref_key = f"model.{package_name}.{ref_name}"
+                        
+                        # Retrieve columns from catalog_nodes using the dynamically constructed key
+                        ref_columns = catalog_nodes.get(ref_key, {}).get('columns', {})
+                        
                         for ref_column_name, ref_column_info in ref_columns.items():
                             ref_column_description = ref_column_info.get('description', '')
                             reference_info.append(f"{ref_name}.{ref_column_name}: {ref_column_description}")
@@ -81,6 +89,7 @@ def build_dataframe_from_manifest(nodes, catalog_nodes):
 
     df = pd.DataFrame(data)
     return df
+
 
 
 # Step 3: Connect to Snowflake and Load Data
@@ -99,19 +108,19 @@ def connect_to_snowflake():
 
 def insert_data_to_snowflake(conn, df):
     # Truncate the existing table
-    truncate_table_query = "TRUNCATE TABLE LINEAGE_DATA.COLUMN_LINEAGE;"
+    truncate_table_query = "TRUNCATE TABLE COLUMN_LINEAGE;"
 
     # Insert data into Snowflake table
     insert_query = """
-    INSERT INTO JAFFLE_LINEAGE.lineage_data.column_lineage (unique_key, database, schema, table_name, column_name, column_description, resource_type, name, sql, reference)
+    INSERT INTO column_lineage (unique_key, database, schema, table_name, column_name, column_description, resource_type, name, sql, reference)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     # Get environment variables
     warehouse = os.getenv('warehouse')
     database = os.getenv('database')
-    schema = os.getenv('schema')  
-    
+    schema = os.getenv('schema')
+
     cursor = conn.cursor()
     # Use environment variables in SQL commands
     cursor.execute(f"USE WAREHOUSE {warehouse};")  # Explicitly set the warehouse
