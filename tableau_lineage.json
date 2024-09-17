@@ -1,0 +1,979 @@
+{
+    "dashboard": [
+        {
+            "name": "Dashboard 1",
+            "upstreamDatasources": [
+                {
+                    "name": "JAFFLE_SHOP",
+                    "fields": [
+                        {
+                            "name": "Count Drink Items",
+                            "upstreamColumns": [
+                                {
+                                    "name": "COUNT_DRINK_ITEMS",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Count Food Items",
+                            "upstreamColumns": [
+                                {
+                                    "name": "COUNT_FOOD_ITEMS",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Count Lifetime Orders",
+                            "upstreamColumns": [
+                                {
+                                    "name": "COUNT_LIFETIME_ORDERS",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Count Order Items",
+                            "upstreamColumns": [
+                                {
+                                    "name": "COUNT_ORDER_ITEMS",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Customer Id",
+                            "upstreamColumns": [
+                                {
+                                    "name": "CUSTOMER_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Customer Id (Customers)",
+                            "upstreamColumns": [
+                                {
+                                    "name": "CUSTOMER_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Customer Name",
+                            "upstreamColumns": [
+                                {
+                                    "name": "CUSTOMER_NAME",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Customer Order Number",
+                            "upstreamColumns": [
+                                {
+                                    "name": "CUSTOMER_ORDER_NUMBER",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "CUSTOMERS",
+                            "upstreamColumns": [],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Customer Type",
+                            "upstreamColumns": [
+                                {
+                                    "name": "CUSTOMER_TYPE",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "First Ordered At",
+                            "upstreamColumns": [
+                                {
+                                    "name": "FIRST_ORDERED_AT",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Is Drink Item",
+                            "upstreamColumns": [
+                                {
+                                    "name": "IS_DRINK_ITEM",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "PRODUCTS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Is Drink Order",
+                            "upstreamColumns": [
+                                {
+                                    "name": "IS_DRINK_ORDER",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Is Food Item",
+                            "upstreamColumns": [
+                                {
+                                    "name": "IS_FOOD_ITEM",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "PRODUCTS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Is Food Order",
+                            "upstreamColumns": [
+                                {
+                                    "name": "IS_FOOD_ORDER",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Is Perishable Supply",
+                            "upstreamColumns": [
+                                {
+                                    "name": "IS_PERISHABLE_SUPPLY",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "SUPPLIES"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Last Ordered At",
+                            "upstreamColumns": [
+                                {
+                                    "name": "LAST_ORDERED_AT",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Lifetime Spend",
+                            "upstreamColumns": [
+                                {
+                                    "name": "LIFETIME_SPEND",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Total Lifetime spend",
+                            "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
+                            "upstreamDatabases": [
+                                {
+                                    "name": "JAFFLE_SHOP"
+                                }
+                            ],
+                            "upstreamTables": [
+                                {
+                                    "name": "CUSTOMERS"
+                                }
+                            ],
+                            "upstreamColumns": [
+                                {
+                                    "name": "LIFETIME_TAX_PAID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "LIFETIME_SPEND",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Lifetime Spend Pretax",
+                            "upstreamColumns": [
+                                {
+                                    "name": "LIFETIME_SPEND_PRETAX",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Lifetime Tax Paid",
+                            "upstreamColumns": [
+                                {
+                                    "name": "LIFETIME_TAX_PAID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "CUSTOMERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Location Id",
+                            "upstreamColumns": [
+                                {
+                                    "name": "LOCATION_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Location Id (Locations)",
+                            "upstreamColumns": [
+                                {
+                                    "name": "LOCATION_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "LOCATIONS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Location Name",
+                            "upstreamColumns": [
+                                {
+                                    "name": "LOCATION_NAME",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "LOCATIONS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "LOCATIONS",
+                            "upstreamColumns": [],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Opened Date",
+                            "upstreamColumns": [
+                                {
+                                    "name": "OPENED_DATE",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "LOCATIONS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Order Cost",
+                            "upstreamColumns": [
+                                {
+                                    "name": "ORDER_COST",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Ordered At",
+                            "upstreamColumns": [
+                                {
+                                    "name": "ORDERED_AT",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Order Id",
+                            "upstreamColumns": [
+                                {
+                                    "name": "ORDER_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Order Id (Stg Order Items)",
+                            "upstreamColumns": [
+                                {
+                                    "name": "ORDER_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "STG_ORDER_ITEMS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Order Item Id",
+                            "upstreamColumns": [
+                                {
+                                    "name": "ORDER_ITEM_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "STG_ORDER_ITEMS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Order Items Subtotal",
+                            "upstreamColumns": [
+                                {
+                                    "name": "ORDER_ITEMS_SUBTOTAL",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "ORDERS",
+                            "upstreamColumns": [],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Order Total",
+                            "upstreamColumns": [
+                                {
+                                    "name": "ORDER_TOTAL",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Order Total Cents",
+                            "upstreamColumns": [
+                                {
+                                    "name": "ORDER_TOTAL_CENTS",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Product Description",
+                            "upstreamColumns": [
+                                {
+                                    "name": "PRODUCT_DESCRIPTION",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "PRODUCTS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Product Id",
+                            "upstreamColumns": [
+                                {
+                                    "name": "PRODUCT_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "STG_ORDER_ITEMS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Product Id (Products)",
+                            "upstreamColumns": [
+                                {
+                                    "name": "PRODUCT_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "PRODUCTS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Product Id (Supplies)",
+                            "upstreamColumns": [
+                                {
+                                    "name": "PRODUCT_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "SUPPLIES"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Product Name",
+                            "upstreamColumns": [
+                                {
+                                    "name": "PRODUCT_NAME",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "PRODUCTS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Product Price",
+                            "upstreamColumns": [
+                                {
+                                    "name": "PRODUCT_PRICE",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "PRODUCTS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "PRODUCTS",
+                            "upstreamColumns": [],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Product Type",
+                            "upstreamColumns": [
+                                {
+                                    "name": "PRODUCT_TYPE",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "PRODUCTS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "STG_ORDER_ITEMS",
+                            "upstreamColumns": [],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Subtotal",
+                            "upstreamColumns": [
+                                {
+                                    "name": "SUBTOTAL",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Subtotal Cents",
+                            "upstreamColumns": [
+                                {
+                                    "name": "SUBTOTAL_CENTS",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "SUPPLIES",
+                            "upstreamColumns": [],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Supply Cost",
+                            "upstreamColumns": [
+                                {
+                                    "name": "SUPPLY_COST",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "SUPPLIES"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Supply Id",
+                            "upstreamColumns": [
+                                {
+                                    "name": "SUPPLY_ID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "SUPPLIES"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Supply Name",
+                            "upstreamColumns": [
+                                {
+                                    "name": "SUPPLY_NAME",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "SUPPLIES"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Supply Uuid",
+                            "upstreamColumns": [
+                                {
+                                    "name": "SUPPLY_UUID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "SUPPLIES"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Tax Paid",
+                            "upstreamColumns": [
+                                {
+                                    "name": "TAX_PAID",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Tax Paid Cents",
+                            "upstreamColumns": [
+                                {
+                                    "name": "TAX_PAID_CENTS",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "ORDERS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        },
+                        {
+                            "name": "Tax Rate",
+                            "upstreamColumns": [
+                                {
+                                    "name": "TAX_RATE",
+                                    "upstreamDatabases": [
+                                        {
+                                            "name": "JAFFLE_SHOP"
+                                        }
+                                    ],
+                                    "upstreamTables": [
+                                        {
+                                            "name": "LOCATIONS"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "formula": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
