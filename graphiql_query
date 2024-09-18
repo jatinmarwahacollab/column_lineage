@@ -1,31 +1,40 @@
 {
-  dashboard: dashboards(filter: {name: "Dashboard 1"}) {
+  workbooks(filter: {name: "Jaffle Shop "}) {
     name
-    id
-    upstreamDatasources(filter: {name: "JAFFLE_SHOP", idWithin: ["b3cef45c-031c-059d-8e8a-0ceb50e5e34e","72e2ae19-360b-06c0-6e9a-736b6a9d92a1"]}) {
+    dashboard: dashboards(filter: {name: "Dashboard 1"}) {
       name
-      fields(orderBy: {field: NAME, direction: ASC}) {
+      id
+      sheets(filter: {name: "location"}) {
         name
-        upstreamDatabases {
+        worksheetFields {
           name
         }
-        upstreamTables {
+        upstreamDatasources(filter: {name: "JAFFLE_SHOP"}) {
           name
-        }
-        upstreamColumns {
-          name
-        }
-        referencedByCalculations {
-          name
-          formula
-          upstreamDatabases {
+          fields(orderBy: {field: NAME, direction: ASC}) {
             name
-          }
-          upstreamTables {
-            name
-          }
-          upstreamColumns {
-            name
+            upstreamDatabases {
+              name
+            }
+            upstreamTables {
+              name
+            }
+            upstreamColumns {
+              name
+            }
+            referencedByCalculations {
+              name
+              formula
+              upstreamDatabases {
+                name
+              }
+              upstreamTables {
+                name
+              }
+              upstreamColumns {
+                name
+              }
+            }
           }
         }
       }
