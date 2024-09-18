@@ -1,0 +1,43 @@
+{
+  workbooks(filter: {name: "Jaffle Shop "}) {
+    name
+    dashboard: dashboards(filter: {name: "Dashboard 1"}) {
+      name
+      id
+      sheets(filter: {name: "location"}) {
+        name
+        worksheetFields {
+          name
+        }
+        upstreamDatasources(filter: {name: "JAFFLE_SHOP"}) {
+          name
+          fields(orderBy: {field: NAME, direction: ASC}) {
+            name
+            upstreamDatabases {
+              name
+            }
+            upstreamTables {
+              name
+            }
+            upstreamColumns {
+              name
+            }
+            referencedByCalculations {
+              name
+              formula
+              upstreamDatabases {
+                name
+              }
+              upstreamTables {
+                name
+              }
+              upstreamColumns {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
