@@ -4,14 +4,14 @@
     dashboard: dashboards(filter: {name: "Dashboard 1"}) {
       name
       id
-      sheets(filter: {name: "location"}) {
+      upstreamDatasources(filter: {idWithin: ["b3cef45c-031c-059d-8e8a-0ceb50e5e34e"]}) {
         name
-        worksheetFields {
+        downstreamSheets {
           name
-        }
-        upstreamDatasources(filter: {name: "JAFFLE_SHOP"}) {
-          name
-          fields(orderBy: {field: NAME, direction: ASC}) {
+          worksheetFields {
+            name
+          }
+          sheetFieldInstances(orderBy: {field: NAME, direction: ASC}) {
             name
             upstreamDatabases {
               name

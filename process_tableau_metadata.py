@@ -1,19 +1,14 @@
+import json
 import requests
 
 # Replace these with your actual Tableau Online details
-instance = "prod-apnortheast-a"  # Replace with your Tableau Online instance (e.g., "10ax", "10az", etc.)
-api_version = "3.14"  # Use the appropriate API version
+instance = "prod-apnortheast-a"
+api_version = "3.14"
 auth_url = f"https://{instance}.online.tableau.com/api/{api_version}/auth/signin"
 
-#auth_url = f"https://prod-apnortheast-a.online.tableau.com/api/VERSION/auth/signin"
-
-token_name = "demo_lineage"  # Your personal access token name
-token_value = ""  # Your personal access token secret
-site_id = ""  # Content URL for your Tableau Online site
-
-headers = {
-    "Content-Type": "application/json"
-}
+token_name = "demo_lineage"
+token_value = "OduNru8eTcevWyUj75fFHQ==:NwB6cBGwWeOjrhSbVoUkIIFLdxy67ACh"
+site_id = ""
 
 auth_payload = {
     "credentials": {
@@ -28,81 +23,88 @@ auth_headers = {
     'Accept': 'application/json'
 }
 
+# Authenticate
 try:
     response = requests.post(auth_url, json=auth_payload, headers=auth_headers)
     response.raise_for_status()
-
-    if response.content:
-        data = response.json()
-        auth_token = data['credentials']['token']
-        print(f"Authenticated with token: {auth_token}")
-    else:
-        print("Authentication successful, but empty response received.")
-
+    data = response.json()
+    auth_token = data['credentials']['token']
+    print(f"Authenticated with token: {auth_token}")
 except requests.exceptions.RequestException as e:
     print(f"Request failed: {e}")
-    if response is not None:
-        print(f"Response content: {response.content}")
+    exit()
 
 # Define the GraphQL endpoint
-metadata_api_url = f"https://prod-apnortheast-a.online.tableau.com/api/metadata/graphql"
+metadata_api_url = f"https://{instance}.online.tableau.com/api/metadata/graphql"
+headers = {
+    "Content-Type": "application/json",
+    "X-Tableau-Auth": auth_token
+}
 
-# Step 1: Fetch the ID of the published datasource
+# Step 1: Fetch the list of IDs for the published datasource
 fetch_datasource_query = """
 {
-  publishedDatasources(filter: {name: "JAFFLE_SHOP"}) {
+  publishedDatasources {
     id
     name
   }
 }
 """
 
-# Include the 'X-Tableau-Auth' header with the authentication token
-headers = {
-    "Content-Type": "application/json",
-    "X-Tableau-Auth": auth_token  # Add the authentication token here
-}
-
-# Make the request to get published datasource ID
 response = requests.post(metadata_api_url, json={'query': fetch_datasource_query}, headers=headers)
 response.raise_for_status()
 
-# Parse the JSON response to get the datasource ID
+# Parse the JSON response to get the datasource IDs
 datasource_data = response.json()
-published_datasource_id = datasource_data['data']['publishedDatasources'][0]['id']
 
-print(f"Published Datasource ID: {published_datasource_id}")
+# Extract multiple IDs from the response
+published_datasource_ids = [ds['id'] for ds in datasource_data['data']['publishedDatasources']]
 
-# Step 2: Construct the main GraphQL query using the fetched ID
+print(f"Published Datasource IDs: {published_datasource_ids}")
+
+# Prepare the list of IDs for the `idWithin` filter
+idWithin_str = '", "'.join(published_datasource_ids)
+idWithin_filter = f'["{idWithin_str}"]'
+
+# Step 2: Construct the main GraphQL query using multiple IDs in `idWithin`
 graphql_query = f"""
 {{
-  dashboard: dashboards(filter: {{name: "Dashboard 1"}}) {{
+  workbooks(filter: {{name: "Jaffle Shop "}}) {{
     name
-    id
-    upstreamDatasources(filter: {{name: "JAFFLE_SHOP", id: "{published_datasource_id}"}}) {{
+    dashboard: dashboards(filter: {{name: "Dashboard 1"}}) {{
       name
-      fields(orderBy: {{field: NAME, direction: ASC}}) {{
+      id
+      upstreamDatasources(filter: {{idWithin: {idWithin_filter}}}) {{
         name
-        upstreamDatabases {{
+        downstreamSheets {{
           name
-        }}
-        upstreamTables {{
-          name
-        }}
-        upstreamColumns {{
-          name
-        }}
-        referencedByCalculations {{
-          name
-          formula
-          upstreamDatabases {{
+          worksheetFields {{
             name
           }}
-          upstreamTables {{
+          sheetFieldInstances(orderBy: {{field: NAME, direction: ASC}}) {{
             name
-          }}
-          upstreamColumns {{
-            name
+            upstreamDatabases {{
+              name
+            }}
+            upstreamTables {{
+              name
+            }}
+            upstreamColumns {{
+              name
+            }}
+            referencedByCalculations {{
+              name
+              formula
+              upstreamDatabases {{
+                name
+              }}
+              upstreamTables {{
+                name
+              }}
+              upstreamColumns {{
+                name
+              }}
+            }}
           }}
         }}
       }}
@@ -117,101 +119,104 @@ response.raise_for_status()
 
 # Parse the JSON response
 data = response.json()
-print(data)
+print(json.dumps(data, indent=2))
 
 def build_lineage(data):
-    output = {"dashboard": []}
+    output = {"workbooks": []}
 
-    # Iterate over the dashboards
-    for dashboard in data['data']['dashboard']:
-        dashboard_output = {
-            "name": dashboard["name"],
-            "upstreamDatasources": []
+    # Iterate over the workbooks
+    for workbook in data['data']['workbooks']:
+        workbook_output = {
+            "name": workbook["name"],
+            "dashboards": []
         }
 
-        # Iterate over the upstreamDatasources in the dashboard
-        for datasource in dashboard["upstreamDatasources"]:
-            datasource_output = {
-                "name": datasource["name"],
-                "fields": []
+        # Iterate over the dashboards in the workbook
+        for dashboard in workbook["dashboard"]:
+            dashboard_output = {
+                "name": dashboard["name"],
+                "upstreamDatasources": []
             }
 
-            # Step 1: Create a registry of fields and calculations to ensure unique entries
-            field_registry = {}
+            # Iterate over the upstreamDatasources in the dashboard
+            for datasource in dashboard["upstreamDatasources"]:
+                datasource_output = {
+                    "name": datasource["name"],
+                    "sheets": []
+                }
 
-            # Iterate over the fields in each datasource
-            for field in datasource["fields"]:
-                field_name = field["name"]
-                datasource_name = datasource["name"]
-
-                # Create a unique key using both field name and datasource name
-                field_key = f"{field_name}_{datasource_name}"
-
-                # Create or update entry for the field
-                if field_key not in field_registry:
-                    # Initialize field output
-                    field_output = {
-                        "name": field_name,
-                        "upstreamColumns": [],
-                        "formula": field.get("formula", "")
+                # Iterate over the downstreamSheets under each datasource
+                for sheet in datasource["downstreamSheets"]:
+                    sheet_output = {
+                        "name": sheet["name"],
+                        "worksheetFields": [],
+                        "sheetFieldInstances": []
                     }
-                    field_registry[field_key] = field_output
-                else:
-                    # If field exists, update formula if available
-                    if "formula" in field and field["formula"]:
-                        field_registry[field_key]["formula"] = field["formula"]
 
-                # Add direct upstream details for each column in the field
-                for column in field.get("upstreamColumns", []):
-                    column_name = column["name"]
-
-                    # Avoid duplicate columns in the same field
-                    if column_name not in [col["name"] for col in field_registry[field_key]["upstreamColumns"]]:
-                        column_entry = {
-                            "name": column_name,
-                            "upstreamDatabases": field.get("upstreamDatabases", []),
-                            "upstreamTables": field.get("upstreamTables", []),
+                    # Add worksheetFields to sheet output
+                    for field in sheet["worksheetFields"]:
+                        worksheet_field_output = {
+                            "name": field["name"]
                         }
-                        field_registry[field_key]["upstreamColumns"].append(column_entry)
+                        sheet_output["worksheetFields"].append(worksheet_field_output)
 
-                # Check if there are referenced calculations for the field
-                if field.get("referencedByCalculations"):
-                    for calc in field["referencedByCalculations"]:
-                        calc_name = calc["name"]
+                    # Add sheetFieldInstances and treat them like upstream columns
+                    for field_instance in sheet["sheetFieldInstances"]:
+                        field_output = {
+                            "name": field_instance["name"],
+                            "upstreamColumns": [],
+                            "formula": ""
+                        }
 
-                        # Create or update entry for the calculation
-                        calc_key = f"{calc_name}_{datasource_name}"
-                        if calc_key not in field_registry:
-                            calc_entry = {
-                                "name": calc_name,
-                                "formula": calc.get("formula", ""),
-                                "upstreamDatabases": calc.get("upstreamDatabases", []),
-                                "upstreamTables": calc.get("upstreamTables", []),
-                                "upstreamColumns": []
+                        # Add direct upstream details for each column in the field
+                        for column in field_instance.get("upstreamColumns", []):
+                            column_entry = {
+                                "name": column["name"],
+                                "upstreamDatabases": field_instance.get("upstreamDatabases", []),
+                                "upstreamTables": field_instance.get("upstreamTables", [])
                             }
+                            field_output["upstreamColumns"].append(column_entry)
 
-                            # Add upstream columns for this calculation
-                            for upstream_col in calc.get("upstreamColumns", []):
-                                upstream_column_entry = {
-                                    "name": upstream_col["name"],
-                                    "upstreamDatabases": calc.get("upstreamDatabases", []),
-                                    "upstreamTables": calc.get("upstreamTables", [])
-                                }
-                                calc_entry["upstreamColumns"].append(upstream_column_entry)
+                        # Handle referencedByCalculations
+                        process_calculations(field_instance, field_output)
 
-                            field_registry[calc_key] = calc_entry
+                        # Add the field instance to the sheet output
+                        sheet_output["sheetFieldInstances"].append(field_output)
 
-            # Append all unique fields and calculations to the datasource
-            for field_key, field_details in field_registry.items():
-                datasource_output["fields"].append(field_details)
+                    # Add sheet output to the datasource
+                    datasource_output["sheets"].append(sheet_output)
 
-            # Add datasource output to the dashboard
-            dashboard_output["upstreamDatasources"].append(datasource_output)
+                # Add datasource output to the dashboard
+                dashboard_output["upstreamDatasources"].append(datasource_output)
 
-        # Add the completed dashboard output to the final result
-        output["dashboard"].append(dashboard_output)
+            # Add dashboard output to the workbook
+            workbook_output["dashboards"].append(dashboard_output)
+
+        # Add the workbook output to the final result
+        output["workbooks"].append(workbook_output)
 
     return output
+
+# Function to handle recursive referencedByCalculations
+def process_calculations(field, field_output):
+    if field.get("referencedByCalculations"):
+        for calc in field["referencedByCalculations"]:
+            calc_entry = {
+                "name": calc["name"],
+                "formula": calc.get("formula", ""),
+                "upstreamColumns": []
+            }
+
+            # Add upstream columns for this calculation
+            for upstream_col in calc.get("upstreamColumns", []):
+                upstream_column_entry = {
+                    "name": upstream_col["name"],
+                    "upstreamDatabases": calc.get("upstreamDatabases", []),
+                    "upstreamTables": calc.get("upstreamTables", [])
+                }
+                calc_entry["upstreamColumns"].append(upstream_column_entry)
+
+            field_output["upstreamColumns"].append(calc_entry)
 
 # Generate the output
 lineage_output = build_lineage(data)
@@ -221,5 +226,3 @@ with open('tableau_lineage.json', 'w') as f:
     json.dump(lineage_output, f, indent=4)
 
 print("Lineage file generated successfully.")
-
-

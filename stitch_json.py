@@ -21,45 +21,57 @@ def stitch_lineages(tableau_data, db_data):
     """
     Stitch together the tableau and database lineages into a combined nested lineage.
     """
-    combined_lineage = {"dashboard": []}
+    combined_lineage = {"workbooks": []}
 
-    for dashboard in tableau_data["dashboard"]:
-        dashboard_entry = {"name": dashboard["name"], "upstreamDatasources": []}
+    for workbook in tableau_data["workbooks"]:
+        workbook_entry = {"name": workbook["name"], "dashboards": []}
 
-        for datasource in dashboard["upstreamDatasources"]:
-            datasource_entry = {"name": datasource["name"], "fields": []}
+        for dashboard in workbook["dashboards"]:
+            dashboard_entry = {"name": dashboard["name"], "sheets": []}
 
-            for field in datasource["fields"]:
-                # Initialize the field entry and include the formula if present
-                field_entry = {
-                    "name": field["name"],
-                    "formula": field.get("formula", ""),
-                    "upstreamColumns": []
-                }
+            for sheet in dashboard["upstreamDatasources"][0]["sheets"]:  # Access downstreamSheets in upstreamDatasources
+                sheet_entry = {"name": sheet["name"], "sheetFieldInstances": []}
 
-                for column in field["upstreamColumns"]:
-                    # Initialize the column entry and include the formula if present
-                    column_entry = {
-                        "name": column["name"],
-                        "formula": column.get("formula", ""),
-                        "upstreamTables": column["upstreamTables"],
-                        "dblineage": []  # Start with an empty lineage list
-                    }
+                # Iterate over the sheetFieldInstances in each sheet
+                field_registry = {}
+                for field in sheet["sheetFieldInstances"]:
+                    # Initialize the field entry and include the formula if present
+                    field_key = f"{field['name']}_{sheet['name']}"
+                    if field_key not in field_registry:
+                        field_registry[field_key] = {
+                            "name": field["name"],
+                            "formula": field.get("formula", ""),
+                            "upstreamColumns": []
+                        }
 
-                    # Populate the lineage information based on upstream tables
-                    for table in column["upstreamTables"]:
-                        # Find matching lineage in the database lineage data
-                        db_lineage = find_database_lineage(table["name"], column["name"], db_data)
-                        if db_lineage:
-                            # Process the upstream models recursively to flatten the lineage
-                            column_entry["dblineage"].append(process_lineage(db_lineage))
+                    # Add direct upstream details for each column in the field
+                    for column in field["upstreamColumns"]:
+                        # Check if 'upstreamTables' exists in the column
+                        upstream_tables = column.get("upstreamTables", [])
+                        
+                        column_entry = {
+                            "name": column["name"],
+                            "formula": column.get("formula", ""),
+                            "upstreamTables": upstream_tables,
+                            "dblineage": []  # Start with an empty lineage list
+                        }
 
-                    field_entry["upstreamColumns"].append(column_entry)
+                        # Populate the lineage information based on upstream tables
+                        for table in upstream_tables:
+                            db_lineage = find_database_lineage(table["name"], column["name"], db_data)
+                            if db_lineage:
+                                column_entry["dblineage"].append(process_lineage(db_lineage))
 
-                datasource_entry["fields"].append(field_entry)
-            dashboard_entry["upstreamDatasources"].append(datasource_entry)
+                        field_registry[field_key]["upstreamColumns"].append(column_entry)
 
-        combined_lineage["dashboard"].append(dashboard_entry)
+                # Append all unique fields to the sheetFieldInstances
+                for field_key, field_details in field_registry.items():
+                    sheet_entry["sheetFieldInstances"].append(field_details)
+
+                dashboard_entry["sheets"].append(sheet_entry)
+
+            workbook_entry["dashboards"].append(dashboard_entry)
+        combined_lineage["workbooks"].append(workbook_entry)
 
     return combined_lineage
 
@@ -130,22 +142,21 @@ def flatten_lineage(dashboard_name, column_name, data_source, table_name, lineag
 # Convert JSON to DataFrame
 flattened_data = []
 
-for dashboard in data["dashboard"]:
-    dashboard_name = dashboard["name"]
-    for data_source in dashboard["upstreamDatasources"]:
-        data_source_name = data_source["name"]
-        for field in data_source["fields"]:
-            column_name_on_dashboard = field["name"]
-            for upstream_column in field.get("upstreamColumns", []):
-                table_name = upstream_column["upstreamTables"][0]["name"] if upstream_column.get("upstreamTables") else ""
-                lineage = upstream_column.get("lineage", [])
-                flattened_data.extend(flatten_lineage(
-                    dashboard_name,
-                    column_name_on_dashboard,
-                    data_source_name,
-                    table_name,
-                    lineage  # Corrected argument
-                ))
+for workbook in data["workbooks"]:
+    for dashboard in workbook["dashboards"]:
+        dashboard_name = dashboard["name"]
+        for sheet in dashboard["sheets"]:
+            for field_instance in sheet["sheetFieldInstances"]:
+                for upstream_column in field_instance.get("upstreamColumns", []):
+                    table_name = upstream_column["upstreamTables"][0]["name"] if upstream_column.get("upstreamTables") else ""
+                    lineage = upstream_column.get("dblineage", [])
+                    flattened_data.extend(flatten_lineage(
+                        dashboard_name,
+                        field_instance["name"],
+                        sheet["name"],
+                        table_name,
+                        lineage
+                    ))
 
 # Convert the flattened data to a DataFrame
 df = pd.DataFrame(flattened_data)
