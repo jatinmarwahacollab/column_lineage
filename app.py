@@ -4,19 +4,19 @@ from graphviz import Digraph
 import pandas as pd
 import warnings
 
-# Suppress deprecation warnings in Python
+# Suppress deprecation warnings in Python (though it won't hide Streamlit warnings in UI)
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # Define the Node class to represent each entity in the lineage
 class Node:
     def __init__(self, name, node_type, table_name='', description='', reasoning='', formula='', lineage_type=''):
         self.name = name
-        self.type = node_type  # e.g., 'Field', 'Column', 'Table', etc.
-        self.table_name = table_name  # Table name associated with the field or column
+        self.type = node_type
+        self.table_name = table_name
         self.description = description
         self.reasoning = reasoning
         self.formula = formula
-        self.lineage_type = lineage_type  # Added to differentiate between Reporting and Database lineage
+        self.lineage_type = lineage_type
         self.children = []  # List of child nodes
 
     def add_child(self, child_node):
@@ -33,7 +33,7 @@ class Node:
             'Lineage Type': self.lineage_type
         }
 
-# Build the lineage tree from the JSON data
+# Function to build the lineage tree from the JSON data
 def build_lineage_tree(field_data):
     root_node = Node(
         name=field_data['name'],
@@ -44,9 +44,7 @@ def build_lineage_tree(field_data):
 
     for upstream_column in field_data.get('upstreamColumns', []):
         column_name = upstream_column['name']
-        table_name = ', '.join(
-            [table['name'] for table in upstream_column.get('upstreamTables', [])]
-        )
+        table_name = ', '.join([table['name'] for table in upstream_column.get('upstreamTables', [])])
         column_node = Node(
             name=column_name,
             node_type='Column',
@@ -62,7 +60,7 @@ def build_lineage_tree(field_data):
 
     return root_node
 
-# Build lineage nodes recursively from dblineage part
+# Function to build lineage nodes recursively from dblineage part
 def build_db_lineage(db_lineage, visited):
     node_id = f"{db_lineage['model']}.{db_lineage['column']}"
     if node_id in visited:
@@ -85,8 +83,8 @@ def build_db_lineage(db_lineage, visited):
 
     return node
 
-# Create the lineage graph using Graphviz
-def create_graph(node, theme):
+# Function to create the lineage graph using Graphviz
+def create_graph(node, theme, metadata_buttons):
     dot = Digraph(comment='Data Lineage')
     dot.attr('graph', bgcolor=theme.bgcolor, rankdir='LR')
     dot.attr('node', style=theme.style, shape=theme.shape, fillcolor=theme.fillcolor,
@@ -97,9 +95,12 @@ def create_graph(node, theme):
         label = f"{current_node.name}"
         if current_node.table_name:
             label += f"\n({current_node.table_name})"
+        elif current_node.type != 'Field':
+            label += f"\n({current_node.type})"
         label += f"\n\n{current_node.lineage_type}"
-        url = f"/?selected_node={current_node.name}"
-        dot.node(current_node.name + current_node.table_name, label=label, href=url)
+
+        dot.node(current_node.name + current_node.table_name, label=label)
+        metadata_buttons[current_node.name] = current_node.get_metadata()
 
         for child in current_node.children:
             dot.edge(current_node.name + current_node.table_name, child.name + child.table_name)
@@ -108,7 +109,7 @@ def create_graph(node, theme):
     add_nodes_edges(node)
     return dot
 
-# Theme class for graph styling
+# Theme class to define visual styles
 class Theme:
     def __init__(self, color, fillcolor, bgcolor, tcolor, style, shape, pencolor, penwidth):
         self.color = color
@@ -120,7 +121,7 @@ class Theme:
         self.pencolor = pencolor
         self.penwidth = penwidth
 
-# Get predefined themes
+# Function to get predefined themes
 def getThemes():
     return {
         "Default": Theme("#6c6c6c", "#e0e0e0", "#ffffff", "#000000", "filled", "box", "#696969", "1"),
@@ -134,13 +135,11 @@ st.title('Data Lineage Visualization')
 
 # Sidebar options
 st.sidebar.header('Configuration')
-
-# Load themes
 themes = getThemes()
 theme_name = st.sidebar.selectbox('Select Theme', list(themes.keys()), index=0)
 theme = themes[theme_name]
 
-# Load JSON data
+# Load and parse the JSON data
 with st.spinner('Loading lineage data...'):
     try:
         with open('combined_lineage.json', 'r') as f:
@@ -149,83 +148,58 @@ with st.spinner('Loading lineage data...'):
         st.error(f"Error loading JSON file: {e}")
         st.stop()
 
-# Workbook selection
+# Extract available workbooks
 workbook_names = [workbook['name'] for workbook in lineage_data.get('workbooks', [])]
 selected_workbook = st.sidebar.selectbox('Select a Workbook', workbook_names)
 
-selected_workbook_data = next((wb for wb in lineage_data.get('workbooks', []) if wb['name'] == selected_workbook), None)
+# Find the selected workbook data
+selected_workbook_data = next((workbook for workbook in lineage_data.get('workbooks', []) if workbook['name'] == selected_workbook), None)
 if not selected_workbook_data:
     st.error("No data found for the selected workbook.")
     st.stop()
 
-# Dashboard selection
+# Extract dashboards
 dashboard_names = [dashboard['name'] for dashboard in selected_workbook_data.get('dashboards', [])]
 selected_dashboard = st.sidebar.selectbox('Select a Dashboard', dashboard_names)
 
-selected_dashboard_data = next((db for db in selected_workbook_data.get('dashboards', []) if db['name'] == selected_dashboard), None)
+# Find the selected dashboard data
+selected_dashboard_data = next((dashboard for dashboard in selected_workbook_data.get('dashboards', []) if dashboard['name'] == selected_dashboard), None)
 if not selected_dashboard_data:
     st.error("No data found for the selected dashboard.")
     st.stop()
 
-# Sheet selection
+# Extract sheets
 sheet_names = [sheet['name'] for sheet in selected_dashboard_data.get('sheets', [])]
 selected_sheet = st.sidebar.selectbox('Select a Sheet', sheet_names)
 
+# Find the selected sheet data
 selected_sheet_data = next((sheet for sheet in selected_dashboard_data.get('sheets', []) if sheet['name'] == selected_sheet), None)
 if not selected_sheet_data:
     st.error("No data found for the selected sheet.")
     st.stop()
 
-# Field selection
+# Extract fields from the selected sheet
 fields = selected_sheet_data.get('sheetFieldInstances', [])
-field_names = [field['name'] for field in fields]
-selected_field = st.sidebar.selectbox('Select a Field', field_names)
-
-selected_field_data = next((field for field in fields if field['name'] == selected_field), None)
-
-# Metadata management
-if selected_field_data:
-    selected_node = build_lineage_tree(selected_field_data)
+if not fields:
+    st.write("No fields available for the selected sheet.")
 else:
-    selected_node = None
+    for field in fields:
+        st.write(f"### {field['name']}")
+        
+        # Expander for lineage graph
+        metadata_buttons = {}
+        with st.expander("Show Lineage Graph"):
+            selected_node = build_lineage_tree(field)
+            dot = create_graph(selected_node, theme, metadata_buttons)
+            st.graphviz_chart(dot, use_container_width=True)
 
-if 'selected_metadata' not in st.session_state:
-    st.session_state['selected_metadata'] = None
-if 'selected_field' not in st.session_state:
-    st.session_state['selected_field'] = selected_field
+            # Create columns dynamically based on number of buttons (nodes)
+            num_buttons = len(metadata_buttons)
+            cols = st.columns(num_buttons)  # Create 'num_buttons' number of columns
 
-# Generate lineage graph
-if selected_node:
-    with st.spinner('Generating lineage diagram...'):
-        dot = create_graph(selected_node, theme)
-        st.graphviz_chart(dot, use_container_width=True)
-
-    # Handle node selection
-    query_params = st.query_params.to_dict()
-    selected_node_name = query_params.get('selected_node', None) or st.session_state.get('selected_field')
-
-    if selected_node_name:
-        st.session_state['selected_field'] = selected_node_name
-        all_nodes = []
-
-        def gather_all_nodes(current_node):
-            all_nodes.append(current_node)
-            for child in current_node.children:
-                gather_all_nodes(child)
-
-        gather_all_nodes(selected_node)
-
-        # Retrieve metadata for selected node
-        selected_node_data = next((node.get_metadata() for node in all_nodes if node.name == selected_node_name), None)
-        if selected_node_data:
-            st.write("### Selected Node Metadata")
-            metadata_df = pd.DataFrame(list(selected_node_data.items()), columns=['Field', 'Value'])
-            st.table(metadata_df)
-
-else:
-    st.write('No lineage information found for the selected field.')
-
-# Option to display raw JSON data
-if st.checkbox('Show Raw Lineage Data'):
-    st.subheader('Lineage Data')
-    st.json(lineage_data)
+            # Place each button in a respective column
+            for i, (node_name, metadata) in enumerate(metadata_buttons.items()):
+                with cols[i]:  # Place each button in its column
+                    if st.button("Show Metadata", key=f"metadata_{node_name}_{field['name']}", use_container_width=False):
+                        metadata_df = pd.DataFrame(list(metadata.items()), columns=['Field', 'Value'])
+                        st.table(metadata_df)
