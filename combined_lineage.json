@@ -5,461 +5,625 @@
             "dashboards": [
                 {
                     "name": "Dashboard 1",
-                    "sheets": [
+                    "upstreamDatasources": [
                         {
-                            "name": "location",
-                            "sheetFieldInstances": [
+                            "name": "JAFFLE_SHOP",
+                            "sheets": [
                                 {
-                                    "name": "Customer Id",
-                                    "formula": "",
-                                    "upstreamColumns": [
+                                    "name": "location",
+                                    "worksheetFields": [],
+                                    "upstreamFields": [
                                         {
-                                            "name": "CUSTOMER_ID",
-                                            "formula": "",
-                                            "upstreamTables": [
+                                            "name": "Customer Id",
+                                            "upstreamColumns": [
                                                 {
-                                                    "name": "ORDERS"
+                                                    "name": "CUSTOMER_ID",
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "ORDERS"
+                                                        }
+                                                    ],
+                                                    "database_lineage": {
+                                                        "model": "orders",
+                                                        "column": "customer_id",
+                                                        "column Description": "The foreign key relating to the customer who placed the order.",
+                                                        "reasoning": "The CUSTOMER_ID is directly selected from the stg_orders table without any transformation or aggregation, indicating a one-to-one mapping.",
+                                                        "upstream_models": [
+                                                            {
+                                                                "model": "stg_orders",
+                                                                "column": "customer_id",
+                                                                "column Description": NaN,
+                                                                "reasoning": "The CUSTOMER_ID column is directly sourced from the customer column in the raw_orders table with a straightforward one-to-one mapping.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "ecom.raw_orders",
+                                                                        "column": "customer",
+                                                                        "column Description": "Description not available",
+                                                                        "reasoning": "Reasoning not available",
+                                                                        "upstream_models": []
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
                                                 }
                                             ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "orders",
-                                                    "column": "customer_id",
-                                                    "column Description": "The foreign key relating to the customer who placed the order.",
-                                                    "reasoning": "The CUSTOMER_ID is directly selected from the stg_orders table without any transformation or aggregation, indicating a one-to-one mapping.",
-                                                    "upstream_models": [
-                                                        {
-                                                            "model": "stg_orders",
-                                                            "column": "customer_id",
-                                                            "column Description": NaN,
-                                                            "reasoning": "The CUSTOMER_ID column is directly sourced from the customer column in the raw_orders table with a straightforward one-to-one mapping.",
-                                                            "upstream_models": [
-                                                                {
-                                                                    "model": "ecom.raw_orders",
-                                                                    "column": "customer",
-                                                                    "column Description": "Description not available",
-                                                                    "reasoning": "Reasoning not available",
-                                                                    "upstream_models": []
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "Location Name",
-                                    "formula": "",
-                                    "upstreamColumns": [
-                                        {
-                                            "name": "LOCATION_NAME",
-                                            "formula": "",
-                                            "upstreamTables": [
-                                                {
-                                                    "name": "LOCATIONS"
-                                                }
-                                            ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "locations",
-                                                    "column": "location_name",
-                                                    "column Description": NaN,
-                                                    "reasoning": "The column LOCATION_NAME is directly selected from the upstream table stg_locations without any transformations, indicating a one-to-one mapping.",
-                                                    "upstream_models": [
-                                                        {
-                                                            "model": "stg_locations",
-                                                            "column": "location_name",
-                                                            "column Description": NaN,
-                                                            "reasoning": "The column LOCATION_NAME is directly sourced from the name column in the raw_stores table with a one-to-one mapping.",
-                                                            "upstream_models": [
-                                                                {
-                                                                    "model": "ecom.raw_stores",
-                                                                    "column": "name",
-                                                                    "column Description": "Description not available",
-                                                                    "reasoning": "Reasoning not available",
-                                                                    "upstream_models": []
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "Order Total",
-                                    "formula": "",
-                                    "upstreamColumns": [
-                                        {
-                                            "name": "ORDER_TOTAL",
-                                            "formula": "",
-                                            "upstreamTables": [
-                                                {
-                                                    "name": "ORDERS"
-                                                }
-                                            ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "orders",
-                                                    "column": "order_total",
-                                                    "column Description": "The total amount of the order in USD including tax.",
-                                                    "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
-                                                    "upstream_models": [
-                                                        {
-                                                            "model": "stg_orders",
-                                                            "column": "order_total",
-                                                            "column Description": NaN,
-                                                            "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
-                                                            "upstream_models": [
-                                                                {
-                                                                    "model": "ecom.raw_orders",
-                                                                    "column": "order_total",
-                                                                    "column Description": "Description not available",
-                                                                    "reasoning": "Reasoning not available",
-                                                                    "upstream_models": []
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "loction and tax",
-                            "sheetFieldInstances": [
-                                {
-                                    "name": "Lifetime Tax Paid",
-                                    "formula": "",
-                                    "upstreamColumns": [
-                                        {
-                                            "name": "LIFETIME_TAX_PAID",
-                                            "formula": "",
-                                            "upstreamTables": [
-                                                {
-                                                    "name": "CUSTOMERS"
-                                                }
-                                            ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "customers",
-                                                    "column": "lifetime_tax_paid",
-                                                    "column Description": "The sum of all the tax portion of every order a customer has placed.",
-                                                    "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer.",
-                                                    "upstream_models": [
-                                                        {
-                                                            "model": "orders",
-                                                            "column": "tax_paid",
-                                                            "column Description": NaN,
-                                                            "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
-                                                            "upstream_models": [
-                                                                {
-                                                                    "model": "stg_orders",
-                                                                    "column": "tax_paid",
-                                                                    "column Description": NaN,
-                                                                    "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
-                                                                    "upstream_models": [
-                                                                        {
-                                                                            "model": "ecom.raw_orders",
-                                                                            "column": "tax_paid",
-                                                                            "column Description": "Description not available",
-                                                                            "reasoning": "Reasoning not available",
-                                                                            "upstream_models": []
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ]
+                                            "formula": ""
                                         },
                                         {
-                                            "name": "Total Lifetime spend (copy)",
+                                            "name": "Location Name",
+                                            "upstreamColumns": [
+                                                {
+                                                    "name": "LOCATION_NAME",
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "LOCATIONS"
+                                                        }
+                                                    ],
+                                                    "database_lineage": {
+                                                        "model": "locations",
+                                                        "column": "location_name",
+                                                        "column Description": NaN,
+                                                        "reasoning": "The column LOCATION_NAME is directly selected from the upstream table stg_locations without any transformations, indicating a one-to-one mapping.",
+                                                        "upstream_models": [
+                                                            {
+                                                                "model": "stg_locations",
+                                                                "column": "location_name",
+                                                                "column Description": NaN,
+                                                                "reasoning": "The column LOCATION_NAME is directly sourced from the name column in the raw_stores table with a one-to-one mapping.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "ecom.raw_stores",
+                                                                        "column": "name",
+                                                                        "column Description": "Description not available",
+                                                                        "reasoning": "Reasoning not available",
+                                                                        "upstream_models": []
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ],
+                                            "formula": ""
+                                        },
+                                        {
+                                            "name": "Order Total",
+                                            "upstreamColumns": [
+                                                {
+                                                    "name": "ORDER_TOTAL",
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "ORDERS"
+                                                        }
+                                                    ],
+                                                    "database_lineage": {
+                                                        "model": "orders",
+                                                        "column": "order_total",
+                                                        "column Description": "The total amount of the order in USD including tax.",
+                                                        "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
+                                                        "upstream_models": [
+                                                            {
+                                                                "model": "stg_orders",
+                                                                "column": "order_total",
+                                                                "column Description": NaN,
+                                                                "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "ecom.raw_orders",
+                                                                        "column": "order_total",
+                                                                        "column Description": "Description not available",
+                                                                        "reasoning": "Reasoning not available",
+                                                                        "upstream_models": []
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ],
+                                            "formula": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "loction and tax",
+                                    "worksheetFields": [],
+                                    "upstreamFields": [
+                                        {
+                                            "name": "Total Lifetime spend",
                                             "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
-                                            "upstreamTables": [],
-                                            "dblineage": []
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "Location Name",
-                                    "formula": "",
-                                    "upstreamColumns": [
-                                        {
-                                            "name": "LOCATION_NAME",
-                                            "formula": "",
-                                            "upstreamTables": [
+                                            "upstreamFields": [
                                                 {
-                                                    "name": "LOCATIONS"
-                                                }
-                                            ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "locations",
-                                                    "column": "location_name",
-                                                    "column Description": NaN,
-                                                    "reasoning": "The column LOCATION_NAME is directly selected from the upstream table stg_locations without any transformations, indicating a one-to-one mapping.",
-                                                    "upstream_models": [
+                                                    "name": "Lifetime Spend",
+                                                    "upstreamColumns": [
                                                         {
-                                                            "model": "stg_locations",
-                                                            "column": "location_name",
-                                                            "column Description": NaN,
-                                                            "reasoning": "The column LOCATION_NAME is directly sourced from the name column in the raw_stores table with a one-to-one mapping.",
-                                                            "upstream_models": [
+                                                            "name": "LIFETIME_SPEND",
+                                                            "upstreamDatabases": [
                                                                 {
-                                                                    "model": "ecom.raw_stores",
-                                                                    "column": "name",
-                                                                    "column Description": "Description not available",
-                                                                    "reasoning": "Reasoning not available",
-                                                                    "upstream_models": []
+                                                                    "name": "JAFFLE_SHOP"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "upstreamTables": [
+                                                                {
+                                                                    "name": "CUSTOMERS"
+                                                                }
+                                                            ],
+                                                            "database_lineage": {
+                                                                "model": "customers",
+                                                                "column": "lifetime_spend",
+                                                                "column Description": "The sum of all the order totals (including tax) that a customer has ever placed.",
+                                                                "reasoning": "The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "orders",
+                                                                        "column": "order_total",
+                                                                        "column Description": "The total amount of the order in USD including tax.",
+                                                                        "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
+                                                                        "upstream_models": [
+                                                                            {
+                                                                                "model": "stg_orders",
+                                                                                "column": "order_total",
+                                                                                "column Description": NaN,
+                                                                                "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
+                                                                                "upstream_models": [
+                                                                                    {
+                                                                                        "model": "ecom.raw_orders",
+                                                                                        "column": "order_total",
+                                                                                        "column Description": "Description not available",
+                                                                                        "reasoning": "Reasoning not available",
+                                                                                        "upstream_models": []
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
                                                         }
                                                     ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "cust type",
-                            "sheetFieldInstances": [
-                                {
-                                    "name": "Customer Type",
-                                    "formula": "",
-                                    "upstreamColumns": [
-                                        {
-                                            "name": "CUSTOMER_TYPE",
-                                            "formula": "",
-                                            "upstreamTables": [
+                                                },
                                                 {
-                                                    "name": "CUSTOMERS"
-                                                }
-                                            ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "customers",
-                                                    "column": "customer_type",
-                                                    "column Description": "Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.",
-                                                    "reasoning": NaN,
-                                                    "upstream_models": [
+                                                    "name": "Lifetime Tax Paid",
+                                                    "upstreamColumns": [
                                                         {
-                                                            "model": "nan",
-                                                            "column": "nan",
-                                                            "column Description": "Description not available",
-                                                            "reasoning": "Reasoning not available",
-                                                            "upstream_models": []
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "Lifetime Spend",
-                                    "formula": "",
-                                    "upstreamColumns": [
-                                        {
-                                            "name": "LIFETIME_SPEND",
-                                            "formula": "",
-                                            "upstreamTables": [
-                                                {
-                                                    "name": "CUSTOMERS"
-                                                }
-                                            ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "customers",
-                                                    "column": "lifetime_spend",
-                                                    "column Description": "The sum of all the order totals (including tax) that a customer has ever placed.",
-                                                    "reasoning": "The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric.",
-                                                    "upstream_models": [
-                                                        {
-                                                            "model": "orders",
-                                                            "column": "order_total",
-                                                            "column Description": "The total amount of the order in USD including tax.",
-                                                            "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
-                                                            "upstream_models": [
+                                                            "name": "LIFETIME_TAX_PAID",
+                                                            "upstreamDatabases": [
                                                                 {
-                                                                    "model": "stg_orders",
-                                                                    "column": "order_total",
-                                                                    "column Description": NaN,
-                                                                    "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
-                                                                    "upstream_models": [
-                                                                        {
-                                                                            "model": "ecom.raw_orders",
-                                                                            "column": "order_total",
-                                                                            "column Description": "Description not available",
-                                                                            "reasoning": "Reasoning not available",
-                                                                            "upstream_models": []
-                                                                        }
-                                                                    ]
+                                                                    "name": "JAFFLE_SHOP"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "upstreamTables": [
+                                                                {
+                                                                    "name": "CUSTOMERS"
+                                                                }
+                                                            ],
+                                                            "database_lineage": {
+                                                                "model": "customers",
+                                                                "column": "lifetime_tax_paid",
+                                                                "column Description": "The sum of all the tax portion of every order a customer has placed.",
+                                                                "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "orders",
+                                                                        "column": "tax_paid",
+                                                                        "column Description": NaN,
+                                                                        "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
+                                                                        "upstream_models": [
+                                                                            {
+                                                                                "model": "stg_orders",
+                                                                                "column": "tax_paid",
+                                                                                "column Description": NaN,
+                                                                                "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
+                                                                                "upstream_models": [
+                                                                                    {
+                                                                                        "model": "ecom.raw_orders",
+                                                                                        "column": "tax_paid",
+                                                                                        "column Description": "Description not available",
+                                                                                        "reasoning": "Reasoning not available",
+                                                                                        "upstream_models": []
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
                                                         }
                                                     ]
                                                 }
                                             ]
                                         },
                                         {
-                                            "name": "Total Lifetime spend (copy)",
+                                            "name": "Lifetime Tax Paid",
+                                            "upstreamColumns": [
+                                                {
+                                                    "name": "LIFETIME_TAX_PAID",
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
+                                                        }
+                                                    ],
+                                                    "database_lineage": {
+                                                        "model": "customers",
+                                                        "column": "lifetime_tax_paid",
+                                                        "column Description": "The sum of all the tax portion of every order a customer has placed.",
+                                                        "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer.",
+                                                        "upstream_models": [
+                                                            {
+                                                                "model": "orders",
+                                                                "column": "tax_paid",
+                                                                "column Description": NaN,
+                                                                "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "stg_orders",
+                                                                        "column": "tax_paid",
+                                                                        "column Description": NaN,
+                                                                        "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
+                                                                        "upstream_models": [
+                                                                            {
+                                                                                "model": "ecom.raw_orders",
+                                                                                "column": "tax_paid",
+                                                                                "column Description": "Description not available",
+                                                                                "reasoning": "Reasoning not available",
+                                                                                "upstream_models": []
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ],
+                                            "formula": ""
+                                        },
+                                        {
+                                            "name": "Location Name",
+                                            "upstreamColumns": [
+                                                {
+                                                    "name": "LOCATION_NAME",
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "LOCATIONS"
+                                                        }
+                                                    ],
+                                                    "database_lineage": {
+                                                        "model": "locations",
+                                                        "column": "location_name",
+                                                        "column Description": NaN,
+                                                        "reasoning": "The column LOCATION_NAME is directly selected from the upstream table stg_locations without any transformations, indicating a one-to-one mapping.",
+                                                        "upstream_models": [
+                                                            {
+                                                                "model": "stg_locations",
+                                                                "column": "location_name",
+                                                                "column Description": NaN,
+                                                                "reasoning": "The column LOCATION_NAME is directly sourced from the name column in the raw_stores table with a one-to-one mapping.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "ecom.raw_stores",
+                                                                        "column": "name",
+                                                                        "column Description": "Description not available",
+                                                                        "reasoning": "Reasoning not available",
+                                                                        "upstream_models": []
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ],
+                                            "formula": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "cust type",
+                                    "worksheetFields": [],
+                                    "upstreamFields": [
+                                        {
+                                            "name": "Customer Type",
+                                            "upstreamColumns": [
+                                                {
+                                                    "name": "CUSTOMER_TYPE",
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
+                                                        }
+                                                    ],
+                                                    "database_lineage": {
+                                                        "model": "customers",
+                                                        "column": "customer_type",
+                                                        "column Description": "Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.",
+                                                        "reasoning": NaN,
+                                                        "upstream_models": [
+                                                            {
+                                                                "model": "nan",
+                                                                "column": "nan",
+                                                                "column Description": "Description not available",
+                                                                "reasoning": "Reasoning not available",
+                                                                "upstream_models": []
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ],
+                                            "formula": ""
+                                        },
+                                        {
+                                            "name": "Total Lifetime spend",
                                             "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
-                                            "upstreamTables": [],
-                                            "dblineage": []
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "Lifetime Tax Paid",
-                                    "formula": "",
-                                    "upstreamColumns": [
-                                        {
-                                            "name": "LIFETIME_TAX_PAID",
-                                            "formula": "",
-                                            "upstreamTables": [
+                                            "upstreamFields": [
                                                 {
-                                                    "name": "CUSTOMERS"
-                                                }
-                                            ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "customers",
-                                                    "column": "lifetime_tax_paid",
-                                                    "column Description": "The sum of all the tax portion of every order a customer has placed.",
-                                                    "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer.",
-                                                    "upstream_models": [
+                                                    "name": "Lifetime Spend",
+                                                    "upstreamColumns": [
                                                         {
-                                                            "model": "orders",
-                                                            "column": "tax_paid",
-                                                            "column Description": NaN,
-                                                            "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
-                                                            "upstream_models": [
+                                                            "name": "LIFETIME_SPEND",
+                                                            "upstreamDatabases": [
                                                                 {
-                                                                    "model": "stg_orders",
-                                                                    "column": "tax_paid",
-                                                                    "column Description": NaN,
-                                                                    "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
-                                                                    "upstream_models": [
-                                                                        {
-                                                                            "model": "ecom.raw_orders",
-                                                                            "column": "tax_paid",
-                                                                            "column Description": "Description not available",
-                                                                            "reasoning": "Reasoning not available",
-                                                                            "upstream_models": []
-                                                                        }
-                                                                    ]
+                                                                    "name": "JAFFLE_SHOP"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "upstreamTables": [
+                                                                {
+                                                                    "name": "CUSTOMERS"
+                                                                }
+                                                            ],
+                                                            "database_lineage": {
+                                                                "model": "customers",
+                                                                "column": "lifetime_spend",
+                                                                "column Description": "The sum of all the order totals (including tax) that a customer has ever placed.",
+                                                                "reasoning": "The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "orders",
+                                                                        "column": "order_total",
+                                                                        "column Description": "The total amount of the order in USD including tax.",
+                                                                        "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
+                                                                        "upstream_models": [
+                                                                            {
+                                                                                "model": "stg_orders",
+                                                                                "column": "order_total",
+                                                                                "column Description": NaN,
+                                                                                "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
+                                                                                "upstream_models": [
+                                                                                    {
+                                                                                        "model": "ecom.raw_orders",
+                                                                                        "column": "order_total",
+                                                                                        "column Description": "Description not available",
+                                                                                        "reasoning": "Reasoning not available",
+                                                                                        "upstream_models": []
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "Lifetime Tax Paid",
+                                                    "upstreamColumns": [
+                                                        {
+                                                            "name": "LIFETIME_TAX_PAID",
+                                                            "upstreamDatabases": [
+                                                                {
+                                                                    "name": "JAFFLE_SHOP"
+                                                                }
+                                                            ],
+                                                            "upstreamTables": [
+                                                                {
+                                                                    "name": "CUSTOMERS"
+                                                                }
+                                                            ],
+                                                            "database_lineage": {
+                                                                "model": "customers",
+                                                                "column": "lifetime_tax_paid",
+                                                                "column Description": "The sum of all the tax portion of every order a customer has placed.",
+                                                                "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "orders",
+                                                                        "column": "tax_paid",
+                                                                        "column Description": NaN,
+                                                                        "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
+                                                                        "upstream_models": [
+                                                                            {
+                                                                                "model": "stg_orders",
+                                                                                "column": "tax_paid",
+                                                                                "column Description": NaN,
+                                                                                "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
+                                                                                "upstream_models": [
+                                                                                    {
+                                                                                        "model": "ecom.raw_orders",
+                                                                                        "column": "tax_paid",
+                                                                                        "column Description": "Description not available",
+                                                                                        "reasoning": "Reasoning not available",
+                                                                                        "upstream_models": []
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
                                                         }
                                                     ]
                                                 }
                                             ]
                                         },
                                         {
-                                            "name": "Total Lifetime spend (copy)",
-                                            "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
-                                            "upstreamTables": [],
-                                            "dblineage": []
-                                        }
-                                    ]
-                                },
-                                {
-                                    "name": "Total Lifetime spend",
-                                    "formula": "",
-                                    "upstreamColumns": [
-                                        {
-                                            "name": "LIFETIME_TAX_PAID",
-                                            "formula": "",
-                                            "upstreamTables": [
+                                            "name": "Lifetime Spend",
+                                            "upstreamColumns": [
                                                 {
-                                                    "name": "CUSTOMERS"
+                                                    "name": "LIFETIME_SPEND",
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
+                                                        }
+                                                    ],
+                                                    "database_lineage": {
+                                                        "model": "customers",
+                                                        "column": "lifetime_spend",
+                                                        "column Description": "The sum of all the order totals (including tax) that a customer has ever placed.",
+                                                        "reasoning": "The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric.",
+                                                        "upstream_models": [
+                                                            {
+                                                                "model": "orders",
+                                                                "column": "order_total",
+                                                                "column Description": "The total amount of the order in USD including tax.",
+                                                                "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "stg_orders",
+                                                                        "column": "order_total",
+                                                                        "column Description": NaN,
+                                                                        "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
+                                                                        "upstream_models": [
+                                                                            {
+                                                                                "model": "ecom.raw_orders",
+                                                                                "column": "order_total",
+                                                                                "column Description": "Description not available",
+                                                                                "reasoning": "Reasoning not available",
+                                                                                "upstream_models": []
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
                                                 }
                                             ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "customers",
-                                                    "column": "lifetime_tax_paid",
-                                                    "column Description": "The sum of all the tax portion of every order a customer has placed.",
-                                                    "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer.",
-                                                    "upstream_models": [
-                                                        {
-                                                            "model": "orders",
-                                                            "column": "tax_paid",
-                                                            "column Description": NaN,
-                                                            "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
-                                                            "upstream_models": [
-                                                                {
-                                                                    "model": "stg_orders",
-                                                                    "column": "tax_paid",
-                                                                    "column Description": NaN,
-                                                                    "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
-                                                                    "upstream_models": [
-                                                                        {
-                                                                            "model": "ecom.raw_orders",
-                                                                            "column": "tax_paid",
-                                                                            "column Description": "Description not available",
-                                                                            "reasoning": "Reasoning not available",
-                                                                            "upstream_models": []
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ]
+                                            "formula": ""
                                         },
                                         {
-                                            "name": "LIFETIME_SPEND",
-                                            "formula": "",
-                                            "upstreamTables": [
+                                            "name": "Lifetime Tax Paid",
+                                            "upstreamColumns": [
                                                 {
-                                                    "name": "CUSTOMERS"
+                                                    "name": "LIFETIME_TAX_PAID",
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
+                                                        }
+                                                    ],
+                                                    "database_lineage": {
+                                                        "model": "customers",
+                                                        "column": "lifetime_tax_paid",
+                                                        "column Description": "The sum of all the tax portion of every order a customer has placed.",
+                                                        "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer.",
+                                                        "upstream_models": [
+                                                            {
+                                                                "model": "orders",
+                                                                "column": "tax_paid",
+                                                                "column Description": NaN,
+                                                                "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping.",
+                                                                "upstream_models": [
+                                                                    {
+                                                                        "model": "stg_orders",
+                                                                        "column": "tax_paid",
+                                                                        "column Description": NaN,
+                                                                        "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping.",
+                                                                        "upstream_models": [
+                                                                            {
+                                                                                "model": "ecom.raw_orders",
+                                                                                "column": "tax_paid",
+                                                                                "column Description": "Description not available",
+                                                                                "reasoning": "Reasoning not available",
+                                                                                "upstream_models": []
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
                                                 }
                                             ],
-                                            "dblineage": [
-                                                {
-                                                    "model": "customers",
-                                                    "column": "lifetime_spend",
-                                                    "column Description": "The sum of all the order totals (including tax) that a customer has ever placed.",
-                                                    "reasoning": "The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric.",
-                                                    "upstream_models": [
-                                                        {
-                                                            "model": "orders",
-                                                            "column": "order_total",
-                                                            "column Description": "The total amount of the order in USD including tax.",
-                                                            "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping.",
-                                                            "upstream_models": [
-                                                                {
-                                                                    "model": "stg_orders",
-                                                                    "column": "order_total",
-                                                                    "column Description": NaN,
-                                                                    "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied.",
-                                                                    "upstream_models": [
-                                                                        {
-                                                                            "model": "ecom.raw_orders",
-                                                                            "column": "order_total",
-                                                                            "column Description": "Description not available",
-                                                                            "reasoning": "Reasoning not available",
-                                                                            "upstream_models": []
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ]
+                                            "formula": ""
                                         }
                                     ]
                                 }

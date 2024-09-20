@@ -66,7 +66,7 @@ print(f"Published Datasource IDs: {published_datasource_ids}")
 idWithin_str = '", "'.join(published_datasource_ids)
 idWithin_filter = f'["{idWithin_str}"]'
 
-# Step 2: Construct the main GraphQL query using multiple IDs in `idWithin`
+# Step 2: Construct the main GraphQL query using sheetFieldInstances and upstreamFields
 graphql_query = f"""
 {{
   workbooks(filter: {{name: "Jaffle Shop "}}) {{
@@ -82,19 +82,8 @@ graphql_query = f"""
             name
           }}
           sheetFieldInstances(orderBy: {{field: NAME, direction: ASC}}) {{
-            name
-            upstreamDatabases {{
+            upstreamFields {{
               name
-            }}
-            upstreamTables {{
-              name
-            }}
-            upstreamColumns {{
-              name
-            }}
-            referencedByCalculations {{
-              name
-              formula
               upstreamDatabases {{
                 name
               }}
@@ -103,6 +92,22 @@ graphql_query = f"""
               }}
               upstreamColumns {{
                 name
+              }}
+              referencedByCalculations {{
+                name
+                formula
+                upstreamFields {{
+                  name
+                  upstreamDatabases {{
+                    name
+                  }}
+                  upstreamTables {{
+                    name
+                  }}
+                  upstreamColumns {{
+                    name
+                  }}
+                }}
               }}
             }}
           }}
@@ -120,6 +125,17 @@ response.raise_for_status()
 # Parse the JSON response
 data = response.json()
 print(json.dumps(data, indent=2))
+
+def deduplicate_fields(fields):
+    """ Function to remove duplicate upstream fields based on the 'name' key """
+    seen = set()
+    unique_fields = []
+    for field in fields:
+        field_name = field["name"]
+        if field_name not in seen:
+            unique_fields.append(field)
+            seen.add(field_name)
+    return unique_fields
 
 def build_lineage(data):
     output = {"workbooks": []}
@@ -150,7 +166,7 @@ def build_lineage(data):
                     sheet_output = {
                         "name": sheet["name"],
                         "worksheetFields": [],
-                        "sheetFieldInstances": []
+                        "upstreamFields": []
                     }
 
                     # Add worksheetFields to sheet output
@@ -160,28 +176,32 @@ def build_lineage(data):
                         }
                         sheet_output["worksheetFields"].append(worksheet_field_output)
 
-                    # Add sheetFieldInstances and treat them like upstream columns
-                    for field_instance in sheet["sheetFieldInstances"]:
-                        field_output = {
-                            "name": field_instance["name"],
-                            "upstreamColumns": [],
-                            "formula": ""
-                        }
-
-                        # Add direct upstream details for each column in the field
-                        for column in field_instance.get("upstreamColumns", []):
-                            column_entry = {
-                                "name": column["name"],
-                                "upstreamDatabases": field_instance.get("upstreamDatabases", []),
-                                "upstreamTables": field_instance.get("upstreamTables", [])
+                    # Add sheetFieldInstances and process upstreamFields
+                    for sheet_field_instance in sheet["sheetFieldInstances"]:
+                        for upstream_field in sheet_field_instance["upstreamFields"]:
+                            field_output = {
+                                "name": upstream_field["name"],
+                                "upstreamColumns": [],
+                                "formula": ""
                             }
-                            field_output["upstreamColumns"].append(column_entry)
 
-                        # Handle referencedByCalculations
-                        process_calculations(field_instance, field_output)
+                            # Add direct upstream details for each column in the field
+                            for column in upstream_field.get("upstreamColumns", []):
+                                column_entry = {
+                                    "name": column["name"],
+                                    "upstreamDatabases": upstream_field.get("upstreamDatabases", []),
+                                    "upstreamTables": upstream_field.get("upstreamTables", [])
+                                }
+                                field_output["upstreamColumns"].append(column_entry)
 
-                        # Add the field instance to the sheet output
-                        sheet_output["sheetFieldInstances"].append(field_output)
+                            # Handle referencedByCalculations first, with new hierarchy of upstreamFields
+                            process_calculations_with_upstream_fields(upstream_field, sheet_output)
+
+                            # Add the upstream field to the sheet output
+                            sheet_output["upstreamFields"].append(field_output)
+
+                    # Deduplicate upstream fields after processing
+                    sheet_output["upstreamFields"] = deduplicate_fields(sheet_output["upstreamFields"])
 
                     # Add sheet output to the datasource
                     datasource_output["sheets"].append(sheet_output)
@@ -197,26 +217,39 @@ def build_lineage(data):
 
     return output
 
-# Function to handle recursive referencedByCalculations
-def process_calculations(field, field_output):
-    if field.get("referencedByCalculations"):
-        for calc in field["referencedByCalculations"]:
+# Function to handle recursive referencedByCalculations with deduplication and new upstreamFields hierarchy
+def process_calculations_with_upstream_fields(upstream_field, sheet_output):
+    if upstream_field.get("referencedByCalculations"):
+        for calc in upstream_field["referencedByCalculations"]:
             calc_entry = {
                 "name": calc["name"],
                 "formula": calc.get("formula", ""),
-                "upstreamColumns": []
+                "upstreamFields": []
             }
 
-            # Add upstream columns for this calculation
-            for upstream_col in calc.get("upstreamColumns", []):
-                upstream_column_entry = {
-                    "name": upstream_col["name"],
-                    "upstreamDatabases": calc.get("upstreamDatabases", []),
-                    "upstreamTables": calc.get("upstreamTables", [])
+            # Add upstreamFields for the referenced calculation
+            for calc_upstream_field in calc.get("upstreamFields", []):
+                calc_field_entry = {
+                    "name": calc_upstream_field["name"],
+                    "upstreamColumns": [],
+                    "upstreamDatabases": calc_upstream_field.get("upstreamDatabases", []),
+                    "upstreamTables": calc_upstream_field.get("upstreamTables", [])
                 }
-                calc_entry["upstreamColumns"].append(upstream_column_entry)
 
-            field_output["upstreamColumns"].append(calc_entry)
+                # Add upstream columns for the referenced calculation's upstream fields
+                for upstream_col in calc_upstream_field.get("upstreamColumns", []):
+                    upstream_column_entry = {
+                        "name": upstream_col["name"],
+                        "upstreamDatabases": calc_upstream_field.get("upstreamDatabases", []),
+                        "upstreamTables": calc_upstream_field.get("upstreamTables", [])
+                    }
+                    calc_field_entry["upstreamColumns"].append(upstream_column_entry)
+
+                # Append each upstreamField inside the referenced calculation
+                calc_entry["upstreamFields"].append(calc_field_entry)
+
+            # Treat each referenced calculation as a separate entry
+            sheet_output["upstreamFields"].append(calc_entry)
 
 # Generate the output
 lineage_output = build_lineage(data)

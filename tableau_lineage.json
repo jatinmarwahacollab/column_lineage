@@ -12,7 +12,7 @@
                                 {
                                     "name": "location",
                                     "worksheetFields": [],
-                                    "sheetFieldInstances": [
+                                    "upstreamFields": [
                                         {
                                             "name": "Customer Id",
                                             "upstreamColumns": [
@@ -75,12 +75,28 @@
                                 {
                                     "name": "loction and tax",
                                     "worksheetFields": [],
-                                    "sheetFieldInstances": [
+                                    "upstreamFields": [
                                         {
-                                            "name": "Lifetime Tax Paid",
-                                            "upstreamColumns": [
+                                            "name": "Total Lifetime spend",
+                                            "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
+                                            "upstreamFields": [
                                                 {
-                                                    "name": "LIFETIME_TAX_PAID",
+                                                    "name": "Lifetime Spend",
+                                                    "upstreamColumns": [
+                                                        {
+                                                            "name": "LIFETIME_SPEND",
+                                                            "upstreamDatabases": [
+                                                                {
+                                                                    "name": "JAFFLE_SHOP"
+                                                                }
+                                                            ],
+                                                            "upstreamTables": [
+                                                                {
+                                                                    "name": "CUSTOMERS"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
                                                     "upstreamDatabases": [
                                                         {
                                                             "name": "JAFFLE_SHOP"
@@ -93,8 +109,7 @@
                                                     ]
                                                 },
                                                 {
-                                                    "name": "Total Lifetime spend (copy)",
-                                                    "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
+                                                    "name": "Lifetime Tax Paid",
                                                     "upstreamColumns": [
                                                         {
                                                             "name": "LIFETIME_TAX_PAID",
@@ -108,19 +123,34 @@
                                                                     "name": "CUSTOMERS"
                                                                 }
                                                             ]
-                                                        },
+                                                        }
+                                                    ],
+                                                    "upstreamDatabases": [
                                                         {
-                                                            "name": "LIFETIME_SPEND",
-                                                            "upstreamDatabases": [
-                                                                {
-                                                                    "name": "JAFFLE_SHOP"
-                                                                }
-                                                            ],
-                                                            "upstreamTables": [
-                                                                {
-                                                                    "name": "CUSTOMERS"
-                                                                }
-                                                            ]
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Lifetime Tax Paid",
+                                            "upstreamColumns": [
+                                                {
+                                                    "name": "LIFETIME_TAX_PAID",
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
                                                         }
                                                     ]
                                                 }
@@ -151,7 +181,7 @@
                                 {
                                     "name": "cust type",
                                     "worksheetFields": [],
-                                    "sheetFieldInstances": [
+                                    "upstreamFields": [
                                         {
                                             "name": "Customer Type",
                                             "upstreamColumns": [
@@ -172,6 +202,68 @@
                                             "formula": ""
                                         },
                                         {
+                                            "name": "Total Lifetime spend",
+                                            "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
+                                            "upstreamFields": [
+                                                {
+                                                    "name": "Lifetime Spend",
+                                                    "upstreamColumns": [
+                                                        {
+                                                            "name": "LIFETIME_SPEND",
+                                                            "upstreamDatabases": [
+                                                                {
+                                                                    "name": "JAFFLE_SHOP"
+                                                                }
+                                                            ],
+                                                            "upstreamTables": [
+                                                                {
+                                                                    "name": "CUSTOMERS"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "Lifetime Tax Paid",
+                                                    "upstreamColumns": [
+                                                        {
+                                                            "name": "LIFETIME_TAX_PAID",
+                                                            "upstreamDatabases": [
+                                                                {
+                                                                    "name": "JAFFLE_SHOP"
+                                                                }
+                                                            ],
+                                                            "upstreamTables": [
+                                                                {
+                                                                    "name": "CUSTOMERS"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "upstreamDatabases": [
+                                                        {
+                                                            "name": "JAFFLE_SHOP"
+                                                        }
+                                                    ],
+                                                    "upstreamTables": [
+                                                        {
+                                                            "name": "CUSTOMERS"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
                                             "name": "Lifetime Spend",
                                             "upstreamColumns": [
                                                 {
@@ -186,38 +278,6 @@
                                                             "name": "CUSTOMERS"
                                                         }
                                                     ]
-                                                },
-                                                {
-                                                    "name": "Total Lifetime spend (copy)",
-                                                    "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
-                                                    "upstreamColumns": [
-                                                        {
-                                                            "name": "LIFETIME_TAX_PAID",
-                                                            "upstreamDatabases": [
-                                                                {
-                                                                    "name": "JAFFLE_SHOP"
-                                                                }
-                                                            ],
-                                                            "upstreamTables": [
-                                                                {
-                                                                    "name": "CUSTOMERS"
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            "name": "LIFETIME_SPEND",
-                                                            "upstreamDatabases": [
-                                                                {
-                                                                    "name": "JAFFLE_SHOP"
-                                                                }
-                                                            ],
-                                                            "upstreamTables": [
-                                                                {
-                                                                    "name": "CUSTOMERS"
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
                                                 }
                                             ],
                                             "formula": ""
@@ -227,70 +287,6 @@
                                             "upstreamColumns": [
                                                 {
                                                     "name": "LIFETIME_TAX_PAID",
-                                                    "upstreamDatabases": [
-                                                        {
-                                                            "name": "JAFFLE_SHOP"
-                                                        }
-                                                    ],
-                                                    "upstreamTables": [
-                                                        {
-                                                            "name": "CUSTOMERS"
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "name": "Total Lifetime spend (copy)",
-                                                    "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
-                                                    "upstreamColumns": [
-                                                        {
-                                                            "name": "LIFETIME_TAX_PAID",
-                                                            "upstreamDatabases": [
-                                                                {
-                                                                    "name": "JAFFLE_SHOP"
-                                                                }
-                                                            ],
-                                                            "upstreamTables": [
-                                                                {
-                                                                    "name": "CUSTOMERS"
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            "name": "LIFETIME_SPEND",
-                                                            "upstreamDatabases": [
-                                                                {
-                                                                    "name": "JAFFLE_SHOP"
-                                                                }
-                                                            ],
-                                                            "upstreamTables": [
-                                                                {
-                                                                    "name": "CUSTOMERS"
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
-                                                }
-                                            ],
-                                            "formula": ""
-                                        },
-                                        {
-                                            "name": "Total Lifetime spend",
-                                            "upstreamColumns": [
-                                                {
-                                                    "name": "LIFETIME_TAX_PAID",
-                                                    "upstreamDatabases": [
-                                                        {
-                                                            "name": "JAFFLE_SHOP"
-                                                        }
-                                                    ],
-                                                    "upstreamTables": [
-                                                        {
-                                                            "name": "CUSTOMERS"
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "name": "LIFETIME_SPEND",
                                                     "upstreamDatabases": [
                                                         {
                                                             "name": "JAFFLE_SHOP"
