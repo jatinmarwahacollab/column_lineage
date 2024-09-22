@@ -1,0 +1,742 @@
+[
+  {
+    "key": 1,
+    "name": "Jaffle Shop ",
+    "parent": 0,
+    "table": null,
+    "type": "Workbook",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 2,
+    "name": "Dashboard 1",
+    "parent": 1,
+    "table": null,
+    "type": "Dashboard",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 3,
+    "name": "JAFFLE_SHOP",
+    "parent": 2,
+    "table": null,
+    "type": "Datasource",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 4,
+    "name": "location",
+    "parent": 3,
+    "table": null,
+    "type": "Sheet",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 5,
+    "name": "Customer Id",
+    "parent": 4,
+    "table": null,
+    "type": "Field",
+    "formula": "",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 6,
+    "name": "CUSTOMER_ID",
+    "parent": 5,
+    "table": "ORDERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 7,
+    "name": "customer_id",
+    "parent": 6,
+    "table": "orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The foreign key relating to the customer who placed the order.",
+    "reasoning": "The CUSTOMER_ID is directly selected from the stg_orders table without any transformation or aggregation, indicating a one-to-one mapping."
+  },
+  {
+    "key": 8,
+    "name": "customer_id",
+    "parent": 7,
+    "table": "stg_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The CUSTOMER_ID column is directly sourced from the customer column in the raw_orders table with a straightforward one-to-one mapping."
+  },
+  {
+    "key": 9,
+    "name": "customer",
+    "parent": 8,
+    "table": "ecom.raw_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 10,
+    "name": "Location Name",
+    "parent": 4,
+    "table": null,
+    "type": "Field",
+    "formula": "",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 11,
+    "name": "LOCATION_NAME",
+    "parent": 10,
+    "table": "LOCATIONS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 12,
+    "name": "location_name",
+    "parent": 11,
+    "table": "locations",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column LOCATION_NAME is directly selected from the upstream table stg_locations without any transformations, indicating a one-to-one mapping."
+  },
+  {
+    "key": 13,
+    "name": "location_name",
+    "parent": 12,
+    "table": "stg_locations",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column LOCATION_NAME is directly sourced from the name column in the raw_stores table with a one-to-one mapping."
+  },
+  {
+    "key": 14,
+    "name": "name",
+    "parent": 13,
+    "table": "ecom.raw_stores",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 15,
+    "name": "Order Total",
+    "parent": 4,
+    "table": null,
+    "type": "Field",
+    "formula": "",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 16,
+    "name": "ORDER_TOTAL",
+    "parent": 15,
+    "table": "ORDERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 17,
+    "name": "order_total",
+    "parent": 16,
+    "table": "orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The total amount of the order in USD including tax.",
+    "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping."
+  },
+  {
+    "key": 18,
+    "name": "order_total",
+    "parent": 17,
+    "table": "stg_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied."
+  },
+  {
+    "key": 19,
+    "name": "order_total",
+    "parent": 18,
+    "table": "ecom.raw_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 20,
+    "name": "loction and tax",
+    "parent": 3,
+    "table": null,
+    "type": "Sheet",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 21,
+    "name": "Total Lifetime spend",
+    "parent": 20,
+    "table": null,
+    "type": "Field",
+    "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 22,
+    "name": "Lifetime Spend",
+    "parent": 21,
+    "table": null,
+    "type": "Field",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 23,
+    "name": "LIFETIME_SPEND",
+    "parent": 22,
+    "table": "CUSTOMERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 24,
+    "name": "lifetime_spend",
+    "parent": 23,
+    "table": "customers",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The sum of all the order totals (including tax) that a customer has ever placed.",
+    "reasoning": "The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric."
+  },
+  {
+    "key": 25,
+    "name": "order_total",
+    "parent": 24,
+    "table": "orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The total amount of the order in USD including tax.",
+    "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping."
+  },
+  {
+    "key": 26,
+    "name": "order_total",
+    "parent": 25,
+    "table": "stg_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied."
+  },
+  {
+    "key": 27,
+    "name": "order_total",
+    "parent": 26,
+    "table": "ecom.raw_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 28,
+    "name": "Lifetime Tax Paid",
+    "parent": 21,
+    "table": null,
+    "type": "Field",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 29,
+    "name": "LIFETIME_TAX_PAID",
+    "parent": 28,
+    "table": "CUSTOMERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 30,
+    "name": "lifetime_tax_paid",
+    "parent": 29,
+    "table": "customers",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The sum of all the tax portion of every order a customer has placed.",
+    "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer."
+  },
+  {
+    "key": 31,
+    "name": "tax_paid",
+    "parent": 30,
+    "table": "orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
+  },
+  {
+    "key": 32,
+    "name": "tax_paid",
+    "parent": 31,
+    "table": "stg_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping."
+  },
+  {
+    "key": 33,
+    "name": "tax_paid",
+    "parent": 32,
+    "table": "ecom.raw_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 34,
+    "name": "Lifetime Tax Paid",
+    "parent": 20,
+    "table": null,
+    "type": "Field",
+    "formula": "",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 35,
+    "name": "LIFETIME_TAX_PAID",
+    "parent": 34,
+    "table": "CUSTOMERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 36,
+    "name": "lifetime_tax_paid",
+    "parent": 35,
+    "table": "customers",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The sum of all the tax portion of every order a customer has placed.",
+    "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer."
+  },
+  {
+    "key": 37,
+    "name": "tax_paid",
+    "parent": 36,
+    "table": "orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
+  },
+  {
+    "key": 38,
+    "name": "tax_paid",
+    "parent": 37,
+    "table": "stg_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping."
+  },
+  {
+    "key": 39,
+    "name": "tax_paid",
+    "parent": 38,
+    "table": "ecom.raw_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 40,
+    "name": "Location Name",
+    "parent": 20,
+    "table": null,
+    "type": "Field",
+    "formula": "",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 41,
+    "name": "LOCATION_NAME",
+    "parent": 40,
+    "table": "LOCATIONS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 42,
+    "name": "location_name",
+    "parent": 41,
+    "table": "locations",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column LOCATION_NAME is directly selected from the upstream table stg_locations without any transformations, indicating a one-to-one mapping."
+  },
+  {
+    "key": 43,
+    "name": "location_name",
+    "parent": 42,
+    "table": "stg_locations",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column LOCATION_NAME is directly sourced from the name column in the raw_stores table with a one-to-one mapping."
+  },
+  {
+    "key": 44,
+    "name": "name",
+    "parent": 43,
+    "table": "ecom.raw_stores",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 45,
+    "name": "cust type",
+    "parent": 3,
+    "table": null,
+    "type": "Sheet",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 46,
+    "name": "Customer Type",
+    "parent": 45,
+    "table": null,
+    "type": "Field",
+    "formula": "",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 47,
+    "name": "CUSTOMER_TYPE",
+    "parent": 46,
+    "table": "CUSTOMERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 48,
+    "name": "customer_type",
+    "parent": 47,
+    "table": "customers",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.",
+    "reasoning": null
+  },
+  {
+    "key": 49,
+    "name": "nan",
+    "parent": 48,
+    "table": "nan",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 50,
+    "name": "Total Lifetime spend",
+    "parent": 45,
+    "table": null,
+    "type": "Field",
+    "formula": "[Lifetime Spend]+[Lifetime Tax Paid]",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 51,
+    "name": "Lifetime Spend",
+    "parent": 50,
+    "table": null,
+    "type": "Field",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 52,
+    "name": "LIFETIME_SPEND",
+    "parent": 51,
+    "table": "CUSTOMERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 53,
+    "name": "lifetime_spend",
+    "parent": 52,
+    "table": "customers",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The sum of all the order totals (including tax) that a customer has ever placed.",
+    "reasoning": "The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric."
+  },
+  {
+    "key": 54,
+    "name": "order_total",
+    "parent": 53,
+    "table": "orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The total amount of the order in USD including tax.",
+    "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping."
+  },
+  {
+    "key": 55,
+    "name": "order_total",
+    "parent": 54,
+    "table": "stg_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied."
+  },
+  {
+    "key": 56,
+    "name": "order_total",
+    "parent": 55,
+    "table": "ecom.raw_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 57,
+    "name": "Lifetime Tax Paid",
+    "parent": 50,
+    "table": null,
+    "type": "Field",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 58,
+    "name": "LIFETIME_TAX_PAID",
+    "parent": 57,
+    "table": "CUSTOMERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 59,
+    "name": "lifetime_tax_paid",
+    "parent": 58,
+    "table": "customers",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The sum of all the tax portion of every order a customer has placed.",
+    "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer."
+  },
+  {
+    "key": 60,
+    "name": "tax_paid",
+    "parent": 59,
+    "table": "orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
+  },
+  {
+    "key": 61,
+    "name": "tax_paid",
+    "parent": 60,
+    "table": "stg_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping."
+  },
+  {
+    "key": 62,
+    "name": "tax_paid",
+    "parent": 61,
+    "table": "ecom.raw_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 63,
+    "name": "Lifetime Spend",
+    "parent": 45,
+    "table": null,
+    "type": "Field",
+    "formula": "",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 64,
+    "name": "LIFETIME_SPEND",
+    "parent": 63,
+    "table": "CUSTOMERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 65,
+    "name": "lifetime_spend",
+    "parent": 64,
+    "table": "customers",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The sum of all the order totals (including tax) that a customer has ever placed.",
+    "reasoning": "The column LIFETIME_SPEND is derived from aggregating the order totals, specifically summing the subtotal and tax paid, indicating a transformation that combines multiple columns into a single metric."
+  },
+  {
+    "key": 66,
+    "name": "order_total",
+    "parent": 65,
+    "table": "orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The total amount of the order in USD including tax.",
+    "reasoning": "The ORDER_TOTAL column is directly selected from the stg_orders table without any transformations, indicating a one-to-one mapping."
+  },
+  {
+    "key": 67,
+    "name": "order_total",
+    "parent": 66,
+    "table": "stg_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column `order_total` is directly selected from the `source` table (which is `ecom.raw_orders`) and transformed to `order_total_cents` before being converted to dollars, indicating a one-to-one mapping with a transformation applied."
+  },
+  {
+    "key": 68,
+    "name": "order_total",
+    "parent": 67,
+    "table": "ecom.raw_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  },
+  {
+    "key": 69,
+    "name": "Lifetime Tax Paid",
+    "parent": 45,
+    "table": null,
+    "type": "Field",
+    "formula": "",
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 70,
+    "name": "LIFETIME_TAX_PAID",
+    "parent": 69,
+    "table": "CUSTOMERS",
+    "type": "Datasource Column",
+    "formula": null,
+    "column_description": null,
+    "reasoning": null
+  },
+  {
+    "key": 71,
+    "name": "lifetime_tax_paid",
+    "parent": 70,
+    "table": "customers",
+    "type": "Database",
+    "formula": null,
+    "column_description": "The sum of all the tax portion of every order a customer has placed.",
+    "reasoning": "The column LIFETIME_TAX_PAID is derived by summing the orders.TAX_PAID, indicating it is an aggregation of tax paid across all orders for a customer."
+  },
+  {
+    "key": 72,
+    "name": "tax_paid",
+    "parent": 71,
+    "table": "orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column TAX_PAID is directly selected from the stg_orders table without any transformation, indicating a one-to-one mapping."
+  },
+  {
+    "key": 73,
+    "name": "tax_paid",
+    "parent": 72,
+    "table": "stg_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": null,
+    "reasoning": "The column `tax_paid` is directly selected from the source table `ecom.raw_orders` and is renamed to `tax_paid_cents` without any transformation, indicating a one-to-one mapping."
+  },
+  {
+    "key": 74,
+    "name": "tax_paid",
+    "parent": 73,
+    "table": "ecom.raw_orders",
+    "type": "Database",
+    "formula": null,
+    "column_description": "Description not available",
+    "reasoning": "Reasoning not available"
+  }
+]
