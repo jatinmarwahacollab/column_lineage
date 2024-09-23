@@ -142,7 +142,7 @@ theme = themes[theme_name]
 # Load and parse the JSON data
 with st.spinner('Loading lineage data...'):
     try:
-        with open('combined_lineage.json', 'r') as f:
+        with open('combined_lineage_streamlit.json', 'r') as f:
             lineage_data = json.load(f)
     except Exception as e:
         st.error(f"Error loading JSON file: {e}")
