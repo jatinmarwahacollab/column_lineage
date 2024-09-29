@@ -4,8 +4,31 @@ from graphviz import Digraph
 import pandas as pd
 import warnings
 
+# Ensure page config is the first Streamlit command
+st.set_page_config(layout="wide")
+
 # Suppress deprecation warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+# CSS to change the multi-select color
+st.markdown(
+    """
+    <style>
+    /* Change the multi-select box and its dropdown background color to gray */
+    div[data-baseweb="select"] {
+        background-color: #f0f0f0;
+    }
+    div[data-baseweb="select"] > div {
+        background-color: #f0f0f0;
+    }
+    /* Change the multi-select options background color to gray */
+    ul[role="listbox"] {
+        background-color: #f0f0f0;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Define the Node class to represent each entity in the lineage
 class Node:
@@ -144,7 +167,6 @@ def getThemes():
     }
 
 # Streamlit app starts here
-st.set_page_config(layout="wide")
 st.title('Data Lineage Visualization')
 
 # Sidebar options
@@ -194,11 +216,15 @@ selected_sheet_data = next(sheet for sheet in selected_datasource_data.get('shee
 fields = selected_sheet_data.get('upstreamFields', [])
 field_names = [field['name'] for field in fields]
 
-# Display all fields as collapsible expanders
-for field in fields:
-    with st.expander(f"{field['name']}"):
-        selected_node = build_lineage_tree(field)
+# Multi-select field filter
+selected_fields = st.sidebar.multiselect('Select Fields', field_names, default=field_names)
 
-        # Display lineage graph inside the expander
-        dot = create_graph(selected_node, theme)
-        st.graphviz_chart(dot, use_container_width=True)
+# Display lineage graphs for the selected fields
+for field in fields:
+    if field['name'] in selected_fields:
+        with st.expander(f"{field['name']}", expanded=True):
+            selected_node = build_lineage_tree(field)
+
+            # Display lineage graph inside the expander
+            dot = create_graph(selected_node, theme)
+            st.graphviz_chart(dot, use_container_width=True)
